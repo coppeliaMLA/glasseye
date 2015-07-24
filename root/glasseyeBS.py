@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup, Tag
 #Get system info
 path = os.getcwd() + "/"
 #input = sys.argv[1]
-input = "markdownExample.md"
+input = "README.md"
 
 def wrap(to_wrap, wrap_in):
     contents = to_wrap.replace_with(wrap_in)
@@ -18,7 +18,6 @@ pandoc_html = "pandocHTML.html"
 glasseye = "glasseyeOut.html"
 tufte_template = "tufteTemplate.html"
 
-print path+pandoc_html
 read_html= open(path + pandoc_html,'r').read()
 soup = BeautifulSoup(read_html, 'html.parser')
 
@@ -33,11 +32,24 @@ for a in soup.findAll('side-note'):
     a['name'] = "span"
     a['class'] = "marginnote"
 
+for a in soup.findAll('sq'):
+    #a.name = "i"
+    #a['class'] = "fa-ul fa fa-square-o"
+    #a.parent['class']="checklist"
+    a.parent.parent['class']="checklist"
+
 if soup.ol != None:
-    wrap(soup.ol, soup.new_tag("div", **{'class':'list-container'}))
+    for ol in soup.findAll('ol'):
+        wrap(ol, soup.new_tag("div", **{'class':'list-container'}))
 
 if soup.ul != None:
-    wrap(soup.ul, soup.new_tag("div", **{'class':'list-container'}))
+   for ul in soup.findAll('ul'):
+       if ul.parent.name != 'li':
+           print 1
+           wrap(ul, soup.new_tag("div", **{'class':'list-container'}))
+
+
+
 
 #Process the charts
 
@@ -61,9 +73,6 @@ for d in enumerate(soup.findAll('treemap')):
     d[1].contents = ""
     d[1]['id'] = "treemap_" + str(d[0])
 
-
-print code_string
-print soup
 soup_string = str(soup)
 
 #Write to file with header and footer from template

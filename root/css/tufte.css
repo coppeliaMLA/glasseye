@@ -28,7 +28,7 @@ h2 {  font-family: 'Droid Serif';
       font-size: 2rem;
       line-height: 1; }
 
-h3 {  font-family: 'Droid Serif';
+h3, h4, h5, h6 {  font-family: 'Droid Serif';
       font-style: italic;
       font-weight: 400;
       font-size: 1.7rem;
@@ -120,6 +120,15 @@ pre.code { padding: 0 2em; }
                           position: relative; }
 .sidenote-link{font-size: 1.0rem;
                 color: #777;  }
+
+.checklist { padding-left:20px; list-style: none; }
+
+.checklist li { margin-bottom:10px; }
+.checklist li:before {    
+    font-family: FontAwesome;
+    content: "\f096";
+    margin:0 5px 0 -15px;
+}
 
 @media screen and (max-width: 600px) { .sidenote, .marginnote { width: 25%;
                                                                 margin-right: -35%; }}
