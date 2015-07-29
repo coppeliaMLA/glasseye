@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup, Tag
 #Get system info
 path = os.getcwd() + "/"
 #input = sys.argv[1]
-input = "README.md"
+input = "markdownExample.md"
 
 def wrap(to_wrap, wrap_in):
     contents = to_wrap.replace_with(wrap_in)
@@ -32,23 +32,20 @@ for a in soup.findAll('side-note'):
     a['name'] = "span"
     a['class'] = "marginnote"
 
-for a in soup.findAll('sq'):
-    #a.name = "i"
-    #a['class'] = "fa-ul fa fa-square-o"
-    #a.parent['class']="checklist"
-    a.parent.parent['class']="checklist"
+for a in soup.findAll('checklist'):
+    l = a.parent.findNext('ul')
+    l['class'] = "checklist"
+    a.extract()
 
 if soup.ol != None:
     for ol in soup.findAll('ol'):
-        wrap(ol, soup.new_tag("div", **{'class':'list-container'}))
+       if ol.parent.name != 'li':
+           wrap(ol, soup.new_tag("div", **{'class':'list-container'}))
 
 if soup.ul != None:
    for ul in soup.findAll('ul'):
        if ul.parent.name != 'li':
-           print 1
            wrap(ul, soup.new_tag("div", **{'class':'list-container'}))
-
-
 
 
 #Process the charts
@@ -72,6 +69,12 @@ for d in enumerate(soup.findAll('treemap')):
     d[1].name = "span"
     d[1].contents = ""
     d[1]['id'] = "treemap_" + str(d[0])
+
+for d in enumerate(soup.findAll('sim_plot')):
+    code_string += "sim_plot(" + str(d[1].contents[0]) + ", " + "'#sim_plot_" + str(d[0]) + "'); \n"
+    d[1].name = "span"
+    d[1].contents = ""
+    d[1]['id'] = "sim_plot_" + str(d[0])
 
 soup_string = str(soup)
 

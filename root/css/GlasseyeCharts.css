@@ -15,9 +15,22 @@
     shape-rendering: crispEdges;
 }
 
+.chart_grid text {
+  font-size: 10px;
+  fill: grey;
+  shape-rendering: crispEdges;
+}
+
 .line_points {
     opacity: 0;
 }
+
+.legend_item text {
+  font-size: 10px;
+  fill: grey;
+  shape-rendering: crispEdges;
+}
+
 
 /* Tip formatting */
 

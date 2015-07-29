@@ -59,6 +59,7 @@ Suspendisse condimentum lacus cursus mi consectetur euismod. Nulla aliquam nisi 
 
 <margin-note>
 <treemap>{ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name": "Tinned Goods", "size": 56 }, { "name": "Meat and Fish", "children": [{ "name": "Meat", "children": [{ "name": "Poultry", "size": 15 }, { "name": "Beef", "size": 17 }]}, { "name": "Fish", "size": 89 } ] }] }</treemap>
+
 Suspendisse condimentum lacus cursus mi consectetur euismod. Nulla aliquam nisi sed velit rhoncus bibendum.
 </margin-note>
 
@@ -66,3 +67,7 @@ Quisque laoreet semper ex in aliquet. Pellentesque pharetra sed augue id porta. 
 Praesent mollis sapien sit amet placerat maximus. Mauris semper a metus non accumsan. Nunc porta nulla eu augue varius, eu efficitur neque dapibus. Donec vitae ullamcorper nulla, quis sollicitudin erat. Sed sed purus et ipsum scelerisque viverra non ut ex. Donec metus ipsum, commodo eget est ac, tempus varius dui. Pellentesque convallis sapien non fermentum viverra. Duis aliquet vel mauris et tincidunt. Quisque eleifend lobortis purus, in gravida eros. Cras vulputate imperdiet risus, sed pretium magna volutpat ut. Vivamus auctor mi mattis eros malesuada posuere aliquam in arcu. Morbi diam turpis, aliquet id blandit vitae, convallis at ex.
 
 Suspendisse condimentum lacus cursus mi consectetur euismod. Nulla aliquam nisi sed velit rhoncus bibendum. Aliquam vulputate justo ligula, ac rutrum turpis venenatis in. Quisque a nibh lacinia, pharetra velit eu, volutpat est. Nunc mauris nunc, viverra at erat ut, vulputate facilisis elit. Praesent dapibus non leo rhoncus molestie. In vulputate arcu viverra, ornare ante rhoncus, tincidunt metus. Phasellus gravida nunc mauris, non porta dui aliquam vel. Vivamus a diam vel nisl dignissim blandit. Praesent a quam faucibus, convallis lacus vel, fringilla lectus. Pellentesque et dignissim leo. Duis nisi magna, varius nec vestibulum et, scelerisque eget neque. Nullam quis risus nisi. Aliquam id ex semper, facilisis nibh sed, tincidunt massa.
+
+
+<sim_plot>"forD3.csv"</sim_plot>
+

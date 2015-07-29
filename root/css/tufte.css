@@ -126,8 +126,9 @@ pre.code { padding: 0 2em; }
 .checklist li { margin-bottom:10px; }
 .checklist li:before {    
     font-family: FontAwesome;
+    font-size: 11px;
     content: "\f096";
-    margin:0 5px 0 -15px;
+    margin:0 8px 0 -15px;
 }
 
 @media screen and (max-width: 600px) { .sidenote, .marginnote { width: 25%;
