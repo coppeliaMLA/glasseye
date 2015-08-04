@@ -33,6 +33,7 @@ Aliquam luctus urna a metus condimentum rhoncus iaculis vel est. Vestibulum tinc
 <margin-note>
 <donut> {"labels": ["a", "b", "c"], "values": [2,2,7]} </donut>
 Aliquam luctus urna a metus condimentum rhoncus iaculis vel est. Vestibulum tincidunt accumsan odio id gravida.
+
 </margin-note>
 
 
@@ -45,16 +46,20 @@ Praesent mollis sapien sit amet placerat maximus. Mauris semper a metus non accu
 Suspendisse condimentum lacus cursus mi consectetur euismod. Nulla aliquam nisi sed velit rhoncus bibendum. Aliquam vulputate justo ligula, ac rutrum turpis venenatis in. Quisque a nibh lacinia, pharetra velit eu, volutpat est. Nunc mauris nunc, viverra at erat ut, vulputate facilisis elit. Praesent dapibus non leo rhoncus molestie. In vulputate arcu viverra, ornare ante rhoncus, tincidunt metus. Phasellus gravida nunc mauris, non porta dui aliquam vel. Vivamus a diam vel nisl dignissim blandit. Praesent a quam faucibus, convallis lacus vel, fringilla lectus. Pellentesque et dignissim leo. Duis nisi magna, varius nec vestibulum et, scelerisque eget neque. Nullam quis risus nisi. Aliquam id ex semper, facilisis nibh sed, tincidunt massa.
 
 <margin-note>
-<line_chart>{"x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "y": [22, 43, 12, 8, 2, 3, 4, 6, 5, 4, 3, 2, 1, 2], "labels": ["width", "height"]}</line_chart>
+<line_plot>{"x": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "y": [22, 43, 12, 8, 2, 3, 4, 6, 5, 4, 3, 2, 1, 2], "labels": ["width", "height"]}</line_plot>
 Praesent mollis sapien sit amet placerat maximus. Mauris semper a metus non accumsan. Nunc porta nulla eu augue varius, eu efficitur neque dapibus.
 </margin-note>
 
 Suspendisse condimentum lacus cursus mi consectetur euismod. Nulla aliquam nisi sed velit rhoncus bibendum. Aliquam vulputate justo ligula, ac rutrum turpis venenatis in. Quisque a nibh lacinia, pharetra velit eu, volutpat est. Nunc mauris nunc, viverra at erat ut, vulputate facilisis elit. Praesent dapibus non leo rhoncus molestie. In vulputate arcu viverra, ornare ante rhoncus, tincidunt metus. Phasellus gravida nunc mauris, non porta dui aliquam vel. Vivamus a diam vel nisl dignissim blandit. Praesent a quam faucibus, convallis lacus vel, fringilla lectus. Pellentesque et dignissim leo. Duis nisi magna, varius nec vestibulum et, scelerisque eget neque. Nullam quis risus nisi. Aliquam id ex semper, facilisis nibh sed, tincidunt massa.
 
+<line_plot>"line_plot.csv"</line_plot>"
+
 Quisque laoreet semper ex in aliquet. Pellentesque pharetra sed augue id porta. Vestibulum urna est, ultricies eu porta in, dapibus sit amet libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
 Praesent mollis sapien sit amet placerat maximus. Mauris semper a metus non accumsan. Nunc porta nulla eu augue varius, eu efficitur neque dapibus. Donec vitae ullamcorper nulla, quis sollicitudin erat. Sed sed purus et ipsum scelerisque viverra non ut ex. Donec metus ipsum, commodo eget est ac, tempus varius dui. Pellentesque convallis sapien non fermentum viverra. Duis aliquet vel mauris et tincidunt. Quisque eleifend lobortis purus, in gravida eros. Cras vulputate imperdiet risus, sed pretium magna volutpat ut. Vivamus auctor mi mattis eros malesuada posuere aliquam in arcu. Morbi diam turpis, aliquet id blandit vitae, convallis at ex.
 
+<donut>"donut.csv"</donut>
 
+Aliquam luctus urna a metus condimentum rhoncus iaculis vel est. Vestibulum tincidunt accumsan odio id gravida.
 Suspendisse condimentum lacus cursus mi consectetur euismod. Nulla aliquam nisi sed velit rhoncus bibendum. Aliquam vulputate justo ligula, ac rutrum turpis venenatis in. Quisque a nibh lacinia, pharetra velit eu, volutpat est. Nunc mauris nunc, viverra at erat ut, vulputate facilisis elit. Praesent dapibus non leo rhoncus molestie. In vulputate arcu viverra, ornare ante rhoncus, tincidunt metus. Phasellus gravida nunc mauris, non porta dui aliquam vel. Vivamus a diam vel nisl dignissim blandit. Praesent a quam faucibus, convallis lacus vel, fringilla lectus. Pellentesque et dignissim leo. Duis nisi magna, varius nec vestibulum et, scelerisque eget neque. Nullam quis risus nisi. Aliquam id ex semper, facilisis nibh sed, tincidunt massa.
 
 <margin-note>
@@ -71,3 +76,10 @@ Suspendisse condimentum lacus cursus mi consectetur euismod. Nulla aliquam nisi 
 
 <sim_plot>"forD3.csv"</sim_plot>
 
+Quisque laoreet semper ex in aliquet. Pellentesque pharetra sed augue id porta. Vestibulum urna est, ultricies eu porta in, dapibus sit amet libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+Praesent mollis sapien sit amet placerat maximus. Mauris semper a metus non accumsan. Nunc porta nulla eu augue varius, eu efficitur neque dapibus. Donec vitae ullamcorper nulla, quis sollicitudin erat. Sed sed purus et ipsum scelerisque viverra non ut ex. Donec metus ipsum, commodo eget est ac, tempus varius dui. Pellentesque convallis sapien non fermentum viverra. Duis aliquet vel mauris et tincidunt. Quisque eleifend lobortis purus, in gravida eros. Cras vulputate imperdiet risus, sed pretium magna volutpat ut. Vivamus auctor mi mattis eros malesuada posuere aliquam in arcu. Morbi diam turpis, aliquet id blandit vitae, convallis at ex.
+
+Suspendisse condimentum lacus cursus mi consectetur euismod. Nulla aliquam nisi sed velit rhoncus bibendum. Aliquam vulputate justo ligula, ac rutrum turpis venenatis in. Quisque a nibh lacinia, pharetra velit eu, volutpat est. Nunc mauris nunc, viverra at erat ut, vulputate facilisis elit. Praesent dapibus non leo rhoncus molestie. In vulputate arcu viverra, ornare ante rhoncus, tincidunt metus. Phasellus gravida nunc mauris, non porta dui aliquam vel. Vivamus a diam vel nisl dignissim blandit. Praesent a quam faucibus, convallis lacus vel, fringilla lectus. Pellentesque et dignissim leo. Duis nisi magna, varius nec vestibulum et, scelerisque eget neque. Nullam quis risus nisi. Aliquam id ex semper, facilisis nibh sed, tincidunt massa.
+
+
+<dot_plot>"dotplot.csv"</dot_plot>

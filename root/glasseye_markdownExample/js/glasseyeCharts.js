@@ -48,15 +48,16 @@ function draw_donut(processed_data, div, size) {
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-        return d.data.label + "<br><br>" + d.data.value + "<br><br>" + d3.format("%")(d.data.value/total_value) ;
-    });
-    /*.offset(function() {
+        return d.data.value + "<br><br>" + d3.format("%")(d.data.value/total_value) ;
+    })
+    .offset(function() {
         return [this.getBBox().height / 2, 0]
     });
-*/
 
     //Need to add margin to bring it into line with other charts
 
+    
+    console.log(size);
 
     if (size === "full_page") {
 
@@ -72,11 +73,11 @@ function draw_donut(processed_data, div, size) {
 
     var width = 300,
         height = 300,
-        margin = {top: 20, right: 40, bottom: 10, left: 40};
+        margin = {top: 20, right: 40, bottom: 30, left: 40};
 
     }
     
-    radius = (height - margin.top - margin.bottom) / 2;
+    radius = (height - margin.left - margin.right) / 2;
 
     var color = d3.scale.ordinal()
         .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
@@ -104,6 +105,8 @@ function draw_donut(processed_data, div, size) {
         .enter().append("g")
         .attr("class", "arc");
 
+    console.log(pie(processed_data));
+
     g.append("path")
         .attr("d", arc)
         .style("fill", function(d) {
@@ -119,11 +122,7 @@ function draw_donut(processed_data, div, size) {
         .attr("dy", ".35em")
         .style("text-anchor", "middle")
         .text(function(d) {
-            if (d.endAngle - d.startAngle > 0.35){
             return d.data.label;
-        } else {
-            return "";
-        }
         });
 
 }
@@ -134,7 +133,7 @@ function draw_donut(processed_data, div, size) {
 function treemap(data,div){
     
 var w = 300,
-    h = 400,
+    h = 250,
     x = d3.scale.linear().range([0, w]),
     y = d3.scale.linear().range([0, h]),
     color = d3.scale.category20c(),
@@ -177,8 +176,7 @@ var svg = d3.select(div)
       .attr("dy", ".35em")
       .attr("text-anchor", "middle")
       .text(function(d) { return d.name; })
-      //.style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; })
-      .call(wrap, 80);
+      .style("opacity", function(d) { d.w = this.getComputedTextLength(); return d.dx > d.w ? 1 : 0; });
 
         d3.select(window).on("click", function() { zoom(root); });
 
@@ -210,8 +208,8 @@ function zoom(d) {
 
   t.select("text")
       .attr("x", function(d) { return kx * d.dx / 2; })
-      .attr("y", function(d) { return ky * d.dy / 2; });
-      //.style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
+      .attr("y", function(d) { return ky * d.dy / 2; })
+      .style("opacity", function(d) { return kx * d.dx > d.w ? 1 : 0; });
 
   node = d;
   d3.event.stopPropagation();
@@ -267,36 +265,33 @@ function line_plot(data, div) {
 
 function draw_line_plot(processed_data, div){
 
+    console.log(processed_data);
+
     var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-        return d3.format(".3n")(d.y);
+        return d.y;
     })
 
     var svg_width = 300, svg_height = 250;
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 0},
+    var margin = {top: 20, right: 20, bottom: 30, left: 20},
     width = svg_width - margin.left - margin.right,
     height = svg_height - margin.top - margin.bottom;
 
-    var min_x = d3.min(processed_data, function(d){return d.x});
-    var max_x = d3.max(processed_data, function(d){return d.x});
-    var range_x = max_x - min_x;
-
     var x = d3.scale.linear()
     .range([0, width])
-    .domain([min_x-0.1*range_x, max_x+0.1*range_x,]);
+    .domain([d3.min(processed_data, function(d){return d['x']})-1,d3.max(processed_data, function(d){return d["x"]})+1]);
 
     var y = d3.scale.linear()
     .range([height, 0])
-    .domain([d3.min(processed_data, function(d){return +d.y}),d3.max(processed_data, function(d){return d.y})]);
+    .domain([d3.min(processed_data, function(d){return d['y']})-10,d3.max(processed_data, function(d){return d['y']})+10]);
 
     var xAxis = d3.svg.axis()
     .scale(x)
     .orient("bottom")
-    .tickSize(-height, 0, 0)
-    .tickPadding(10);
+    .tickSize(-height, 0, 0);
 
     var yAxis = d3.svg.axis()
     .scale(y)
@@ -370,7 +365,6 @@ function sim_plot(file, div) {
 
     d3.csv(file, function(error, data) {
 
-
         //Set up color scales
         var color = d3.scale.category20()
 
@@ -381,8 +375,6 @@ function sim_plot(file, div) {
                 variations.push(d.variation)
             }
         });
-
-
 
         var simulations = [];
         data.map(function(d) {
@@ -412,7 +404,6 @@ function sim_plot(file, div) {
             }
 
         });
-
 
 
         //Set up the scales
@@ -470,14 +461,13 @@ function sim_plot(file, div) {
                 return y(d.value);
             });
 
-        //var totalLength = width + 200; //At some point base this on path length
+        var totalLength = width + 200; //At some point base this on path length
 
         //Add the simulation paths for each variation
-
         processed_data.forEach(function(v, j) {
 
 
-            var path = svg.selectAll(".variations")
+            svg.selectAll(".variations")
                 .data(v.simulations)
                 .enter()
                 .append("g")
@@ -495,46 +485,21 @@ function sim_plot(file, div) {
                     } else {
                         return 0.08
                     }
-                });
-
-
-                path.each(function(d) { d.totalLength = this.getTotalLength(); })
-                .attr("stroke-dasharray", function(d) { return d.totalLength + " " + d.totalLength; })
-                .attr("stroke-dashoffset", function(d) { return d.totalLength; })
+                })
+                .attr("stroke-dasharray", totalLength + " " + totalLength)
+                .attr("stroke-dashoffset", totalLength)
                 .transition()
-                .delay(j * 7000)
+                .delay(j * 4000)
                 .duration(7000)
                 .ease("linear")
-                .attr("stroke-dashoffset", 0)
-                .transition()
-                .duration((variations.length-1-j)*7000)
-                .attr("stroke-dashoffset", 0)
-                .each("end", repeat);
-
-
-                function repeat() {
-                    var path = d3.select(this);
-                    path.attr("stroke-dasharray", function(d) { return d.totalLength + " " + d.totalLength; })
-                        .attr("stroke-dashoffset", function(d) { return d.totalLength; })
-                        .transition()
-                        .delay(j * 7000)
-                        .duration(7000)
-                        .ease("linear")
-                        .attr("stroke-dashoffset", 0)
-                        .transition()
-                        .duration((variations.length-1-j)*7000)
-                        .attr("stroke-dashoffset", 0)
-                        .each("end", repeat);
-                }
+                .attr("stroke-dashoffset", 0);
 
 
         });
 
 
-    if (variations.length > 1) {
+    add_legend(svg, width+margin.left, margin.top, variations.map(function(v){ return {"label": v, "colour": color(v)}}));
 
-       add_legend(svg, width+margin.left, margin.top, variations.map(function(v){ return {"label": v, "colour": color(v)}}));
-    }
 
     });
 
@@ -550,7 +515,7 @@ function dot_plot(file, div){
     var margin = {
             top: 20,
             right: 250,
-            bottom: 110,
+            bottom: 80,
             left: 20
         },
         width = svg_width - margin.left - margin.right,
@@ -673,9 +638,9 @@ function dot_plot(file, div){
 
         });
 
-    if (groups.length > 1) {
+
     add_legend(svg, width+margin.left, margin.top, groups.map(function(v){ return {"label": v, "colour": color(v)}}));
-}
+
     });
 
 //Put 
@@ -683,9 +648,6 @@ function dot_plot(file, div){
 //ordinal.rangePoints(interval[, padding])
 
 }
-
-
-
 
 //All purpose functions
 
@@ -714,29 +676,6 @@ function add_legend(svg, x, y, legend_data) {
 }
 
 
-function wrap(text, width) {
-  text.each(function() {
-    var text = d3.select(this),
-        words = text.text().split(/\s+/).reverse(),
-        word,
-        line = [],
-        lineNumber = 0,
-        lineHeight = 1.1, // ems
-        y = text.attr("y"),
-        dy = parseFloat(text.attr("dy")),
-        tspan = text.text(null).append("tspan").attr("x", 40).attr("y", y).attr("dy", dy + "em");
-    while (word = words.pop()) {
-      line.push(word);
-      tspan.text(line.join(" "));
-      if (tspan.node().getComputedTextLength() > width) {
-        line.pop();
-        tspan.text(line.join(" "));
-        line = [word];
-        tspan = text.append("tspan").attr("x", 40).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-      }
-    }
-  });
-}
 
 
 

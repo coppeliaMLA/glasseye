@@ -12,22 +12,23 @@ body { width: 87.5%;
        color: #777;
        max-width: 1400px; }
 
-h1 {  font-family: 'Lato';
+h1 {  font-family: 'Droid Serif';
+      font-style: italic;
       font-weight: 400;
       margin-top: 4rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       font-size: 2.5rem;
-      line-height: 1;
-      width: 55%; }
+      line-height: 1; }
 
-h2 {  font-family: 'Lato';
+h2 {  font-family: 'Droid Serif';
+      font-style: italic;
       font-weight: 400;
       margin-top: 2.1rem;
       margin-bottom: 0;
       font-size: 2rem;
       line-height: 1; }
 
-h3, h4, h5, h6 {  font-family: 'Lato';
+h3, h4, h5, h6 {  font-family: 'Droid Serif';
       font-style: italic;
       font-weight: 400;
       font-size: 1.7rem;
@@ -36,7 +37,7 @@ h3, h4, h5, h6 {  font-family: 'Lato';
       line-height: 1; }
 
 subtitle { 
-           font-family: 'Lato';
+           font-family: 'Droid Serif';
            font-style: italic;
            margin-top: 1rem;
            margin-bottom: 1rem;
@@ -99,9 +100,9 @@ sup.sidenote-number {
 .sans { font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif; }
 
 .code { font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-        color: steelblue;
-        font-size: 1.5rem;
-        line-height: 1.8; }
+        color: #222;
+        font-size: 1.2rem;
+        line-height: 1.6; }
 
 pre.code { padding: 0 2em; }
 
@@ -117,10 +118,7 @@ pre.code { padding: 0 2em; }
                           line-height: 1.96;
                           vertical-align: baseline;
                           position: relative; }
-
-.marginnote a {font-size: 1.0rem;
-                color: #777;  }
-.sidenote a {font-size: 1.0rem;
+.sidenote-link{font-size: 1.0rem;
                 color: #777;  }
 
 .checklist { padding-left:20px; list-style: none; }
