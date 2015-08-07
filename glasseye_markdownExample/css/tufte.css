@@ -99,6 +99,11 @@ sup.sidenote-number {
 code { font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
         font-size: inherit;
         line-height: 1.8; }
+        
+pre {
+  width: 55%;
+  overflow: scroll;
+}
 
 pre code { padding: 0 2em; }
 
