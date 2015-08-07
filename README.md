@@ -6,7 +6,7 @@ Glasseye is something I developed to present the results of statistical analysis
 2. The Tufte wide margin layout
 3. Visualisation using d3.js
 
-See a full demo here
+See a full demo [here](http://coppeliamla.github.io/glasseye/glasseye_markdownExample/demo.html)
 
 The idea is to be able to write up work in markdown and have the results transformed into something like a Tufte layoutof which more below. For the Tufte layout I took the excellent tufte.css style sheet developed by [Dave Liepmann and co](https://github.com/daveliepmann/tufte-css) and made a few changes to suit my purposes. Finally I've added some d3 charts (just a small selection at the moment but this will grow) that can easily invoked from within the markdown. 
 
