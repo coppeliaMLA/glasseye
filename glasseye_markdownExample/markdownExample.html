@@ -22,7 +22,7 @@
 <li>The Tufte wide margin layout</li>
 <li>Visualisation using d3.js</li>
 </ol></div>
-<p>The idea is to be able to write up work in markdown<sup>2</sup><span class="marginnote">2. Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</span> and have the results transformed into something like a Tufte layout<sup>3</sup><span class="marginnote">3. The Tufte layout makes extenive use of a wide margin to display notes, images and charts<br><br><img alt="" src="Tufte.gif"/></br></br></span> of which more below. For the Tufte layout I took the excellent tufte.css style sheet developed by <a href="https://github.com/daveliepmann/tufte-css">Dave Liepmann and co</a> and made a few changes to suit this format. Finally I've added some d3 charts (just a small selection at the moment but this will grow) that can easily invoked from within the markdown.</p>
+<p>The idea is to be able to write up work in markdown<sup>2</sup><span class="marginnote">2. Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</span> and have the results transformed into something like a Tufte layout<sup>3</sup><span class="marginnote">3. The Tufte layout makes extenive use of a wide margin to display notes, images and charts<br><br><img alt="" src="Tufte.gif"/></br></br></span> of which more below. For the Tufte layout I took the excellent tufte.css style sheet developed by <a href="https://github.com/daveliepmann/tufte-css">Dave Liepmann and co</a> and made a few changes to suit my purposes. Finally I've added some d3 charts (just a small selection at the moment but this will grow) that can easily invoked from within the markdown.</p>
 <p>It's all very very beta at the moment. I'm not claiming it's ready to go. I would like to add lots more charts, redesign the d3 code and improve it's overall usability (in particular replace the tags approach with something more in the spirit of markdown) however I thought I'd share it as it is. There's also a lot be done in terms of good design practice (css and all that). Please don't judge me <strong>yet</strong>!</p>
 <h2 id="what-it-can-do">What it can do</h2>
 <p>In case it's not obvious this web page was written using glasseye<sup>4</sup><span class="marginnote">4. You can view the markdown here</span>, that it is it was written in markdown with a few extra html-like tags thrown in.</p>
@@ -58,7 +58,7 @@
 <p>Then you should be able to run the following in a terminal</p>
 <pre><code>python glasseye.py your_md_file.md</code></pre>
 <p>It will produce a directory containing all the necessary html, js and css.</p>
-<p>Would be very pleased to here from anyone giving it a go!</p>
+<p>Would be very pleased to hear from anyone giving it a go!</p>
     </div>
 
 <script>donut("data/share.csv", '#donut_0', 'margin'); 

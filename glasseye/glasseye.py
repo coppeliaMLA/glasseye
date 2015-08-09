@@ -9,7 +9,8 @@ def wrap(to_wrap, wrap_in):
 #Get paths and file names
 user_path = os.getcwd() + "/"
 input_file = sys.argv[1]
-glasseye_path = "/Users/simon/Documents/CodeRepos/glasseye/"
+glasseye_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
+print glasseye_path
 pandoc_html = "pandocHTML.html"
 stem = os.path.splitext(input_file)[0]
 glasseye_file = stem + ".html"
