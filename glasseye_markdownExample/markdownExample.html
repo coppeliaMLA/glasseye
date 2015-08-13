@@ -61,10 +61,10 @@
 <p>Would be very pleased to hear from anyone giving it a go!</p>
     </div>
 
-<script>donut("data/share.csv", '#donut_0', 'margin'); 
-line_plot("data/lineplotExample.csv", '#line_plot_0', ["Size", "Number of explosions"]); 
+<script>sim_plot("data/activeDecidedSim.csv", '#sim_plot_0'); 
 treemap({ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name": "Tinned Goods", "children": [{ "name": "Beans", "size": 34 }, { "name": "Soups", "size": 56 }, { "name": "Puddings", "children": [{ "name": "Fruit", "children": [{ "name": "Tangerines", "size": 15 }, { "name": "Pears", "size": 17 }]}, { "name": "Apricots", "size": 89 } ] }] }, { "name": "Meat and Fish", "children": [{ "name": "Meat", "children": [{ "name": "Poultry", "size": 15 }, { "name": "Beef", "size": 17 }]}, { "name": "Fish", "size": 89 } ] }] }, '#treemap_0'); 
-sim_plot("data/activeDecidedSim.csv", '#sim_plot_0'); 
+donut("data/share.csv", '#donut_0', 'margin'); 
+line_plot("data/lineplotExample.csv", '#line_plot_0', ["Size", "Number of explosions"]); 
 </script><script type="text/javascript">
 (function () {
   var script = document.createElement("script");

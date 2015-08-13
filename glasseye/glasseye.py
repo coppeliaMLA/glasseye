@@ -6,11 +6,19 @@ def wrap(to_wrap, wrap_in):
     contents = to_wrap.replace_with(wrap_in)
     wrap_in.append(contents)
 
+#Function to add charts
+def add_chart(chart_id, code_string):
+    for d in enumerate(soup.findAll(chart_id)):
+        code_string += chart_id + "(" + str(d[1].contents[0]) + ", " + "'#" + chart_id + "_" + str(d[0]) + "'); \n"
+        d[1].name = "span"
+        d[1].contents = ""
+        d[1]['id'] = chart_id + "_" + str(d[0])
+    return code_string
+
 #Get paths and file names
 user_path = os.getcwd() + "/"
 input_file = sys.argv[1]
 glasseye_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/"
-print glasseye_path
 pandoc_html = "pandocHTML.html"
 stem = os.path.splitext(input_file)[0]
 glasseye_file = stem + ".html"
@@ -75,16 +83,23 @@ if soup.ul != None:
 #Process the charts
 code_string = ""
 
+#Standard charts
+
+standard_charts = ["sim_plot", "treemap", "dot_plot"]
+
+for s in standard_charts:
+    code_string = add_chart(s, code_string)
+
+#Charts with extra features (will modify the standard charts asap)
+
 for d in enumerate(soup.findAll('donut')):
     if d[1].parent.name == "span":
-        #d[1].parent['class'] == "marginnote":
         code_string += "donut(" + str(d[1].contents[0]) + ", " + "'#donut_" + str(d[0]) + "', 'margin'); \n"
     else:
         code_string += "donut(" + str(d[1].contents[0]) + ", " + "'#donut_" + str(d[0]) + "', 'full_page'); \n"
     d[1].name = "span"
     d[1].contents = ""
     d[1]['id'] = "donut_" + str(d[0])
-    #wrap(d[1], soup.new_tag("p"))
 
 for d in enumerate(soup.findAll('line_plot')):
     arguments = str(d[1].contents[0])
@@ -96,30 +111,6 @@ for d in enumerate(soup.findAll('line_plot')):
     d[1].name = "span"
     d[1].contents = ""
     d[1]['id'] = "line_plot_" + str(d[0])
-
-for d in enumerate(soup.findAll('treemap')):
-    code_string += "treemap(" + str(d[1].contents[0]) + ", " + "'#treemap_" + str(d[0]) + "'); \n"
-    d[1].name = "span"
-    d[1].contents = ""
-    d[1]['id'] = "treemap_" + str(d[0])
-
-for d in enumerate(soup.findAll('sim_plot')):
-    code_string += "sim_plot(" + str(d[1].contents[0]) + ", " + "'#sim_plot_" + str(d[0]) + "'); \n"
-    d[1].name = "span"
-    d[1].contents = ""
-    d[1]['id'] = "sim_plot_" + str(d[0])
-
-for d in enumerate(soup.findAll('dot_plot')):
-    code_string += "dot_plot(" + str(d[1].contents[0]) + ", " + "'#dot_plot_" + str(d[0]) + "'); \n"
-    d[1].name = "span"
-    d[1].contents = ""
-    d[1]['id'] = "dot_plot_" + str(d[0])
-
-for d in enumerate(soup.findAll('led_sim')):
-    code_string += "led_sim(" + str(d[1].contents[0]) + ", " + "'#led_sim_" + str(d[0]) + "'); \n"
-    d[1].name = "span"
-    d[1].contents = ""
-    d[1]['id'] = "led_sim_" + str(d[0])
 
 soup_string = str(soup)
 

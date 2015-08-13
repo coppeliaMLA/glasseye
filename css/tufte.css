@@ -82,7 +82,9 @@ a {  font-size: 1.4rem;
       color: #777;  }
 
 
-img { max-width: 100%; }
+img { max-width: 100%; 
+      margin-bottom: 20px;
+      margin-top: 20px;}
 
 sup, sub { vertical-align: baseline;
            position: relative;
@@ -106,6 +108,12 @@ pre code { padding: 0 2em; }
 pre {
   width: 55%;
   overflow: scroll;
+}
+
+hr {
+  width: 55%;
+  float: left;
+  clear: both;
 }
 
 .fullwidth { max-width: 95%; } 
