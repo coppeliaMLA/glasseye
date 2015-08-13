@@ -90,7 +90,7 @@ You can try out the simple test file included in the repository
 python -m glasseye test.md
 ```
 
-It will produce a directory prefixed by `glasseye_' that contains all the necessary html, js and css. You will need to copy into this directory any images or data referenced in the original markdown. It's a little adhoc at the moment but I promise to tidy up the process.
+It will produce a directory prefixed by `glasseye_` that contains all the necessary html, js and css. You will need to copy into this directory any images or data referenced in the original markdown. It's a little adhoc at the moment but I promise to tidy up the process.
 
 Also note if you are running the d3 charts from csv files (as described in the demo) then you'll probably need to run the html on a webserver. I use the old favourite
 
