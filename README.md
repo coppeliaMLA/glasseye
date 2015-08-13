@@ -74,7 +74,8 @@ git clone https://github.com/coppeliaMLA/glasseye.git
 Add the location of the glasseye python module to your PYTHONPATH
 
 ```
-PYTHONPATH="${PYTHONPATH}:/Users/simon/CodeRepos/glasseye/glasseye
+PYTHONPATH="${PYTHONPATH}:/Users/simon/CodeRepos/glasseye/glasseye"
+export PYTHONPATH
 ```
 
 You should then be able to run the following in a terminal on any markdown file
