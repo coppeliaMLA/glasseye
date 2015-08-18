@@ -1,5 +1,11 @@
 /* General chart formatting */
 
+svg {
+  clear: both;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .line {
     fill: none;
     stroke: steelblue;

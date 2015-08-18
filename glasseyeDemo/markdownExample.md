@@ -9,7 +9,7 @@ Glasseye<side-note>See the [github repository](https://github.com/coppeliaMLA/gl
 2. The Tufte wide margin layout
 3. Visualisation using d3.js
 
-The idea is to be able to write up work in markdown<side-note>Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</side-note> and have the results transformed into something like a Tufte layout<side-note>The Tufte layout makes extenive use of a wide margin to display notes, images and charts<br><br>![](Tufte.gif)</side-note>. For the Tufte layout I took the excellent tufte.css style sheet developed by [Dave Liepmann and co](https://github.com/daveliepmann/tufte-css) and made a few changes to suit my purpose. Finally I've added some d3 charts (just a small selection at the moment but this will grow) that can easily invoked from within the markdown. 
+The idea is to be able to write up work in markdown<side-note>Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</side-note> and have the results transformed into something like a Tufte layout<side-note>The Tufte layout makes extenive use of a wide margin to display notes, images and charts. ![](Tufte.gif)</side-note>. For the Tufte layout I took the excellent tufte.css style sheet developed by [Dave Liepmann and co](https://github.com/daveliepmann/tufte-css) and made a few changes to suit my purpose. Finally I've added some d3 charts (just a small selection at the moment but this will grow) that can easily invoked from within the markdown. 
 
 It's all very very beta at the moment. I'm not claiming it's ready to go. I would like to add lots more charts, redesign the d3 code and improve its overall usability (in particular replace the tags approach with something more in the spirit of markdown) however I thought I'd share it as it is. There's also a lot be done in terms of good design practice (css and all that). Please don't judge me **yet**!
 
@@ -23,7 +23,7 @@ First there's the `<side-note>` tag. Anything enclosed in these tags will genera
 Then there is a `<margin-note>` tag which is the nearly the same as the side note, only there's no number linking it to a particular part in the main text. You'll see to the right an example of a margin note containing a d3 donut.
 
 <margin-note>
-An example of margin note containing a donut plot. Because a tooltip is available we can create a less cluttered chart with labels for the smaller segments demoted to the tooltip.<donut>"data/share.csv"</donut><br>Including d3 charts in a glasseye document is very easy. You just need to surround the name of the file containing the data with tags specfying the type of chart. For example this chart was generated using `<donut>"data/share.csv"</donut>`
+An example of margin note containing a donut plot. Because a tooltip is available we can create a less cluttered chart with labels for the smaller segments demoted to the tooltip.<donut>"data/share.csv"</donut>Including d3 charts in a glasseye document is very easy. You just need to surround the name of the file containing the data with tags specfying the type of chart. For example this chart was generated using `<donut>"data/share.csv"</donut>`
 </margin-note>
 
 ###Latex
@@ -43,14 +43,13 @@ $$ \mathrm{B}(\alpha) = \frac{\prod_{i=1}^N \Gamma(\alpha_i)}{\Gamma\bigl(\sum_{
 So far I've only a few charts for you to use but hopefully that will expand quite rapidly. I've tried to create charts that are simple and uncluttered with the tooltip taking over some of the work. This is so that they can fit in the margin nicely. I've been thinking about making them as intellegent as possible so that choices are made for you about formatting (for example label positioning). That may prove annoying though so we'll see how it goes. It's easy to include any of the d3 charts into either the main body of the text or into the margin. 
 
 Inserting a plot is again just a matter of using some custom tags. For example to generate a line plot just surround a string containing the path and filname of a csv file with a `<line_plot>` tag. You can optionally supply axis labels.<side-note>
-An example of a line plot. Note the tooltip means we don't need y axis tick labels.<br>
-<line_plot>"data/lineplotExample.csv", ["Size", "Number of explosions"]</line_plot><br>
-This plot was created by inserting the following line into the markdown. `<line_plot>"data/lineplotExample.csv", ["Size", "Number of explosions"]</line_plot><br>
+An example of a line plot. Note the tooltip means we don't need y axis tick labels.
+<line_plot>"data/lineplotExample.csv", ["Size", "Number of explosions"]</line_plot>
+This plot was created by inserting the following line into the markdown. `<line_plot>"data/lineplotExample.csv", ["Size", "Number of explosions"]</line_plot>
 `
 
 
-Alternatively you can write the data in json into the markdown. For example we can create an interactive treemap<side-note>An example of an intreactive treemap. Click on the rectangles to zoom in <br>
-<br><treemap>{ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name": "Tinned Goods", "children": [{ "name": "Beans", "size": 34 }, { "name": "Soups", "size": 56 }, { "name": "Puddings", "children": [{ "name": "Fruit", "children": [{ "name": "Tangerines", "size": 15 }, { "name": "Pears", "size": 17 }]}, { "name": "Apricots", "size": 89 } ] }] }, { "name": "Meat and Fish", "children": [{ "name": "Meat", "children": [{ "name": "Poultry", "size": 15 }, { "name": "Beef", "size": 17 }]}, { "name": "Fish", "size": 89 } ] }] }</treemap>
+Alternatively you can write the data in json into the markdown. For example we can create an interactive treemap<side-note>An example of an intreactive treemap. Click on the rectangles to zoom in <treemap>{ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name": "Tinned Goods", "children": [{ "name": "Beans", "size": 34 }, { "name": "Soups", "size": 56 }, { "name": "Puddings", "children": [{ "name": "Fruit", "children": [{ "name": "Tangerines", "size": 15 }, { "name": "Pears", "size": 17 }]}, { "name": "Apricots", "size": 89 } ] }] }, { "name": "Meat and Fish", "children": [{ "name": "Meat", "children": [{ "name": "Poultry", "size": 15 }, { "name": "Beef", "size": 17 }]}, { "name": "Fish", "size": 89 } ] }] }</treemap>
 </side-note>
  by inserting the following into the markdown
 
@@ -68,7 +67,7 @@ Alternatively you can write the data in json into the markdown. For example we c
 
 Javascript charts also allow us to animate content which can be useful. I created a chart type `<sim_plot>` for a project using agent based simulation. It animates a time line which helps bring home the fact that the data is computer generated
 
-<sim_plot>"data/activeDecidedSim.csv"</sim_plot><br>
+<sim_plot>"data/activeDecidedSim.csv"</sim_plot>
 
 ##How it works
 

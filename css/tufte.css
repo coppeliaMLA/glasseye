@@ -8,7 +8,7 @@ body { width: 87.5%;
        font-family: 'Raleway';
        padding-bottom: 20rem;
        color: #777;
-       max-width: 1400px; }
+       max-width: 1200px; }
 
 h1 {  font-family: 'Lato';
       font-weight: 400;
@@ -83,6 +83,7 @@ a {  font-size: 1.4rem;
 
 
 img { max-width: 100%; 
+      clear: both;
       margin-bottom: 20px;
       margin-top: 20px;}
 

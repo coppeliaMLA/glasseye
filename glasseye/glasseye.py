@@ -13,6 +13,8 @@ def add_chart(chart_id, code_string):
         d[1].name = "span"
         d[1].contents = ""
         d[1]['id'] = chart_id + "_" + str(d[0])
+        tag = soup.new_tag("br")
+        d[1].insert_after(tag)
     return code_string
 
 #Get paths and file names
@@ -95,6 +97,8 @@ for d in enumerate(soup.findAll('donut')):
     d[1].name = "span"
     d[1].contents = ""
     d[1]['id'] = "donut_" + str(d[0])
+    tag = soup.new_tag("br")
+    d[1].insert_after(tag)
 
 for d in enumerate(soup.findAll('line_plot')):
     arguments = str(d[1].contents[0])
@@ -106,6 +110,8 @@ for d in enumerate(soup.findAll('line_plot')):
     d[1].name = "span"
     d[1].contents = ""
     d[1]['id'] = "line_plot_" + str(d[0])
+    tag = soup.new_tag("br")
+    d[1].insert_after(tag)
 
 soup_string = str(soup)
 
