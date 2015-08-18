@@ -24,28 +24,23 @@ stem = os.path.splitext(input_file)[0]
 glasseye_file = stem + ".html"
 tufte_template = "templates/tufteTemplate.html"
 
-#Make a glasseye directory at use location
-
-glasseye_dir = user_path + "glasseye_" + stem + "/"
-if not os.path.exists(glasseye_dir):
-    os.makedirs(glasseye_dir)
-
 #Copy across directories to the user location
-css_path = glasseye_dir + "css"
-if os.path.exists(css_path):
-    sh.rmtree(css_path)
-sh.copytree(glasseye_path + "css", css_path)
+if user_path != glasseye_path:
+    css_path = user_path + "css"
+    if os.path.exists(css_path):
+        sh.rmtree(css_path)
+    sh.copytree(glasseye_path + "css", css_path)
 
-js_path = glasseye_dir + "js"
-if os.path.exists(js_path):
-    sh.rmtree(js_path)
-sh.copytree(glasseye_path + "js", js_path)
+    js_path = user_path + "js"
+    if os.path.exists(js_path):
+        sh.rmtree(js_path)
+    sh.copytree(glasseye_path + "js", js_path)
 
 #Convert markdown to html using pandoc
-py.convert(user_path+input_file, 'html', outputfile = glasseye_dir + "pandocHTML.html", extra_args=['--mathjax'])
+py.convert(user_path+input_file, 'html', outputfile = user_path + "pandocHTML.html", extra_args=['--mathjax'])
 
 #Read in the html and soupify it
-read_html= open(glasseye_dir + pandoc_html,'r').read()
+read_html= open(user_path + pandoc_html,'r').read()
 soup = BeautifulSoup(read_html, 'html.parser')
 
 #Make the changes for the Tufte format
@@ -116,7 +111,7 @@ soup_string = str(soup)
 
 #Write to file with header and footer from template
 with open(glasseye_path + tufte_template, "r") as template:
-     with open(glasseye_dir + glasseye_file, "w") as glasseye_file:
+     with open(user_path + glasseye_file, "w") as glasseye_file:
          for line in template:
              if '<div id = "tufte_container">' in line:
                  glasseye_file.write('<div id = "tufte_container">')

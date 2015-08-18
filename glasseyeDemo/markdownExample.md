@@ -78,13 +78,13 @@ At the moment it hangs together with pandoc and the python beautifulsoup library
 2. Install python 2.7 and make sure you have the pypandoc and beautifulsoup libraries
 3. Download the source code from github
 
-Then you should be able to run the following in a terminal<side-note>You'll need to add the cloned repository to your PYTHON PATH. Please see the repositor README for details.
+Then you should be able to run the following in a terminal<side-note>You'll need to add the cloned repository to your PYTHON PATH. Please see the repository README for details.</side-note>
 
 ```
 python -m glasseye your_md_file.md
 ```
 
-It will produce a directory containing all the necessary html, js and css.
+It will produce an html file and the supporting css and js directories.
 
 Would be very pleased to hear from anyone giving it a go!
 

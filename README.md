@@ -90,7 +90,7 @@ You can try out the simple test file included in the repository
 python -m glasseye test.md
 ```
 
-It will produce a directory containing all the necessary html, js and css.
+It will produce an html file and the supporting js and css directories.
 
 Would be very pleased to hear from anyone giving it a go!
 
