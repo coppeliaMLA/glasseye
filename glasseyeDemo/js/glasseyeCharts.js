@@ -1,3 +1,119 @@
+/* Charts will be redesigned in a more modular way once we have enough examples*/
+
+function gantt(data, div, size) {
+
+        //Is data a file name or a json object
+
+
+    if (typeof data === "object")
+
+    {
+
+        var parse_date = d3.time.format("%d/%m/%Y").parse;
+
+        //Parse the dates
+            data.forEach(function(d) {
+                d.start = parse_date(d.start);
+                d.end = parse_date(d.end);
+            });
+
+        draw_gantt(data, div, size);
+
+    } else
+
+    {
+
+
+        d3.csv(data, function(error, processed_data) {
+
+            draw_gantt(processed_data, div, size);
+
+        });
+
+    }
+
+}
+
+function draw_gantt(processed_data, div, size){
+
+    //Set up svg
+
+    if (size === "full_page") {
+
+
+
+    var svg_width = 600,
+        svg_height = 400;
+
+    
+    }
+    else {
+
+    var svg_width = 300,
+        svg_height = 200;
+
+    }
+
+    var margin = {
+            top: 20,
+            right: 20,
+            bottom: 20,
+            left: 20
+        },
+        width = svg_width - margin.left - margin.right,
+        height = svg_height - margin.top - margin.bottom;
+
+    //Set up grid
+
+    var min_x = d3.min(processed_data, function(d){return d.start}),
+    max_x = d3.max(processed_data, function(d){return d.end}),
+    min_y = 0;
+    max_y = processed_data.length;
+
+    var x = d3.time.scale()
+    .range([0, width])
+    .domain([min_x, max_x]);
+
+    var y = d3.scale.linear()
+    .range([0, height])
+    .domain([min_y, max_y]);
+
+    
+    var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .tickSize(-height, 0, 0)
+    .tickPadding(10);
+
+    var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickSize(-width, 0, 0)
+    .tickFormat("");
+
+    var svg = d3.select(div).append("svg")
+    .attr("width", svg_width)
+    .attr("height", svg_height);
+
+    var chart_area = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    chart_area.append("g")
+    .attr("class", "chart_grid")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+    chart_area.append("g")
+    .attr("class", "chart_grid")
+    .call(yAxis);
+
+
+    //Add blocks
+
+    //Add tooltips
+}
+
+
 function donut(data, div, size) {
 
     //Is data a file name or a json object
@@ -50,10 +166,6 @@ function draw_donut(processed_data, div, size) {
     .html(function(d) {
         return d.data.label + "<br><br>" + d.data.value + "<br><br>" + d3.format("%")(d.data.value/total_value) ;
     });
-    /*.offset(function() {
-        return [this.getBBox().height / 2, 0]
-    });
-*/
 
     //Need to add margin to bring it into line with other charts
 
@@ -221,7 +333,7 @@ function zoom(d) {
 }
 
 
-function line_plot(data, div, labels) {
+function lineplot(data, div, labels) {
 
     //Is data a file name or a json object
 
@@ -240,7 +352,7 @@ function line_plot(data, div, labels) {
             processed_data.push(data_item);
         }
 
-        draw_line_plot(processed_data, div, labels);
+        draw_lineplot(processed_data, div, labels);
 
     } else
 
@@ -256,7 +368,7 @@ function line_plot(data, div, labels) {
             }
         });
 
-        draw_line_plot(processed_data, div, labels);
+        draw_lineplot(processed_data, div, labels);
 
         });
 
@@ -265,7 +377,7 @@ function line_plot(data, div, labels) {
 }
 
 
-function draw_line_plot(processed_data, div, labels){
+function draw_lineplot(processed_data, div, labels){
 
     var tip = d3.tip()
     .attr('class', 'd3-tip')
@@ -383,7 +495,7 @@ function draw_line_plot(processed_data, div, labels){
 
 
 
-function sim_plot(file, div) {
+function simplot(file, div) {
 
     //Set up the layout variables
 

@@ -17,9 +17,9 @@ It's all very very beta at the moment. I'm not claiming it's ready to go. I woul
 In case it's not obvious this web page was written using glasseye, that it is it was written in markdown with a few extra html-like tags thrown in. 
 
 ###Side notes and margin notes
-First there's the `<side-note>` tag. Anything enclosed in these tags will generate a numbered side note in the wide margin as close as possible to the note number in the main text. 
+First there's the `<sidenote>` tag. Anything enclosed in these tags will generate a numbered side note in the wide margin as close as possible to the note number in the main text. 
 
-Then there is a `<margin-note>` tag which is the nearly the same as the side note, only there's no number linking it to a particular part in the main text. 
+Then there is a `<marginnote>` tag which is the nearly the same as the side note, only there's no number linking it to a particular part in the main text. 
 
 ###Latex
 
@@ -31,7 +31,7 @@ However sometimes the mathematical details are not central to a discussion, in w
 
 So far I've only a few charts for you to use but hopefully that will expand quite rapidly. I've tried to create charts that are simple and uncluttered with the tooltip taking over some of the work. This is so that they can fit in the margin nicely. I've been thinking about making them as intellegent as possible so that choices are made for you about formatting (for example label positioning). That may prove annoying though so we'll see how it goes. It's easy to include any of the d3 charts into either the main body of the text or into the margin. 
 
-Inserting a plot is again just a matter of using some custom tags. For example to generate a line plot just surround a string containing the path and filname of a csv file with a `<line_plot>` tag. You can optionally supply axis labels.
+Inserting a plot is again just a matter of using some custom tags. For example to generate a line plot just surround a string containing the path and filname of a csv file with a `<lineplot>` tag. You can optionally supply axis labels.
 
 
 Alternatively you can write the data in json into the markdown. For example we can create an interactive treemap by inserting the following into the markdown

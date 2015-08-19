@@ -46,14 +46,14 @@ read_html= open(user_path + pandoc_html,'r').read()
 soup = BeautifulSoup(read_html, 'html.parser')
 
 #Make the changes for the Tufte format
-for a in soup.findAll('margin-note'):
+for a in soup.findAll('marginnote'):
     p = soup.new_tag("p")
     a.replaceWith(p)
     p.insert(0, a)
     a.name = "span"
     a['class'] = "marginnote"
 
-for a in enumerate(soup.findAll('side-note')):
+for a in enumerate(soup.findAll('sidenote')):
     a[1].name = "span"
     a[1]['class'] = "marginnote"
     a[1].insert(0, str(a[0]+1) + ". ")
@@ -82,7 +82,7 @@ code_string = ""
 
 #Standard charts
 
-standard_charts = ["sim_plot", "treemap", "dot_plot"]
+standard_charts = ["simplot", "treemap", "dot_plot", "gantt"]
 
 for s in standard_charts:
     code_string = add_chart(s, code_string)
@@ -100,16 +100,16 @@ for d in enumerate(soup.findAll('donut')):
     tag = soup.new_tag("br")
     d[1].insert_after(tag)
 
-for d in enumerate(soup.findAll('line_plot')):
+for d in enumerate(soup.findAll('lineplot')):
     arguments = str(d[1].contents[0])
     if "," in arguments:
         arguments = arguments.split(",", 1)
-        code_string += "line_plot(" + arguments[0] + ", " + "'#line_plot_" + str(d[0]) + "'," + arguments[1] + "); \n"
+        code_string += "lineplot(" + arguments[0] + ", " + "'#lineplot_" + str(d[0]) + "'," + arguments[1] + "); \n"
     else:
-        code_string += "line_plot(" + str(d[1].contents[0]) + ", " + "'#line_plot_" + str(d[0]) + "'); \n"
+        code_string += "lineplot(" + str(d[1].contents[0]) + ", " + "'#lineplot_" + str(d[0]) + "'); \n"
     d[1].name = "span"
     d[1].contents = ""
-    d[1]['id'] = "line_plot_" + str(d[0])
+    d[1]['id'] = "lineplot_" + str(d[0])
     tag = soup.new_tag("br")
     d[1].insert_after(tag)
 
