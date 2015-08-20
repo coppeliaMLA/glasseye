@@ -851,6 +851,11 @@ function gantt(data, div, size) {
             d.end = parse_date(d.end);
         });
 
+
+        data.sort(function(a, b){
+            return b.start-a.start;
+        })
+
         return data;
 
     }
