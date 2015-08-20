@@ -5,7 +5,6 @@
   <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Droid%20Sans' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Sorkin' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="css/tufte.css"/>
   <link rel="stylesheet" href="css/glasseyeCharts.css"/>
   <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
@@ -62,10 +61,10 @@
 <p>Would be very pleased to hear from anyone giving it a go!</p>
     </div>
 
-<script>simplot("data/activeDecidedSim.csv", '#simplot_0'); 
-treemap({ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name": "Tinned Goods", "children": [{ "name": "Beans", "size": 34 }, { "name": "Soups", "size": 56 }, { "name": "Puddings", "children": [{ "name": "Fruit", "children": [{ "name": "Tangerines", "size": 15 }, { "name": "Pears", "size": 17 }]}, { "name": "Apricots", "size": 89 } ] }] }, { "name": "Meat and Fish", "children": [{ "name": "Meat", "children": [{ "name": "Poultry", "size": 15 }, { "name": "Beef", "size": 17 }]}, { "name": "Fish", "size": 89 } ] }] }, '#treemap_0'); 
+<script>simplot("data/activeDecidedSim.csv", '#simplot_0', 'full_page'); 
+treemap({ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name": "Tinned Goods", "children": [{ "name": "Beans", "size": 34 }, { "name": "Soups", "size": 56 }, { "name": "Puddings", "children": [{ "name": "Fruit", "children": [{ "name": "Tangerines", "size": 15 }, { "name": "Pears", "size": 17 }]}, { "name": "Apricots", "size": 89 } ] }] }, { "name": "Meat and Fish", "children": [{ "name": "Meat", "children": [{ "name": "Poultry", "size": 15 }, { "name": "Beef", "size": 17 }]}, { "name": "Fish", "size": 89 } ] }] }, '#treemap_0', 'margin'); 
 donut("data/share.csv", '#donut_0', 'margin'); 
-lineplot("data/lineplotExample.csv", '#lineplot_0', ["Size", "Number of explosions"]); 
+lineplot("data/lineplotExample.csv", '#lineplot_0','margin', ["Size", "Number of explosions"]); 
 </script><script type="text/javascript">
 (function () {
   var script = document.createElement("script");

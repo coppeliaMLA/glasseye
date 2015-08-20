@@ -6,6 +6,10 @@ svg {
   margin-bottom: 20px;
 }
 
+text {
+  stroke: none;
+}
+
 .line {
     fill: none;
     stroke: steelblue;
@@ -42,6 +46,7 @@ svg {
   fill: grey;
   shape-rendering: crispEdges;
   text-transform: uppercase;
+  stroke: none;
 }
 
 
@@ -74,4 +79,11 @@ svg {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
+}
+
+/*Gantt elements */
+
+.task {
+    fill: steelblue;
+    stroke: none;
 }

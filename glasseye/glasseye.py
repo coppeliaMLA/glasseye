@@ -9,7 +9,11 @@ def wrap(to_wrap, wrap_in):
 #Function to add charts
 def add_chart(chart_id, code_string):
     for d in enumerate(soup.findAll(chart_id)):
-        code_string += chart_id + "(" + str(d[1].contents[0]) + ", " + "'#" + chart_id + "_" + str(d[0]) + "'); \n"
+        code_string += chart_id + "(" + str(d[1].contents[0]) + ", '#" + chart_id + "_" + str(d[0])
+        if d[1].parent.name == "span":
+            code_string += "', 'margin'); \n"
+        else:
+            code_string += "', 'full_page'); \n"
         d[1].name = "span"
         d[1].contents = ""
         d[1]['id'] = chart_id + "_" + str(d[0])
@@ -82,31 +86,24 @@ code_string = ""
 
 #Standard charts
 
-standard_charts = ["simplot", "treemap", "dot_plot", "gantt"]
+standard_charts = ["simplot", "treemap", "dot_plot", "gantt", "donut"]
 
 for s in standard_charts:
     code_string = add_chart(s, code_string)
 
 #Charts with extra features (will modify the standard charts asap)
 
-for d in enumerate(soup.findAll('donut')):
-    if d[1].parent.name == "span":
-        code_string += "donut(" + str(d[1].contents[0]) + ", " + "'#donut_" + str(d[0]) + "', 'margin'); \n"
-    else:
-        code_string += "donut(" + str(d[1].contents[0]) + ", " + "'#donut_" + str(d[0]) + "', 'full_page'); \n"
-    d[1].name = "span"
-    d[1].contents = ""
-    d[1]['id'] = "donut_" + str(d[0])
-    tag = soup.new_tag("br")
-    d[1].insert_after(tag)
-
 for d in enumerate(soup.findAll('lineplot')):
+    if d[1].parent.name == "span":
+        size = "margin"
+    else:
+        size = "full_page"
     arguments = str(d[1].contents[0])
     if "," in arguments:
         arguments = arguments.split(",", 1)
-        code_string += "lineplot(" + arguments[0] + ", " + "'#lineplot_" + str(d[0]) + "'," + arguments[1] + "); \n"
+        code_string += "lineplot(" + arguments[0] + ", " + "'#lineplot_" + str(d[0]) + "','" + size + "'," + arguments[1] + "); \n"
     else:
-        code_string += "lineplot(" + str(d[1].contents[0]) + ", " + "'#lineplot_" + str(d[0]) + "'); \n"
+        code_string += "lineplot(" + str(d[1].contents[0]) + ", " + "'#lineplot_" + str(d[0]) + "','" + size + "'); \n"
     d[1].name = "span"
     d[1].contents = ""
     d[1]['id'] = "lineplot_" + str(d[0])
