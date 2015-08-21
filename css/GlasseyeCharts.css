@@ -49,6 +49,11 @@ text {
   stroke: none;
 }
 
+.bar {
+  stroke: none;
+  fill: steelblue;
+}
+
 
 /* Tip formatting */
 

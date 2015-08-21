@@ -1,5 +1,4 @@
 //Glasseye chart super class: sets up the svg and the chart area
-
 var GlasseyeChart = function(div, size, margin) {
 
     this.div = div;
@@ -17,7 +16,7 @@ var GlasseyeChart = function(div, size, margin) {
                 left: 20
             }
         } else {
-        this.margin = margin; 
+            this.margin = margin;
         }
 
 
@@ -33,7 +32,7 @@ var GlasseyeChart = function(div, size, margin) {
                 left: 20
             }
         } else {
-        this.margin = margin; 
+            this.margin = margin;
         }
     }
 
@@ -42,7 +41,7 @@ var GlasseyeChart = function(div, size, margin) {
     this.height = this.svg_height - this.margin.top - this.margin.bottom;
 }
 
-GlasseyeChart.prototype.add_svg = function(){
+GlasseyeChart.prototype.add_svg = function() {
 
     //Add the svg to the div
     this.svg = d3.select(this.div).append("svg")
@@ -65,13 +64,19 @@ var GridChart = function(div, size, labels, scales, margin) {
     this.labels = labels;
     this.scales = scales;
 
-    this.x = scales[0].scale_func.range([0, this.width])
-    if (scales[1].scale_type ==="ordinal") {
+    if (scales[0].scale_type === "ordinal") {
+        this.x = scales[0].scale_func.rangePoints([0, this.width], 1)
+    } else {
+        this.x = scales[0].scale_func.range([0, this.width])
+    }
+    
+    if (scales[1].scale_type === "ordinal") {
         this.y = scales[1].scale_func.rangePoints([this.height, 0], 1)
-    } else
-    {
+    } else {
         this.y = scales[1].scale_func.range([this.height, 0])
     }
+
+
     this.x_axis = d3.svg.axis()
         .scale(this.x)
         .orient("bottom")
@@ -87,7 +92,7 @@ var GridChart = function(div, size, labels, scales, margin) {
 
 GridChart.prototype = Object.create(GlasseyeChart.prototype);
 
-GridChart.prototype.add_grid = function(){
+GridChart.prototype.add_grid = function() {
 
     var x_axis_g = this.chart_area.append("g")
         .attr("class", "chart_grid")
@@ -159,7 +164,7 @@ var LinePlot = function(processed_data, div, size, labels, scales) {
 
 LinePlot.prototype = Object.create(GridChart.prototype);
 
-LinePlot.prototype.add_line = function(){
+LinePlot.prototype.add_line = function() {
 
     this.chart_area.call(this.tip);
 
@@ -191,47 +196,110 @@ LinePlot.prototype.add_line = function(){
 
 }
 
-var Gantt = function(processed_data, div, size, scales) {
+var BarChart = function(processed_data, div, size, labels, scales) {
 
-    this.div = div;
+    GridChart.call(this, div, size, labels, scales);
 
-    GridChart.call(this, div, size, ["Time", "Tasks"], scales, {top: 20, bottom: 80, left: 80, right: 20});
+    this.processed_data = processed_data;
 
-    var tip = d3.tip()
+    //Some customisations
+    this.margin.left = 4;
+    this.y_axis.tickFormat("");
+
+    this.tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
         .html(function(d) {
-            return Math.floor((d.end - d.start) / (1000*60*60*24)) + " days";
+            return d3.format(".3n")(d.value);
         })
 
-    var x_scale = this.x,
-        y_scale = this.y;
+    this.bar_width = this.width / processed_data.length;
 
-    this.chart_area.call(tip);
+}
+
+BarChart.prototype = Object.create(GridChart.prototype);
+
+BarChart.prototype.add_bars = function() {
+
+    this.chart_area.call(this.tip);
+
+    var x_scale = this.x,
+        y_scale = this.y,
+        height = this.height
+        bar_width = this.bar_width;
+
+    this.chart_area.selectAll(".bar")
+        .data(this.processed_data)
+        .enter()
+        .append("rect")
+        .attr("class", "bar")
+        .attr("x", function(d) {
+            return x_scale(d.category) - bar_width/4;
+        })
+        .attr("y", function(d) {
+            return y_scale(d.value);
+        })
+        .attr("width", this.bar_width/2)
+        .attr("height", function(d) {
+            return height - y_scale(d.value);
+        })
+        .on('mouseover', this.tip.show)
+        .on('mouseout', this.tip.hide);
+
+    return this;
+
+}
+
+
+var Gantt = function(processed_data, div, size, scales) {
+
+    this.div = div;
+    this.processed_data = processed_data;
+
+    GridChart.call(this, div, size, ["Time", "Tasks"], scales, {
+        top: 20,
+        bottom: 80,
+        left: 80,
+        right: 20
+    });
+
+    this.tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d) {
+            return Math.floor((d.end - d.start) / (1000 * 60 * 60 * 24)) + " days";
+        })
+
+    this.bar_width = this.width / processed_data.length;
 
 }
 
 Gantt.prototype = Object.create(GridChart.prototype);
 
-Gantt.prototype.add_tasks = function(){
+Gantt.prototype.add_tasks = function() {
 
+    var x_scale = this.x,
+        y_scale = this.y
+        bar_width = this.bar_width;  
+
+    this.chart_area.call(this.tip);
     this.chart_area.selectAll(".task")
-        .data(processed_data)
+        .data(this.processed_data)
         .enter()
         .append("rect")
         .attr("class", "task")
         .attr("y", function(d) {
-            return y_scale(d.task)-10;
+            return y_scale(d.task) - bar_width/6;
         })
         .attr("x", function(d) {
             return x_scale(d.start);
         })
-        .attr("height", 20)
-        .attr("width",  function(d) {
+        .attr("height", this.bar_width/3)
+        .attr("width", function(d) {
             return x_scale(d.end) - x_scale(d.start);
         })
-        .on('mouseover', tip.show)
-        .on('mouseout', tip.hide);
+        .on('mouseover', this.tip.show)
+        .on('mouseout', this.tip.hide);
 
     return this;
 
@@ -240,56 +308,59 @@ Gantt.prototype.add_tasks = function(){
 
 var Donut = function(processed_data, div, size) {
 
-    margin = {top: 5, bottom: 5, left: 5, right: 5};
+    margin = {
+        top: 5,
+        bottom: 5,
+        left: 5,
+        right: 5
+    };
 
     GlasseyeChart.call(this, div, size, margin);
 
     this.processed_data = processed_data;
 
     var total_value = d3.sum(processed_data.map(function(d) {
-            return d.value
-        }));
+        return d.value
+    }));
 
     this.tip = d3.tip()
-            .attr('class', 'd3-tip')
-            .offset([-10, 0])
-            .html(function(d) {
-                return d.data.label + "<br><br>" + d.data.value + "<br><br>" + d3.format("%")(d.data.value / total_value);
-    });
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function(d) {
+            return d.data.label + "<br><br>" + d.data.value + "<br><br>" + d3.format("%")(d.data.value / total_value);
+        });
 
     var radius = this.height / 2;
 
-    
-
     this.arc = d3.svg.arc()
-            .outerRadius(radius - 10)
-            .innerRadius(radius - 70);
+        .outerRadius(radius - 10)
+        .innerRadius(radius - 70);
 
     this.pie = d3.layout.pie()
-            .sort(null)
-            .value(function(d) {
-                return d.value;
-            });
+        .sort(null)
+        .value(function(d) {
+            return d.value;
+        });
 
 }
 
 
 Donut.prototype = Object.create(GlasseyeChart.prototype);
 
-Donut.prototype.add_donut= function(){
+Donut.prototype.add_donut = function() {
 
     var svg_donut = this.chart_area.append("g")
         .attr("transform", "translate(" + this.width / 2 + "," + this.height / 2 + ")");
 
     var color = d3.scale.ordinal()
-            .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+        .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
     svg_donut.call(this.tip);
 
     var g = svg_donut.selectAll(".arc")
-            .data(this.pie(this.processed_data))
-            .enter().append("g")
-            .attr("class", "arc");
+        .data(this.pie(this.processed_data))
+        .enter().append("g")
+        .attr("class", "arc");
 
     g.append("path")
         .attr("d", this.arc)
@@ -318,7 +389,47 @@ Donut.prototype.add_donut= function(){
 }
 
 
-//Individual charts
+//Functions to draw charts
+
+function barchart(data, div, size){
+
+var inline_parser = function(data) {
+
+        processed_data = [];
+
+        for (i = 0; i < data.value.length; i++) {
+            data_item = {
+                "category": data.category[i],
+                "value": +data.value[i]
+            };
+            processed_data.push(data_item);
+
+        }
+
+        return processed_data;
+
+    }
+
+    var csv_parser = function(data) {
+        return data;
+    }
+
+    var draw = function(processed_data, div, size) {
+
+        var x_values = processed_data.map(function(d) {return d.category;});
+        var y_values = processed_data.map(function(d) {return d.value;});
+        var scales = [create_scale(x_values, d3.scale.ordinal()), create_scale(y_values, d3.scale.linear())];
+
+        var glasseye_chart = new BarChart(processed_data, div, size, ["category", "value"], scales);
+
+        glasseye_chart.add_svg().add_grid().add_bars();
+
+    }
+
+    build_chart(data, div, size, undefined, csv_parser, inline_parser, draw);
+
+
+}
 
 function donut(data, div, size) {
 
@@ -343,11 +454,11 @@ function donut(data, div, size) {
         return data;
     }
 
-    var draw = function(processed_data, div, size) { 
+    var draw = function(processed_data, div, size) {
 
         var glasseye_chart = new Donut(processed_data, div, size);
 
-        glasseye_chart.add_svg().add_donut();  
+        glasseye_chart.add_svg().add_donut();
 
     }
 
@@ -374,23 +485,27 @@ function lineplot(data, div, size, labels) {
         return processed_data;
     }
 
-    var csv_parser = function(data){
+    var csv_parser = function(data) {
 
         var processed_data = data.map(function(d) {
-                return {
-                    x: +d.x,
-                    y: +d.y
-                }
-            });
+            return {
+                x: +d.x,
+                y: +d.y
+            }
+        });
 
         return processed_data;
-    
+
     }
 
     var draw = function draw_lineplot(processed_data, div, size, labels) {
 
-        var x_values = processed_data.map(function(d){return d.x});
-        var y_values = processed_data.map(function(d){return d.y});
+        var x_values = processed_data.map(function(d) {
+            return d.x
+        });
+        var y_values = processed_data.map(function(d) {
+            return d.y
+        });
         var scales = [create_scale(x_values, d3.scale.linear()), create_scale(y_values, d3.scale.linear())];
         var glasseye_chart = new LinePlot(processed_data, div, size, labels, scales);
         glasseye_chart.add_svg().add_grid().add_line();
@@ -414,8 +529,8 @@ function gantt(data, div, size) {
         });
 
 
-        data.sort(function(a, b){
-            return b.start-a.start;
+        data.sort(function(a, b) {
+            return b.start - a.start;
         })
 
         return data;
@@ -449,9 +564,7 @@ function gantt(data, div, size) {
 
 
         var glasseye_chart = new Gantt(processed_data, div, size, scales);
-        glasseye_chart.add_svg();
-        glasseye_chart.add_grid();
-        glasseye_chart.add_tasks();
+        glasseye_chart.add_svg().add_grid().add_tasks();
 
     }
 
@@ -600,7 +713,7 @@ function treemap(data, div, size) {
 
 function simplot(data, div, size) {
 
-    var inline_parser = function(data){
+    var inline_parser = function(data) {
         //To be written
     }
 
@@ -643,15 +756,25 @@ function simplot(data, div, size) {
 
         });
 
-        var comp_data = {original_data: data, grouped_data: processed_data, variations: variations, simulations: simulations};
+        var comp_data = {
+            original_data: data,
+            grouped_data: processed_data,
+            variations: variations,
+            simulations: simulations
+        };
 
         return comp_data;
 
     }
 
-    var draw = function(processed_data, div, size){
+    var draw = function(processed_data, div, size) {
 
-        var glasseye_chart = new GlasseyeChart(div, size, {top: 20, bottom: 20, right: 100, left: 20});
+        var glasseye_chart = new GlasseyeChart(div, size, {
+            top: 20,
+            bottom: 20,
+            right: 100,
+            left: 20
+        });
         glasseye_chart.add_svg();
 
         var color = d3.scale.category20();
@@ -974,9 +1097,10 @@ function dot_plot(file, div, size) {
 
 //All purpose functions
 
-function create_scale(data, d3_scale, padding){
+function create_scale(data, d3_scale, padding) {
 
-    var min = d3.min(data), max = d3.max(data);
+    var min = d3.min(data),
+        max = d3.max(data);
     var range = max - min;
     var range_max_ratio = range / max;
 
@@ -985,11 +1109,9 @@ function create_scale(data, d3_scale, padding){
     if (typeof d3_scale.rangePoints === "function") {
         scale.domain(data);
         var scale_type = "ordinal";
-    }
+    } else {
 
-    else {
-
-        if (typeof data[0] === "number"){
+        if (typeof data[0] === "number") {
 
             if (range_max_ratio < 0.2) {
                 scale.domain([min - 0.1 * range, max + 0.1 * range]).nice;
@@ -1006,11 +1128,14 @@ function create_scale(data, d3_scale, padding){
             var scale_type = "nonlinear";
         }
 
-    }   
+    }
 
 
 
-    return {scale_func: scale, scale_type: scale_type};
+    return {
+        scale_func: scale,
+        scale_type: scale_type
+    };
 
 }
 

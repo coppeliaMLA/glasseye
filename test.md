@@ -37,3 +37,9 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer facilisis, mass
 </marginnote>
 
 Phasellus sed enim auctor, elementum nibh eget, sagittis velit. Nam vestibulum, justo sed pharetra malesuada, sem dolor sodales elit, vitae tempor ante nisi eu libero. Mauris nec tellus vulputate, fringilla risus id, ultrices quam. Nam posuere risus sit amet fringilla porta. Vivamus pharetra consequat felis. Integer at ligula venenatis, molestie sapien eu, pellentesque neque. Duis eget enim lacus. Vivamus turpis dui, convallis vel metus facilisis, ullamcorper vestibulum urna. Sed sed velit magna. In magna magna, tristique non finibus a, egestas in erat.
+
+<marginnote>
+<barchart>
+{"category": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]}
+</barchart>
+</marginnote>

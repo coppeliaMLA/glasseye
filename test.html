@@ -26,11 +26,13 @@
 <p><span id="gantt_0"></span><br/></p>
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer facilisis, massa a dapibus mollis, libero eros aliquet risus, eu porttitor lorem tellus non lectus. Etiam sollicitudin elit eget feugiat accumsan. Integer varius dolor ut neque finibus sagittis. Morbi condimentum nunc aliquam purus posuere ornare laoreet vel elit. Fusce sed pharetra leo. Phasellus condimentum vestibulum tellus elementum rutrum. Ut bibendum et urna pulvinar viverra. Duis vitae ultrices lacus. Cras elementum luctus magna nec posuere. Nullam ac felis vel tortor dapibus aliquam eu sed ipsum. Quisque fringilla viverra ligula. Proin aliquet enim tincidunt enim fermentum dictum. In nec augue a dolor aliquet sollicitudin. <p><span class="marginnote"> <span id="gantt_1"></span><br/> </span></p></p>
 <p>Phasellus sed enim auctor, elementum nibh eget, sagittis velit. Nam vestibulum, justo sed pharetra malesuada, sem dolor sodales elit, vitae tempor ante nisi eu libero. Mauris nec tellus vulputate, fringilla risus id, ultrices quam. Nam posuere risus sit amet fringilla porta. Vivamus pharetra consequat felis. Integer at ligula venenatis, molestie sapien eu, pellentesque neque. Duis eget enim lacus. Vivamus turpis dui, convallis vel metus facilisis, ullamcorper vestibulum urna. Sed sed velit magna. In magna magna, tristique non finibus a, egestas in erat.</p>
+<p><p><span class="marginnote"> <span id="barchart_0"></span><br/> </span></p></p>
     </div>
 
 <script>treemap({ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name": "Tinned Goods", "children": [{ "name": "Beans", "size": 34 }, { "name": "Soups", "size": 56 }, { "name": "Puddings", "children": [{ "name": "Fruit", "children": [{ "name": "Tangerines", "size": 15 }, { "name": "Pears", "size": 17 }]}, { "name": "Apricots", "size": 89 } ] }] }, { "name": "Meat and Fish", "children": [{ "name": "Meat", "children": [{ "name": "Poultry", "size": 15 }, { "name": "Beef", "size": 17 }]}, { "name": "Fish", "size": 89 } ] }] }, '#treemap_0', 'margin'); 
 gantt( [{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"}, {"task": "Build phase", "start": "13/03/2015", "end": "24/03/2015"}, {"task": "Testing phase", "start": "25/03/2015", "end": "15/04/2015"}] , '#gantt_0', 'full_page'); 
 gantt( [{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"}, {"task": "Build phase", "start": "13/03/2015", "end": "24/03/2015"}, {"task": "Testing phase", "start": "25/03/2015", "end": "15/04/2015"}] , '#gantt_1', 'margin'); 
+barchart( {"category": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]} , '#barchart_0', 'margin'); 
 </script><script type="text/javascript">
 (function () {
   var script = document.createElement("script");
