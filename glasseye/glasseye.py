@@ -86,7 +86,7 @@ code_string = ""
 
 #Standard charts
 
-standard_charts = ["simplot", "treemap", "dot_plot", "gantt", "donut", "barchart"]
+standard_charts = ["simplot", "treemap", "dot_plot", "gantt", "donut", "barchart", "tree", "force"]
 
 for s in standard_charts:
     code_string = add_chart(s, code_string)

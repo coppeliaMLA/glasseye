@@ -119,6 +119,9 @@ hr {
 
 .fullwidth { max-width: 95%; } 
 
+ul {padding-left: 7%;}
+ol {padding-left: 7%;}
+
 .sidenote, .marginnote { float: right;
                           clear: right;
                           margin-right: -60%;
@@ -135,6 +138,16 @@ hr {
 .sidenote a {font-size: 1.0rem;
                 color: #777;  }
 
+li .marginnote  { float: right;
+                          clear: right;
+                          margin-right: -64.52%;
+                          width: 53.76%;
+                          margin-top: 0;
+                          margin-bottom: 20px;
+                          font-size: 1.0rem;
+                          line-height: 1.96;
+                          vertical-align: baseline;
+                          position: relative; }
 
 
 .checklist { padding-left:20px; list-style: none; }

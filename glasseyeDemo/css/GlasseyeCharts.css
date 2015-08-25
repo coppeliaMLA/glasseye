@@ -31,9 +31,6 @@ text {
   shape-rendering: crispEdges;
 }
 
-.line_points {
-    opacity: 0;
-}
 
 .legend_item text {
   font-size: 10px;
@@ -48,6 +45,50 @@ text {
   text-transform: uppercase;
   stroke: none;
 }
+
+/*line plot*/
+
+.line_points {
+    opacity: 0;
+}
+
+/*bar chart*/
+
+.bar {
+  stroke: none;
+  fill: steelblue;
+}
+
+/*tree*/
+
+.treenode circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.treenode {
+    font: 10px sans-serif;
+}
+
+.treelink {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+}
+
+/*force*/
+
+.forcenode {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: steelblue;
+}
+.forcelink {
+    stroke: #999;
+    stroke-opacity: .6;
+}
+
 
 
 /* Tip formatting */
