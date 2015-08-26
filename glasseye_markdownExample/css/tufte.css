@@ -8,7 +8,7 @@ body { width: 87.5%;
        font-family: 'Raleway';
        padding-bottom: 20rem;
        color: #777;
-       max-width: 1400px; }
+       max-width: 1200px; }
 
 h1 {  font-family: 'Lato';
       font-weight: 400;
@@ -25,10 +25,17 @@ h2 {  font-family: 'Lato';
       font-size: 2rem;
       line-height: 1; }
 
-h3, h4, h5, h6 {  font-family: 'Lato';
+h3 {  font-family: 'Lato';
       font-style: italic;
       font-weight: 400;
       font-size: 1.7rem;
+      margin-top: 2rem;
+      margin-bottom: 0;
+      line-height: 1; }
+
+h4, h5, h6 {  font-family: 'Lato';
+      font-weight: 400;
+      font-size: 1.5rem;
       margin-top: 2rem;
       margin-bottom: 0;
       line-height: 1; }
@@ -82,7 +89,10 @@ a {  font-size: 1.4rem;
       color: #777;  }
 
 
-img { max-width: 100%; }
+img { max-width: 100%; 
+      clear: both;
+      margin-bottom: 20px;
+      margin-top: 20px;}
 
 sup, sub { vertical-align: baseline;
            position: relative;
@@ -97,17 +107,31 @@ sup.sidenote-number {
 .sans { font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif; }
 
 code { font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-        font-size: inherit;
-        line-height: 1.8; }
-        
+        font-size: 1rem;
+        line-height: 1.8;
+        width: 55%; }
+
+.marginnote code { 
+        font-size: 0.9rem;
+      }
+
+pre code { padding: 0 2em; }
+
 pre {
   width: 55%;
   overflow: scroll;
 }
 
-pre code { padding: 0 2em; }
+hr {
+  width: 55%;
+  float: left;
+  clear: both;
+}
 
 .fullwidth { max-width: 95%; } 
+
+ul {padding-left: 7%;}
+ol {padding-left: 7%;}
 
 .sidenote, .marginnote { float: right;
                           clear: right;
@@ -125,6 +149,16 @@ pre code { padding: 0 2em; }
 .sidenote a {font-size: 1.0rem;
                 color: #777;  }
 
+li .marginnote  { float: right;
+                          clear: right;
+                          margin-right: -64.52%;
+                          width: 53.76%;
+                          margin-top: 0;
+                          margin-bottom: 20px;
+                          font-size: 1.0rem;
+                          line-height: 1.96;
+                          vertical-align: baseline;
+                          position: relative; }
 
 
 .checklist { padding-left:20px; list-style: none; }
