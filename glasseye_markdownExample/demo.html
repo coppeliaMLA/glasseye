@@ -16,13 +16,16 @@
   
 <div id = "tufte_container"><h2 id="a-glasseye-demo">A Glasseye Demo</h2>
 <h2 id="what-is-glasseye">What is glasseye?</h2>
-<p>Glasseye<sup>1</sup><span class="marginnote">1. See the <a href="https://github.com/coppeliaMLA/glasseye">github repository</a> for the source code</span> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way. It brings together three great things that I use a lot:</p>
+<p>Glasseye<sup>1</sup><span class="marginnote">1. See the <a href="https://github.com/coppeliaMLA/glasseye">github repository</a> for the source code</span> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way.</p>
+<p>Glasseye brings together three great things that I use a lot:</p>
 <div class="list-container"><ol style="list-style-type: decimal">
 <li>The markdown markup language.</li>
 <li>The Tufte wide margin layout</li>
 <li>Visualisation using d3.js</li>
 </ol></div>
 <p>The idea is to be able to write up work in markdown<sup>2</sup><span class="marginnote">2. Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</span> and have the results transformed into something like a Tufte layout<sup>3</sup><span class="marginnote">3. The Tufte layout makes extenive use of a wide margin to display notes, images and charts. <img alt="" src="Tufte.gif"/></span>. For the Tufte layout I took the excellent tufte.css style sheet developed by <a href="https://github.com/daveliepmann/tufte-css">Dave Liepmann and co</a> and adapted it for my purposes. Finally I've added some d3 charts (just a small selection at the moment but this is growing) that can easily invoked from within the markdown.</p>
+<p>Here's an example: a d3 force directed graph, which can be easily added in to a glasseye document using html like tags.</p>
+<p><span id="force_0"></span><br/></p>
 <h2 id="what-it-can-do">What it can do</h2>
 <p>In case it's not obvious this web page was written using glasseye<sup>4</sup><span class="marginnote">4. You can view the markdown <a href="viewMarkdown.txt">here</a></span>, that it is it was written in markdown with a few extra html-like tags thrown in.</p>
 <h3 id="side-notes-and-margin-notes">Side notes and margin notes</h3>
@@ -117,7 +120,7 @@
 {"category": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]}
 &lt;/barchart&gt;</code></pre>
 <h3 id="a-force-directed-layout">A force directed layout</h3>
-<p>Another fairly standard chart in the d3 world, you can create a force directed layout of a graph using the force tags and some json.<sup>16</sup><span class="marginnote">16.  A force directed layout of a graph. <span id="force_0"></span><br/> </span></p>
+<p>Another fairly standard chart in the d3 world, you can create a force directed layout of a graph using the force tags and some json.<sup>16</sup><span class="marginnote">16.  A force directed layout of a graph. <span id="force_1"></span><br/> </span></p>
 <pre><code>
 &lt;force&gt;
     {
@@ -215,8 +218,7 @@
                 }
             ] 
 }
-&lt;/treemap&gt;
-</code></pre>
+&lt;/treemap&gt;</code></pre>
     </div>
 
 <script>simplot("data/activeDecidedSim.csv", '#simplot_0', 'full_page'); 
@@ -227,7 +229,8 @@ donut( {"labels":["Cats", "Dogs", "Monkeys", "Cabbages"], "values": [100, 34, 22
 barchart( {"category": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]} , '#barchart_0', 'margin'); 
 tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]} , '#tree_0', 'full_page'); 
 tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]} , '#tree_1', 'margin'); 
-force( { "nodes": [{ "name": "squishedfish.com", "group": 1 }, { "name": "reddog.co.uk", "group": 1 }, { "name": "blankcat.com", "group": 2 }, { "name": "scrimpledfeet.com", "group": 2 }, { "name": "sickbag.com", "group": 2 }, { "name": "bluehouse.co.uk", "group": 3 }, { "name": "webbedcat.com", "group": 3 }, { "name": "flatrhino.co.uk", "group": 1 }, { "name": "greycamel.com", "group": 3 } ], "links": [{ "source": 0, "target": 1, "value": 20 }, { "source": 0, "target": 2, "value": 30 }, { "source": 1, "target": 4, "value": 22 }, { "source": 6, "target": 2, "value": 5 }, { "source": 1, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }] } , '#force_0', 'margin'); 
+force( { "nodes": [{ "name": "Brand X", "group": 1 }, { "name": "Brand Y", "group": 1 }, { "name": "Brand Z", "group": 1 }, { "name": "Agent 1", "group": 2 }, { "name": "Agent 2", "group": 2 }, { "name": "Agent 3", "group": 3 }, { "name": "Agent 4", "group": 3}, { "name": "Agent 5", "group": 2}, { "name": "Agent 6", "group": 2} , {"name": "Agent 7", "group": 2} , { "name": "Agent 8", "group": 2 } , { "name": "Agent 9", "group": 2 } , { "name": "Agent 10", "group": 2 } , { "name": "Agent 11", "group": 2 }], "links": [{ "source": 0, "target": 6, "value": 20 }, { "source": 1, "target": 4, "value": 30 }, { "source": 2, "target": 7, "value": 22 }, { "source": 6, "target": 11, "value": 5 }, { "source": 10, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }, { "source": 5, "target": 9, "value": 15 }, { "source": 4, "target": 7, "value": 15 }, { "source": 10, "target": 6, "value": 15 }] } , '#force_0', 'full_page'); 
+force( { "nodes": [{ "name": "squishedfish.com", "group": 1 }, { "name": "reddog.co.uk", "group": 1 }, { "name": "blankcat.com", "group": 2 }, { "name": "scrimpledfeet.com", "group": 2 }, { "name": "sickbag.com", "group": 2 }, { "name": "bluehouse.co.uk", "group": 3 }, { "name": "webbedcat.com", "group": 3 }, { "name": "flatrhino.co.uk", "group": 1 }, { "name": "greycamel.com", "group": 3 } ], "links": [{ "source": 0, "target": 1, "value": 20 }, { "source": 0, "target": 2, "value": 30 }, { "source": 1, "target": 4, "value": 22 }, { "source": 6, "target": 2, "value": 5 }, { "source": 1, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }] } , '#force_1', 'margin'); 
 lineplot("data/lineplotExample.csv", '#lineplot_0','margin', ["Size", "Number of explosions"]); 
 lineplot({"x": [1, 3, 5, 6, 20, 22, 25], "y": [100, 98, 66, 43, 23, 22, 45]}, '#lineplot_1','full_page'); 
 </script><script type="text/javascript">
