@@ -1,0 +1,4 @@
+include glasseye/css/*.css
+include glasseye/js/*.js
+include glasseye/templates/*.html
+include README.md

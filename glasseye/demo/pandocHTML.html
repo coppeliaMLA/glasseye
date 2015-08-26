@@ -1,0 +1,204 @@
+<h2 id="a-glasseye-demo">A Glasseye Demo</h2>
+<h2 id="what-is-glasseye">What is glasseye?</h2>
+<p>Glasseye<sidenote>See the <a href="https://github.com/coppeliaMLA/glasseye">github repository</a> for the source code</sidenote> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way. It brings together three great things that I use a lot:</p>
+<ol style="list-style-type: decimal">
+<li>The markdown markup language.</li>
+<li>The Tufte wide margin layout</li>
+<li>Visualisation using d3.js</li>
+</ol>
+<p>The idea is to be able to write up work in markdown<sidenote>Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</sidenote> and have the results transformed into something like a Tufte layout<sidenote>The Tufte layout makes extenive use of a wide margin to display notes, images and charts. <img src="Tufte.gif" alt="" /></sidenote>. For the Tufte layout I took the excellent tufte.css style sheet developed by <a href="https://github.com/daveliepmann/tufte-css">Dave Liepmann and co</a> and adapted it for my purposes. Finally I've added some d3 charts (just a small selection at the moment but this is growing) that can easily invoked from within the markdown.</p>
+<h2 id="what-it-can-do">What it can do</h2>
+<p>In case it's not obvious this web page was written using glasseye<sidenote>You can view the markdown <a href="viewMarkdown.txt">here</a></sidenote>, that it is it was written in markdown with a few extra html-like tags thrown in.</p>
+<h3 id="side-notes-and-margin-notes">Side notes and margin notes</h3>
+<p>First there's the <code>&lt;sidenote&gt;</code> tag. Anything enclosed in these tags will generate a numbered side note in the wide margin as close as possible to the note number in the main text. For example, I've used one here.<sidenote>I'm a side note! Use me for commentary, links, bits of maths, anything that's peripheral to the main discussion.</sidenote>.</p>
+<p>You can easily add images to the side notes and margin notes just by including the usual markdown syntax for inserting an image<sidenote>The syntax is <code>![alt text](filename)</code></sidenote> within the tags.</p>
+<p>Then there is a <code>&lt;marginnote&gt;</code> tag which is the nearly the same as the side note, only there's no number linking it to a particular part in the main text. You'll see to the right an example of a margin note containing a d3 donut chart.</p>
+<p><marginnote> An example of margin note containing a donut plot. Because a tooltip is available we can create a less cluttered chart with labels for the smaller segments demoted to the tooltip.<donut>&quot;data/share.csv&quot;</donut>Including d3 charts in a glasseye document is very easy. You just need to surround the name of the file containing the data with tags specfying the type of chart. For example this chart was generated using <code>&lt;donut&gt;&quot;data/share.csv&quot;&lt;/donut&gt;</code> </marginnote></p>
+<h3 id="latex">Latex</h3>
+<p>I'm using pandoc to convert the markdown to html which means we can take advantage of its ability to transform latex into mathjax. For example the formula below was written in latex.</p>
+<p><span class="math display">\[E[L]= \frac{1}{B(\alpha)}\int \cdots \int_\mathbf{D}\ \sum_{j=1}^N \theta_{j}^2 \ \prod_{j=1}^N \theta_j^{\alpha_j-1} \ d\theta_1 \!\cdots d\theta_N \]</span></p>
+<p>However sometimes the mathematical details are not central to a discussion, in which case it's nice to put them in a side note which can be easily done using the sidenote or marginnote tags<sidenote> Here's an example of some maths that has been placed in a side note <span class="math display">\[ f(\theta_1,\dots, \theta_N; \alpha_1,\dots, \alpha_N) = \frac{1}{\mathrm{B}(\alpha)} \prod_{i=1}^N \theta_i^{\alpha_i - 1} \]</span> Where the normalising constant is: <span class="math display">\[ \mathrm{B}(\alpha) = \frac{\prod_{i=1}^N \Gamma(\alpha_i)}{\Gamma\bigl(\sum_{i=1}^N \alpha_i\bigr)},\qquad\alpha=(\alpha_1,\dots,\alpha_N)\]</span> </sidenote></p>
+<h3 id="d3-charts">d3 charts</h3>
+<p>I've tried to create charts that are simple and uncluttered with the tooltip taking over some of the work. This is so that they can fit in the margin nicely. I've been thinking about making them as intellegent as possible so that choices are made for you about formatting (for example label positioning). That may prove annoying though so we'll see how it goes. It's easy to include any of the d3 charts into either the main body of the text or into the margin.</p>
+<p>Inserting a plot is again just a matter of using some custom tags. For example to generate a line plot just surround a string containing the path and filname of a csv file with a <code>&lt;lineplot&gt;</code> tag. You can optionally supply axis labels.<sidenote> An example of a line plot. Note the tooltip means we don't need y axis tick labels. <lineplot>&quot;data/lineplotExample.csv&quot;, [&quot;Size&quot;, &quot;Number of explosions&quot;]</lineplot> This plot was created by inserting the following line into the markdown. <code>&lt;lineplot&gt;&quot;data/lineplotExample.csv&quot;, [&quot;Size&quot;, &quot;Number of explosions&quot;]&lt;/lineplot&gt;</code></p>
+<p>Alternatively you can write the data in json into the markdown. For example we can create an interactive treemap<sidenote>An example of an intreactive treemap. Click on the rectangles to zoom in <treemap>{ &quot;name&quot;: &quot;All&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;Bakery&quot;, &quot;size&quot;: 34 }, { &quot;name&quot;: &quot;Tinned Goods&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;Beans&quot;, &quot;size&quot;: 34 }, { &quot;name&quot;: &quot;Soups&quot;, &quot;size&quot;: 56 }, { &quot;name&quot;: &quot;Puddings&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;Fruit&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;Tangerines&quot;, &quot;size&quot;: 15 }, { &quot;name&quot;: &quot;Pears&quot;, &quot;size&quot;: 17 }]}, { &quot;name&quot;: &quot;Apricots&quot;, &quot;size&quot;: 89 } ] }] }, { &quot;name&quot;: &quot;Meat and Fish&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;Meat&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;Poultry&quot;, &quot;size&quot;: 15 }, { &quot;name&quot;: &quot;Beef&quot;, &quot;size&quot;: 17 }]}, { &quot;name&quot;: &quot;Fish&quot;, &quot;size&quot;: 89 } ] }] }</treemap> </sidenote> by inserting the following into the markdown<sidenote>See the section below for the full json</sidenote></p>
+<pre><code>
+&lt;treemap&gt;
+{
+    &quot;name&quot;: &quot;All&quot;,
+    &quot;children&quot;: [
+        {&quot;name&quot;: &quot;Bakery&quot;,
+         &quot;size&quot;: 34},
+        {&quot;name&quot;: &quot;Tinned Goods&quot;,
+         &quot;children&quot;: [
+                {&quot;name&quot;: &quot;Beans&quot;,
+                 &quot;size&quot;: 34},
+                {&quot;name&quot;: &quot;Soups&quot;,
+                 &quot;size&quot;: 56},
+                {&quot;name&quot;: &quot;Puddings&quot;,
+                 &quot;children&quot;: [
+                        {&quot;name&quot;: &quot;Fruit&quot;,
+                         &quot;children&quot;: [
+                                {&quot;name&quot;: &quot;Tangerines&quot;,
+                                 &quot;size&quot;: 15},
+                                {&quot;name&quot;: &quot;Pears&quot;,
+                                 &quot;size&quot;: 17}
+                            ]
+                        },
+                        {&quot;name&quot;: &quot;Apricots&quot;,
+                         &quot;size&quot;: 89}
+...
+&lt;/treemap&gt;</code></pre>
+<p>Javascript charts also allow us to animate content which can be useful. I created a chart type <code>&lt;sim_plot&gt;</code> for a project using agent based simulation. It animates a time line which helps bring home the fact that the data is computer generated</p>
+<p><simplot>&quot;data/activeDecidedSim.csv&quot;</simplot></p>
+<h2 id="how-it-works">How it works</h2>
+<p>Glasseye is built using pandoc and the python beautifulsoup library. Pandoc is used to generate the html from the markdown and beautifulsoup is used to manipulate the extra tags and make the appropriate substitutions, including adding in the d3 charts.</p>
+<h2 id="installing-glasseye">Installing glasseye</h2>
+<p>I've now added glasseye to pip so installation is fairly straightforward</p>
+<ol style="list-style-type: decimal">
+<li>Install pandoc from <a href="http://pandoc.org">here</a></li>
+<li>If you don't have it already install python 2.7</li>
+<li>Then from the command line run <code>pip install glasseye</code> <sidenote>Assumes you already have the pip package. If you don't just run <code>easy_install pip</code></sidenote></li>
+</ol>
+<h2 id="using-glasseye">Using glasseye</h2>
+<p>Just create your markdown file using a text editor and then from the commandline run<sidenote>Don't forget to include the path of the markdown file if you are not actually in its directory</sidenote></p>
+<pre><code>glasseye myMarkdownFile.md</code></pre>
+<p>The html will then be created in the current directory along with the supporting css and javascript.</p>
+<p>You can test it out using the demo that comes with the package. You'll find the demo files in <code>path_to_your_packages/glasseye/demo</code>. Copy them to a new directory and run</p>
+<pre><code>glasseye markdownExample.md</code></pre>
+<h2 id="the-charts">The charts</h2>
+<p>In no particular order here are the d3 charts I have added so far.<sidenote>You might be wondering why I've added these charts when there are so many basic charts that I haven't yet included. The answer is quite selfish. I'm just adding them as I need them. More will follow!</sidenote>. Some of them can be generated from csv files some from inline json, some from both. The aim is for all to be generated from both.</p>
+<h3 id="a-tree-layout">A tree layout</h3>
+<p>This ia a fairly standard layout for a hierarchy, adapated from Mike Bostocks <a href="http://bl.ocks.org/mbostock/4063570">original design</a>.</p>
+<p><tree> {&quot;name&quot;: &quot;root&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;purpledog.com&quot; }, { &quot;name&quot;: &quot;squishedfish.co.uk&quot; }, { &quot;name&quot;: &quot;blogs&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;political&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;flatbat.com&quot; }, { &quot;name&quot;: &quot;netfrog.co.uk&quot; }]}, { &quot;name&quot;: &quot;squarespider.com&quot; } ] }]} </tree></p>
+<p>Like all of the charts it can appear in the main body or in the margin.<sidenote>The same tree layout as it appears in the margin.<tree> {&quot;name&quot;: &quot;root&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;purpledog.com&quot; }, { &quot;name&quot;: &quot;squishedfish.co.uk&quot; }, { &quot;name&quot;: &quot;blogs&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;political&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;flatbat.com&quot; }, { &quot;name&quot;: &quot;netfrog.co.uk&quot; }]}, { &quot;name&quot;: &quot;squarespider.com&quot; } ] }]} </tree></sidenote></p>
+<p>To create a treelayout include some nested json within the tree tags.</p>
+<pre><code>
+&lt;tree&gt;
+{
+    &quot;name&quot;: &quot;root&quot;,
+    &quot;children&quot;: [
+        {&quot;name&quot;: &quot;purpledog.com&quot;},
+        {&quot;name&quot;: &quot;squishedfish.co.uk&quot;},
+        {&quot;name&quot;: &quot;blogs&quot;,
+         &quot;children&quot;: [
+                {&quot;name&quot;: &quot;political&quot;,
+                 &quot;children&quot;: [
+                        {&quot;name&quot;: &quot;flatbat.com&quot;},
+                        {&quot;name&quot;: &quot;netfrog.co.uk&quot;}
+                    ]
+                },
+                {&quot;name&quot;: &quot;squarespider.com&quot;}
+            ]
+        }
+    ]
+}
+&lt;/tree&gt;</code></pre>
+<h3 id="a-simple-bar-chart">A simple bar chart</h3>
+<p>A simple bar chart can be created using the barchart tags.<sidenote> A bar chart as it appears in the margin. <barchart> {&quot;category&quot;: [&quot;Apples&quot;, &quot;Pears&quot;, &quot;Oranges&quot;], &quot;value&quot;: [33, 12, 9]} </barchart> </sidenote></p>
+<pre><code>
+&lt;barchart&gt;
+{&quot;category&quot;: [&quot;Apples&quot;, &quot;Pears&quot;, &quot;Oranges&quot;], &quot;value&quot;: [33, 12, 9]}
+&lt;/barchart&gt;</code></pre>
+<h3 id="a-force-directed-layout">A force directed layout</h3>
+<p>Another fairly standard chart in the d3 world, you can create a force directed layout of a graph using the force tags and some json.<sidenote> A force directed layout of a graph. <force> { &quot;nodes&quot;: [{ &quot;name&quot;: &quot;squishedfish.com&quot;, &quot;group&quot;: 1 }, { &quot;name&quot;: &quot;reddog.co.uk&quot;, &quot;group&quot;: 1 }, { &quot;name&quot;: &quot;blankcat.com&quot;, &quot;group&quot;: 2 }, { &quot;name&quot;: &quot;scrimpledfeet.com&quot;, &quot;group&quot;: 2 }, { &quot;name&quot;: &quot;sickbag.com&quot;, &quot;group&quot;: 2 }, { &quot;name&quot;: &quot;bluehouse.co.uk&quot;, &quot;group&quot;: 3 }, { &quot;name&quot;: &quot;webbedcat.com&quot;, &quot;group&quot;: 3 }, { &quot;name&quot;: &quot;flatrhino.co.uk&quot;, &quot;group&quot;: 1 }, { &quot;name&quot;: &quot;greycamel.com&quot;, &quot;group&quot;: 3 } ], &quot;links&quot;: [{ &quot;source&quot;: 0, &quot;target&quot;: 1, &quot;value&quot;: 20 }, { &quot;source&quot;: 0, &quot;target&quot;: 2, &quot;value&quot;: 30 }, { &quot;source&quot;: 1, &quot;target&quot;: 4, &quot;value&quot;: 22 }, { &quot;source&quot;: 6, &quot;target&quot;: 2, &quot;value&quot;: 5 }, { &quot;source&quot;: 1, &quot;target&quot;: 7, &quot;value&quot;: 5 }, { &quot;source&quot;: 3, &quot;target&quot;: 8, &quot;value&quot;: 15 }, { &quot;source&quot;: 5, &quot;target&quot;: 8, &quot;value&quot;: 15 }] } </force> </sidenote></p>
+<pre><code>
+&lt;force&gt;
+    {
+    &quot;nodes&quot;: [
+        {&quot;name&quot;: &quot;squishedfish.com&quot;, &quot;group&quot;: 1},
+        {&quot;name&quot;: &quot;reddog.co.uk&quot;, &quot;group&quot;: 1},
+        {&quot;name&quot;: &quot;blankcat.com&quot;, &quot;group&quot;: 2},
+        {&quot;name&quot;: &quot;scrimpledfeet.com&quot;, &quot;group&quot;: 2},
+        {&quot;name&quot;: &quot;sickbag.com&quot;, &quot;group&quot;: 2},
+        {&quot;name&quot;: &quot;bluehouse.co.uk&quot;, &quot;group&quot;: 3},
+        {&quot;name&quot;: &quot;webbedcat.com&quot;, &quot;group&quot;: 3},
+        {&quot;name&quot;: &quot;flatrhino.co.uk&quot;,&quot;group&quot;: 1},
+        {&quot;name&quot;: &quot;greycamel.com&quot;, &quot;group&quot;: 3}
+    ],
+    &quot;links&quot;: [
+        { &quot;source&quot;: 0, &quot;target&quot;: 1, &quot;value&quot;: 20 }, 
+        { &quot;source&quot;: 0, &quot;target&quot;: 2, &quot;value&quot;: 30 }, 
+        { &quot;source&quot;: 1, &quot;target&quot;: 4, &quot;value&quot;: 22 }, 
+        { &quot;source&quot;: 6, &quot;target&quot;: 2, &quot;value&quot;: 5 }, 
+        { &quot;source&quot;: 1, &quot;target&quot;: 7, &quot;value&quot;: 5 }, 
+        { &quot;source&quot;: 3, &quot;target&quot;: 8, &quot;value&quot;: 15 }, 
+        { &quot;source&quot;: 5, &quot;target&quot;: 8, &quot;value&quot;: 15 }
+        ] 
+    }
+&lt;/force&gt;</code></pre>
+<h3 id="a-gantt-chart">A gantt chart</h3>
+<p>I find a simple version of a Gantt chart useful when creating plans and proposals. It gives a rough idea of the time scales involved. The syntax is as follows:</p>
+<pre><code>&lt;gantt&gt;
+        [{&quot;task&quot;: &quot;Analysis phase&quot;, &quot;start&quot;: &quot;01/03/2015&quot;, &quot;end&quot;: &quot;12/03/2015&quot;}, 
+        {&quot;task&quot;: &quot;Build phase&quot;, &quot;start&quot;: &quot;13/03/2015&quot;, &quot;end&quot;: &quot;24/03/2015&quot;},
+        {&quot;task&quot;: &quot;Testing phase&quot;, &quot;start&quot;: &quot;25/03/2015&quot;, &quot;end&quot;: &quot;15/04/2015&quot;}]
+&lt;/gantt&gt;</code></pre>
+<p>This will give you the following</p>
+<p><gantt> [{&quot;task&quot;: &quot;Analysis phase&quot;, &quot;start&quot;: &quot;01/03/2015&quot;, &quot;end&quot;: &quot;12/03/2015&quot;}, {&quot;task&quot;: &quot;Build phase&quot;, &quot;start&quot;: &quot;13/03/2015&quot;, &quot;end&quot;: &quot;24/03/2015&quot;}, {&quot;task&quot;: &quot;Testing phase&quot;, &quot;start&quot;: &quot;25/03/2015&quot;, &quot;end&quot;: &quot;15/04/2015&quot;}] </gantt></p>
+<h3 id="a-donut-chart">A donut chart</h3>
+<p>As seen above, you can create a donut plot from a csv file (you just need columns with headings <code>label</code> and <code>value</code>). Alternatively you can use inline json as in this example.</p>
+<pre><code>
+&lt;donut&gt;
+{
+    &quot;label&quot;:[&quot;Cats&quot;, &quot;Dogs&quot;, &quot;Monkeys&quot;, &quot;Cabbages&quot;], 
+    &quot;values&quot;: [100, 34, 22, 76]
+ }
+&lt;/donut&gt;</code></pre>
+<p><marginnote> A donut created from inline json. <donut> {&quot;labels&quot;:[&quot;Cats&quot;, &quot;Dogs&quot;, &quot;Monkeys&quot;, &quot;Cabbages&quot;], &quot;values&quot;: [100, 34, 22, 76]} </donut> <marginnote></p>
+<h3 id="a-line-chart">A line chart</h3>
+<p>Similarly the line chart can be either created from a csv file (as long as it has columns with heading x and y) or from in line json. Here is an example.</p>
+<pre><code>
+&lt;lineplot&gt;
+    {
+        &quot;x&quot;: [1, 3, 5, 6, 20, 22, 25], 
+        &quot;y&quot;: [100, 98, 66, 43, 23, 22, 45]
+    }
+&lt;/lineplot&gt;</code></pre>
+<p><lineplot>{&quot;x&quot;: [1, 3, 5, 6, 20, 22, 25], &quot;y&quot;: [100, 98, 66, 43, 23, 22, 45]}</lineplot></p>
+<h3 id="a-tree-map">A tree map</h3>
+<p>At present the treemap can only be generated from inline json. Here's the full json.</p>
+<pre><code>
+&lt;treemap&gt;
+{
+    &quot;name&quot;: &quot;All&quot;,
+    &quot;children&quot;: [
+        {&quot;name&quot;: &quot;Bakery&quot;,
+         &quot;size&quot;: 34},
+        {&quot;name&quot;: &quot;Tinned Goods&quot;,
+         &quot;children&quot;: [
+                {&quot;name&quot;: &quot;Beans&quot;,
+                 &quot;size&quot;: 34},
+                {&quot;name&quot;: &quot;Soups&quot;,
+                 &quot;size&quot;: 56},
+                {&quot;name&quot;: &quot;Puddings&quot;,
+                 &quot;children&quot;: [
+                        {&quot;name&quot;: &quot;Fruit&quot;,
+                         &quot;children&quot;: [
+                                {&quot;name&quot;: &quot;Tangerines&quot;,
+                                 &quot;size&quot;: 15},
+                                {&quot;name&quot;: &quot;Pears&quot;,
+                                 &quot;size&quot;: 17}
+                            ]
+                        },
+                        {&quot;name&quot;: &quot;Apricots&quot;,
+                         &quot;size&quot;: 89} 
+                                ] }] }, 
+                { &quot;name&quot;: &quot;Meat and Fish&quot;, 
+                   &quot;children&quot;: [
+                        { &quot;name&quot;: &quot;Meat&quot;, 
+                          &quot;children&quot;: [
+                                { &quot;name&quot;: &quot;Poultry&quot;, 
+                                  &quot;size&quot;: 15 }, 
+                                { &quot;name&quot;: &quot;Beef&quot;, 
+                                  &quot;size&quot;: 17 }
+                                       ]}, 
+                        { &quot;name&quot;: &quot;Fish&quot;, 
+                          &quot;size&quot;: 89 } 
+                                ] 
+                }
+            ] 
+}
+&lt;/treemap&gt;
+...
+&lt;/treemap&gt;</code></pre>

@@ -25,10 +25,17 @@ h2 {  font-family: 'Lato';
       font-size: 2rem;
       line-height: 1; }
 
-h3, h4, h5, h6 {  font-family: 'Lato';
+h3 {  font-family: 'Lato';
       font-style: italic;
       font-weight: 400;
       font-size: 1.7rem;
+      margin-top: 2rem;
+      margin-bottom: 0;
+      line-height: 1; }
+
+h4, h5, h6 {  font-family: 'Lato';
+      font-weight: 400;
+      font-size: 1.5rem;
       margin-top: 2rem;
       margin-bottom: 0;
       line-height: 1; }
@@ -100,9 +107,13 @@ sup.sidenote-number {
 .sans { font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif; }
 
 code { font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-        font-size: inherit;
+        font-size: 1rem;
         line-height: 1.8;
         width: 55%; }
+
+.marginnote code { 
+        font-size: 0.9rem;
+      }
 
 pre code { padding: 0 2em; }
 
