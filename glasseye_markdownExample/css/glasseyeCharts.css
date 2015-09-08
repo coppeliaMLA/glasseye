@@ -8,6 +8,7 @@ svg {
 
 text {
   stroke: none;
+  font-family: 'Raleway';
 }
 
 .line {
