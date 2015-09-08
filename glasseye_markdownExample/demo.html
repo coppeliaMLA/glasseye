@@ -11,6 +11,7 @@
   <script src="js/d3.min.js"></script>
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
   <script src="js/glasseyeCharts.js"></script>
+  <script src="js/venn.js"></script>
 </head>
 <body>
   
@@ -87,10 +88,23 @@
 <pre><code>glasseye markdownExample.md</code></pre>
 <h2 id="the-charts">The charts</h2>
 <p>In no particular order here are the d3 charts I have added so far.<sup>13</sup><span class="marginnote">13. You might be wondering why I've added these charts when there are so many basic charts that I haven't yet included. The answer is quite selfish. I'm just adding them as I need them. More will follow!</span>. Some of them can be generated from csv files some from inline json, some from both. The aim is for all to be generated from both.</p>
+<h3 id="a-venn-diagram">A Venn diagram</h3>
+<p>I've used Ben Frederickson's <a href="https://github.com/benfred/venn.js">Venn.js</a> package for laying out proportional Venn diagrams. It searches for the best possible representation and does a great job when there's three sets and quite often when there's four.<sup>14</sup><span class="marginnote">14. A description of the algorithm he uses can be found on his <a href="http://www.benfrederickson.com/venn-diagrams-with-d3.js/">blog</a></span></p>
+<p>You'll just need to put the json describing your sets between <code>&lt;venn&gt;</code> tags as in this example. The result can be seen in the margin.<sup>15</sup><span class="marginnote">15. An example of a proportional Venn diagram created using Ben Frederickson's <a href="https://github.com/benfred/venn.js">Venn.js</a> package <span id="venn_0"></span><br/> </span></p>
+<pre><code>
+&lt;venn&gt;
+[ {sets: ['Badgers'], size: 300}, 
+  {sets: ['Peanuts'], size: 42},
+  {sets: ['Mushrooms'], size: 130},
+  {sets: ['Badgers','Mushrooms'], size: 67},
+  {sets: ['Peanuts','Mushrooms'], size: 2},
+  {sets: ['Peanuts','Badgers'], size: 0}
+ ]
+&lt;/venn&gt;</code></pre>
 <h3 id="a-tree-layout">A tree layout</h3>
 <p>This ia a fairly standard layout for a hierarchy, adapated from Mike Bostocks <a href="http://bl.ocks.org/mbostock/4063570">original design</a>.</p>
 <p><span id="tree_0"></span><br/></p>
-<p>Like all of the charts it can appear in the main body or in the margin.<sup>14</sup><span class="marginnote">14. The same tree layout as it appears in the margin.<span id="tree_1"></span><br/></span></p>
+<p>Like all of the charts it can appear in the main body or in the margin.<sup>16</sup><span class="marginnote">16. The same tree layout as it appears in the margin.<span id="tree_1"></span><br/></span></p>
 <p>To create a treelayout include some nested json within the tree tags.</p>
 <pre><code>
 &lt;tree&gt;
@@ -114,13 +128,13 @@
 }
 &lt;/tree&gt;</code></pre>
 <h3 id="a-simple-bar-chart">A simple bar chart</h3>
-<p>A simple bar chart can be created using the barchart tags.<sup>15</sup><span class="marginnote">15.  A bar chart as it appears in the margin. <span id="barchart_0"></span><br/> </span></p>
+<p>A simple bar chart can be created using the barchart tags.<sup>17</sup><span class="marginnote">17.  A bar chart as it appears in the margin. <span id="barchart_0"></span><br/> </span></p>
 <pre><code>
 &lt;barchart&gt;
 {"category": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]}
 &lt;/barchart&gt;</code></pre>
 <h3 id="a-force-directed-layout">A force directed layout</h3>
-<p>Another fairly standard chart in the d3 world, you can create a force directed layout of a graph using the force tags and some json.<sup>16</sup><span class="marginnote">16.  A force directed layout of a graph. <span id="force_1"></span><br/> </span></p>
+<p>Another fairly standard chart in the d3 world, you can create a force directed layout of a graph using the force tags and some json.<sup>18</sup><span class="marginnote">18.  A force directed layout of a graph. <span id="force_1"></span><br/> </span></p>
 <pre><code>
 &lt;force&gt;
     {
@@ -156,7 +170,7 @@
 <p>This will give you the following</p>
 <p><span id="gantt_0"></span><br/></p>
 <h3 id="a-donut-chart">A donut chart</h3>
-<p>As seen above, you can create a donut plot from a csv file (you just need columns with headings <code>label</code> and <code>value</code>). Alternatively you can use inline json as in this example.</p>
+<p>As seen above, you can create a donut plot from a csv file (you just need columns with headings <code>label</code> and <code>value</code>). Alternatively you can use inline json as in this example.<sup>19</sup><span class="marginnote">19.  A donut created from inline json. <span id="donut_1"></span><br/> <sup>20</sup><span class="marginnote">20. </span></span></p>
 <pre><code>
 &lt;donut&gt;
 {
@@ -164,7 +178,6 @@
     "values": [100, 34, 22, 76]
  }
 &lt;/donut&gt;</code></pre>
-<p><p><span class="marginnote"> A donut created from inline json. <span id="donut_1"></span><br/> <p><span class="marginnote"></span></p></span></p></p>
 <h3 id="a-line-chart">A line chart</h3>
 <p>Similarly the line chart can be either created from a csv file (as long as it has columns with heading x and y) or from in line json. Here is an example.</p>
 <pre><code>
@@ -231,6 +244,7 @@ tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squi
 tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]} , '#tree_1', 'margin'); 
 force( { "nodes": [{ "name": "Brand X", "group": 1 }, { "name": "Brand Y", "group": 1 }, { "name": "Brand Z", "group": 1 }, { "name": "Agent 1", "group": 2 }, { "name": "Agent 2", "group": 2 }, { "name": "Agent 3", "group": 3 }, { "name": "Agent 4", "group": 3}, { "name": "Agent 5", "group": 2}, { "name": "Agent 6", "group": 2} , {"name": "Agent 7", "group": 2} , { "name": "Agent 8", "group": 2 } , { "name": "Agent 9", "group": 2 } , { "name": "Agent 10", "group": 2 } , { "name": "Agent 11", "group": 2 }], "links": [{ "source": 0, "target": 6, "value": 20 }, { "source": 1, "target": 4, "value": 30 }, { "source": 2, "target": 7, "value": 22 }, { "source": 6, "target": 11, "value": 5 }, { "source": 10, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }, { "source": 5, "target": 9, "value": 15 }, { "source": 4, "target": 7, "value": 15 }, { "source": 10, "target": 6, "value": 15 }] } , '#force_0', 'full_page'); 
 force( { "nodes": [{ "name": "squishedfish.com", "group": 1 }, { "name": "reddog.co.uk", "group": 1 }, { "name": "blankcat.com", "group": 2 }, { "name": "scrimpledfeet.com", "group": 2 }, { "name": "sickbag.com", "group": 2 }, { "name": "bluehouse.co.uk", "group": 3 }, { "name": "webbedcat.com", "group": 3 }, { "name": "flatrhino.co.uk", "group": 1 }, { "name": "greycamel.com", "group": 3 } ], "links": [{ "source": 0, "target": 1, "value": 20 }, { "source": 0, "target": 2, "value": 30 }, { "source": 1, "target": 4, "value": 22 }, { "source": 6, "target": 2, "value": 5 }, { "source": 1, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }] } , '#force_1', 'margin'); 
+venn( [ {sets: ['Badgers'], size: 300}, {sets: ['Peanuts'], size: 42}, {sets: ['Mushrooms'], size: 130}, {sets: ['Badgers','Mushrooms'], size: 67}, {sets: ['Peanuts','Mushrooms'], size: 2}, {sets: ['Peanuts','Badgers'], size: 0} ] , '#venn_0', 'margin'); 
 lineplot("data/lineplotExample.csv", '#lineplot_0','margin', ["Size", "Number of explosions"]); 
 lineplot({"x": [1, 3, 5, 6, 20, 22, 25], "y": [100, 98, 66, 43, 23, 22, 45]}, '#lineplot_1','full_page'); 
 </script><script type="text/javascript">
