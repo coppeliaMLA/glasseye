@@ -87,7 +87,7 @@ def main():
 
     #Standard charts
 
-    standard_charts = ["simplot", "treemap", "dot_plot", "gantt", "donut", "barchart", "tree", "force"]
+    standard_charts = ["simplot", "treemap", "dot_plot", "gantt", "donut", "barchart", "tree", "force", "venn"]
 
     for s in standard_charts:
         code_string = add_chart(s, code_string)

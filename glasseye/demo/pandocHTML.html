@@ -1,12 +1,15 @@
 <h2 id="a-glasseye-demo">A Glasseye Demo</h2>
 <h2 id="what-is-glasseye">What is glasseye?</h2>
-<p>Glasseye<sidenote>See the <a href="https://github.com/coppeliaMLA/glasseye">github repository</a> for the source code</sidenote> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way. It brings together three great things that I use a lot:</p>
+<p>Glasseye<sidenote>See the <a href="https://github.com/coppeliaMLA/glasseye">github repository</a> for the source code</sidenote> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way.</p>
+<p>Glasseye brings together three great things that I use a lot:</p>
 <ol style="list-style-type: decimal">
 <li>The markdown markup language.</li>
 <li>The Tufte wide margin layout</li>
 <li>Visualisation using d3.js</li>
 </ol>
 <p>The idea is to be able to write up work in markdown<sidenote>Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</sidenote> and have the results transformed into something like a Tufte layout<sidenote>The Tufte layout makes extenive use of a wide margin to display notes, images and charts. <img src="Tufte.gif" alt="" /></sidenote>. For the Tufte layout I took the excellent tufte.css style sheet developed by <a href="https://github.com/daveliepmann/tufte-css">Dave Liepmann and co</a> and adapted it for my purposes. Finally I've added some d3 charts (just a small selection at the moment but this is growing) that can easily invoked from within the markdown.</p>
+<p>Here's an example: a d3 force directed graph, which can be easily added in to a glasseye document using html like tags.</p>
+<p><force> { &quot;nodes&quot;: [{ &quot;name&quot;: &quot;Brand X&quot;, &quot;group&quot;: 1 }, { &quot;name&quot;: &quot;Brand Y&quot;, &quot;group&quot;: 1 }, { &quot;name&quot;: &quot;Brand Z&quot;, &quot;group&quot;: 1 }, { &quot;name&quot;: &quot;Agent 1&quot;, &quot;group&quot;: 2 }, { &quot;name&quot;: &quot;Agent 2&quot;, &quot;group&quot;: 2 }, { &quot;name&quot;: &quot;Agent 3&quot;, &quot;group&quot;: 3 }, { &quot;name&quot;: &quot;Agent 4&quot;, &quot;group&quot;: 3}, { &quot;name&quot;: &quot;Agent 5&quot;, &quot;group&quot;: 2}, { &quot;name&quot;: &quot;Agent 6&quot;, &quot;group&quot;: 2} , {&quot;name&quot;: &quot;Agent 7&quot;, &quot;group&quot;: 2} , { &quot;name&quot;: &quot;Agent 8&quot;, &quot;group&quot;: 2 } , { &quot;name&quot;: &quot;Agent 9&quot;, &quot;group&quot;: 2 } , { &quot;name&quot;: &quot;Agent 10&quot;, &quot;group&quot;: 2 } , { &quot;name&quot;: &quot;Agent 11&quot;, &quot;group&quot;: 2 }], &quot;links&quot;: [{ &quot;source&quot;: 0, &quot;target&quot;: 6, &quot;value&quot;: 20 }, { &quot;source&quot;: 1, &quot;target&quot;: 4, &quot;value&quot;: 30 }, { &quot;source&quot;: 2, &quot;target&quot;: 7, &quot;value&quot;: 22 }, { &quot;source&quot;: 6, &quot;target&quot;: 11, &quot;value&quot;: 5 }, { &quot;source&quot;: 10, &quot;target&quot;: 7, &quot;value&quot;: 5 }, { &quot;source&quot;: 3, &quot;target&quot;: 8, &quot;value&quot;: 15 }, { &quot;source&quot;: 5, &quot;target&quot;: 8, &quot;value&quot;: 15 }, { &quot;source&quot;: 5, &quot;target&quot;: 9, &quot;value&quot;: 15 }, { &quot;source&quot;: 4, &quot;target&quot;: 7, &quot;value&quot;: 15 }, { &quot;source&quot;: 10, &quot;target&quot;: 6, &quot;value&quot;: 15 }] } </force></p>
 <h2 id="what-it-can-do">What it can do</h2>
 <p>In case it's not obvious this web page was written using glasseye<sidenote>You can view the markdown <a href="viewMarkdown.txt">here</a></sidenote>, that it is it was written in markdown with a few extra html-like tags thrown in.</p>
 <h3 id="side-notes-and-margin-notes">Side notes and margin notes</h3>
@@ -68,6 +71,19 @@
 <pre><code>glasseye markdownExample.md</code></pre>
 <h2 id="the-charts">The charts</h2>
 <p>In no particular order here are the d3 charts I have added so far.<sidenote>You might be wondering why I've added these charts when there are so many basic charts that I haven't yet included. The answer is quite selfish. I'm just adding them as I need them. More will follow!</sidenote>. Some of them can be generated from csv files some from inline json, some from both. The aim is for all to be generated from both.</p>
+<h3 id="a-venn-diagram">A Venn diagram</h3>
+<p>I've used Ben Frederickson's <a href="https://github.com/benfred/venn.js">Venn.js</a> package for laying out proportional Venn diagrams. It searches for the best possible representation and does a great job when there's three sets and quite often when there's four.<sidenote>A description of the algorithm he uses can be found on his <a href="http://www.benfrederickson.com/venn-diagrams-with-d3.js/">blog</a></sidenote></p>
+<p>You'll just need to put the json describing your sets between <code>&lt;venn&gt;</code> tags as in this example. The result can be seen in the margin.<sidenote>An example of a proportional Venn diagram created using Ben Frederickson's <a href="https://github.com/benfred/venn.js">Venn.js</a> package <venn> [ {sets: ['Badgers'], size: 300}, {sets: ['Peanuts'], size: 42}, {sets: ['Mushrooms'], size: 130}, {sets: ['Badgers','Mushrooms'], size: 67}, {sets: ['Peanuts','Mushrooms'], size: 2}, {sets: ['Peanuts','Badgers'], size: 0} ] </venn> </sidenote></p>
+<pre><code>
+&lt;venn&gt;
+[ {sets: [&#39;Badgers&#39;], size: 300}, 
+  {sets: [&#39;Peanuts&#39;], size: 42},
+  {sets: [&#39;Mushrooms&#39;], size: 130},
+  {sets: [&#39;Badgers&#39;,&#39;Mushrooms&#39;], size: 67},
+  {sets: [&#39;Peanuts&#39;,&#39;Mushrooms&#39;], size: 2},
+  {sets: [&#39;Peanuts&#39;,&#39;Badgers&#39;], size: 0}
+ ]
+&lt;/venn&gt;</code></pre>
 <h3 id="a-tree-layout">A tree layout</h3>
 <p>This ia a fairly standard layout for a hierarchy, adapated from Mike Bostocks <a href="http://bl.ocks.org/mbostock/4063570">original design</a>.</p>
 <p><tree> {&quot;name&quot;: &quot;root&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;purpledog.com&quot; }, { &quot;name&quot;: &quot;squishedfish.co.uk&quot; }, { &quot;name&quot;: &quot;blogs&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;political&quot;, &quot;children&quot;: [{ &quot;name&quot;: &quot;flatbat.com&quot; }, { &quot;name&quot;: &quot;netfrog.co.uk&quot; }]}, { &quot;name&quot;: &quot;squarespider.com&quot; } ] }]} </tree></p>
@@ -137,7 +153,7 @@
 <p>This will give you the following</p>
 <p><gantt> [{&quot;task&quot;: &quot;Analysis phase&quot;, &quot;start&quot;: &quot;01/03/2015&quot;, &quot;end&quot;: &quot;12/03/2015&quot;}, {&quot;task&quot;: &quot;Build phase&quot;, &quot;start&quot;: &quot;13/03/2015&quot;, &quot;end&quot;: &quot;24/03/2015&quot;}, {&quot;task&quot;: &quot;Testing phase&quot;, &quot;start&quot;: &quot;25/03/2015&quot;, &quot;end&quot;: &quot;15/04/2015&quot;}] </gantt></p>
 <h3 id="a-donut-chart">A donut chart</h3>
-<p>As seen above, you can create a donut plot from a csv file (you just need columns with headings <code>label</code> and <code>value</code>). Alternatively you can use inline json as in this example.</p>
+<p>As seen above, you can create a donut plot from a csv file (you just need columns with headings <code>label</code> and <code>value</code>). Alternatively you can use inline json as in this example.<sidenote> A donut created from inline json. <donut> {&quot;labels&quot;:[&quot;Cats&quot;, &quot;Dogs&quot;, &quot;Monkeys&quot;, &quot;Cabbages&quot;], &quot;values&quot;: [100, 34, 22, 76]} </donut> </sidenote></p>
 <pre><code>
 &lt;donut&gt;
 {
@@ -145,7 +161,6 @@
     &quot;values&quot;: [100, 34, 22, 76]
  }
 &lt;/donut&gt;</code></pre>
-<p><marginnote> A donut created from inline json. <donut> {&quot;labels&quot;:[&quot;Cats&quot;, &quot;Dogs&quot;, &quot;Monkeys&quot;, &quot;Cabbages&quot;], &quot;values&quot;: [100, 34, 22, 76]} </donut> <marginnote></p>
 <h3 id="a-line-chart">A line chart</h3>
 <p>Similarly the line chart can be either created from a csv file (as long as it has columns with heading x and y) or from in line json. Here is an example.</p>
 <pre><code>
@@ -199,6 +214,4 @@
                 }
             ] 
 }
-&lt;/treemap&gt;
-...
 &lt;/treemap&gt;</code></pre>

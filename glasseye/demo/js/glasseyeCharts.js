@@ -59,6 +59,36 @@ GlasseyeChart.prototype.add_svg = function() {
 
 //Sub classes for the glasseye charts
 
+var Venn = function(processed_data, div, size) {
+
+    margin = {
+        top: 5,
+        bottom: 5,
+        left: 5,
+        right: 5
+    };
+
+    GlasseyeChart.call(this, div, size, margin);
+
+    this.processed_data = processed_data;
+
+    this.venn_chart = venn.VennDiagram()
+                 .width(this.width)
+                 .height(this.height);
+
+
+
+}
+
+Venn.prototype = Object.create(GlasseyeChart.prototype);
+
+Venn.prototype.add_venn = function() {
+
+    this.chart_area.datum(this.processed_data).call(this.venn_chart);
+
+}
+
+
 var GridChart = function(div, size, labels, scales, margin) {
 
     GlasseyeChart.call(this, div, size, margin);
@@ -448,6 +478,127 @@ Tree.prototype.add_tree = function() {
 
 }
 
+/*
+var InteractiveTree = function(processed_data, div, size){
+
+    Tree.call(this, processed_data, div, size);
+
+}
+
+
+InteractiveTree.prototype = Object.create(Tree.prototype);
+
+InteractiveTree.prototype.add_interactivity = function() {
+
+    function toggleAll(d) {
+        if (d.children) {
+            d.children.forEach(toggleAll);
+            toggle(d);
+        }
+    }
+
+    function toggle(d) {
+        if (d.children) {
+            d._children = d.children;
+            d.children = null;
+        } else {
+            d.children = d._children;
+            d._children = null;
+        }
+    }
+
+    var root = this.processed_data
+
+    root.children.forEach(toggleAll);
+    update(root);
+
+
+    function update(source) {
+
+        //Code from Mike Bostock
+  
+        var duration =  500;
+        // Compute the new tree layout.
+        var nodes = this.cluster.nodes(root).reverse();
+        
+        // Normalize for fixed-depth.
+        nodes.forEach(function(d) { d.y = d.depth * 180; });
+        
+        // Update the nodes…
+        var node = vis.selectAll("g.node")
+              .data(nodes, function(d) { return d.id || (d.id = ++i); });
+        
+        // Enter any new nodes at the parent's previous position.
+        var nodeEnter = node.enter().append("svg:g")
+              .attr("class", "node")
+              .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
+              .on("click", function(d) { toggle(d); update(d); });
+          nodeEnter.append("svg:circle")
+              .attr("r", 1e-6)
+              .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+          nodeEnter.append("svg:text")
+              .attr("x", function(d) { return d.children || d._children ? -10 : 10; })
+              .attr("dy", ".35em")
+              .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+              .text(function(d) { return d.name; })
+              .style("fill-opacity", 1e-6)
+              .on('click', function (d) {if (d.url.length>0) {
+            window.location = d.url
+            }});
+          // Transition nodes to their new position.
+          var nodeUpdate = node.transition()
+              .duration(duration)
+              .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
+          nodeUpdate.select("circle")
+              .attr("r", 4.5)
+              .style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+          nodeUpdate.select("text")
+              .style("fill-opacity", 1);
+          // Transition exiting nodes to the parent's new position.
+          var nodeExit = node.exit().transition()
+              .duration(duration)
+              .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
+              .remove();
+          nodeExit.select("circle")
+              .attr("r", 1e-6);
+          nodeExit.select("text")
+              .style("fill-opacity", 1e-6);
+          // Update the links…
+          var link = vis.selectAll("path.link")
+              .data(tree.links(nodes), function(d) { return d.target.id; });
+          // Enter any new links at the parent's previous position.
+          link.enter().insert("svg:path", "g")
+              .attr("class", "link")
+              .attr("d", function(d) {
+                var o = {x: source.x0, y: source.y0};
+                return diagonal({source: o, target: o});
+              })
+            .transition()
+              .duration(duration)
+              .attr("d", diagonal);
+          // Transition links to their new position.
+          link.transition()
+              .duration(duration)
+              .attr("d", diagonal);
+          // Transition exiting nodes to the parent's new position.
+          link.exit().transition()
+              .duration(duration)
+              .attr("d", function(d) {
+                var o = {x: source.x, y: source.y};
+                return diagonal({source: o, target: o});
+              })
+              .remove();
+          // Stash the old positions for transition.
+          nodes.forEach(function(d) {
+            d.x0 = d.x;
+            d.y0 = d.y;
+          });
+        }
+
+}
+
+*/
+
 var Force = function(processed_data, div, size){
 
     var margin = (size === "full_page") ? {top: 5, bottom: 5, left: 100, right: 100} : {top: 5, bottom: 5, left: 50, right: 50};
@@ -533,6 +684,30 @@ Force.prototype.add_force = function() {
 }
 
 //Functions to draw charts
+
+function venn(data, div, size){
+
+var inline_parser = function(data) {
+        return data;
+    }
+
+    var csv_parser = function(data) {
+        return data;
+    }
+
+    var draw = function(processed_data, div, size) {
+
+
+        var glasseye_chart = new Venn(processed_data, div, size);
+
+        glasseye_chart.add_svg().add_venn();
+
+    }
+
+    build_chart(data, div, size, undefined, csv_parser, inline_parser, draw);
+
+}
+
 
 
 function tree(data, div, size){

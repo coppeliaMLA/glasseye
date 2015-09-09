@@ -119,7 +119,7 @@ pre code { padding: 0 2em; }
 
 pre {
   width: 55%;
-  overflow: hidden;
+  overflow: scroll;
 }
 
 hr {

@@ -2,3 +2,6 @@ include glasseye/css/*.css
 include glasseye/js/*.js
 include glasseye/templates/*.html
 include README.md
+include glasseye/demo/*.gif
+include glasseye/demo/*.md
+include glasseye/demo/data/*.csv

@@ -3,13 +3,22 @@ A Glasseye Demo
 
 ##What is glasseye?
 
-Glasseye<sidenote>See the [github repository](https://github.com/coppeliaMLA/glasseye) for the source code</sidenote> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way. It brings together three great things that I use a lot:
+Glasseye<sidenote>See the [github repository](https://github.com/coppeliaMLA/glasseye) for the source code</sidenote> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way. 
+
+Glasseye brings together three great things that I use a lot:
 
 1. The markdown markup language.
 2. The Tufte wide margin layout
 3. Visualisation using d3.js
 
 The idea is to be able to write up work in markdown<sidenote>Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</sidenote> and have the results transformed into something like a Tufte layout<sidenote>The Tufte layout makes extenive use of a wide margin to display notes, images and charts. ![](Tufte.gif)</sidenote>. For the Tufte layout I took the excellent tufte.css style sheet developed by [Dave Liepmann and co](https://github.com/daveliepmann/tufte-css) and adapted it for my purposes. Finally I've added some d3 charts (just a small selection at the moment but this is growing) that can easily invoked from within the markdown. 
+
+Here's an example:  a d3 force directed graph, which can be easily added in to a glasseye document using html like tags.
+
+<force>
+	{ "nodes": [{ "name": "Brand X", "group": 1 }, { "name": "Brand Y", "group": 1 }, { "name": "Brand Z", "group": 1 }, { "name": "Agent 1", "group": 2 }, { "name": "Agent 2", "group": 2 }, { "name": "Agent 3", "group": 3 }, { "name": "Agent 4", "group": 3}, { "name": "Agent 5", "group": 2}, { "name": "Agent 6", "group": 2} , {"name": "Agent 7", "group": 2} , { "name": "Agent 8", "group": 2 } , { "name": "Agent 9", "group": 2 } , { "name": "Agent 10", "group": 2 } , { "name": "Agent 11", "group": 2 }], "links": [{ "source": 0, "target": 6, "value": 20 }, { "source": 1, "target": 4, "value": 30 }, { "source": 2, "target": 7, "value": 22 }, { "source": 6, "target": 11, "value": 5 }, { "source": 10, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }, { "source": 5, "target": 9, "value": 15 }, { "source": 4, "target": 7, "value": 15 }, { "source": 10, "target": 6, "value": 15 }] }
+</force>
+
 
 ##What it can do
 
@@ -117,6 +126,35 @@ glasseye markdownExample.md
 ##The charts
 
 In no particular order here are the d3 charts I have added so far.<sidenote>You might be wondering why I've added these charts when there are so many basic charts that I haven't yet included. The answer is quite selfish. I'm just adding them as I need them. More will follow!</sidenote>. Some of them can be generated from csv files some from inline json, some from both. The aim is for all to be generated from both.
+
+###A Venn diagram
+
+I've used Ben Frederickson's [Venn.js](https://github.com/benfred/venn.js) package for laying out proportional Venn diagrams. It searches for the best possible representation and does a great job when there's three sets and quite often when there's four.<sidenote>A description of the algorithm he uses can be found on his [blog](http://www.benfrederickson.com/venn-diagrams-with-d3.js/)</sidenote>
+
+You'll just need to put the json describing your sets between `<venn>` tags as in this example. The result can be seen in the margin.<sidenote>An example of a proportional Venn diagram created using Ben Frederickson's [Venn.js](https://github.com/benfred/venn.js) package <venn>
+[ {sets: ['Badgers'], size: 300}, 
+  {sets: ['Peanuts'], size: 42},
+  {sets: ['Mushrooms'], size: 130},
+  {sets: ['Badgers','Mushrooms'], size: 67},
+  {sets: ['Peanuts','Mushrooms'], size: 2},
+  {sets: ['Peanuts','Badgers'], size: 0}
+ ]
+</venn>
+</sidenote>
+
+
+```
+
+<venn>
+[ {sets: ['Badgers'], size: 300}, 
+  {sets: ['Peanuts'], size: 42},
+  {sets: ['Mushrooms'], size: 130},
+  {sets: ['Badgers','Mushrooms'], size: 67},
+  {sets: ['Peanuts','Mushrooms'], size: 2},
+  {sets: ['Peanuts','Badgers'], size: 0}
+ ]
+</venn>
+```
 
 ###A tree layout
 
@@ -235,7 +273,12 @@ This will give you the following
 
 ###A donut chart
 
-As seen above, you can create a donut plot from a csv file (you just need columns with headings `label` and `value`). Alternatively you can use inline json as in this example.
+As seen above, you can create a donut plot from a csv file (you just need columns with headings `label` and `value`). Alternatively you can use inline json as in this example.<sidenote>
+A donut created from inline json.
+<donut>
+{"labels":["Cats", "Dogs", "Monkeys", "Cabbages"], "values": [100, 34, 22, 76]}
+</donut>
+</sidenote>
 
 ```
 
@@ -246,12 +289,6 @@ As seen above, you can create a donut plot from a csv file (you just need column
  }
 </donut>
 ```
-<marginnote>
-A donut created from inline json.
-<donut>
-{"labels":["Cats", "Dogs", "Monkeys", "Cabbages"], "values": [100, 34, 22, 76]}
-</donut>
-<marginnote>
 
 ###A line chart
 
@@ -315,8 +352,6 @@ At present the treemap can only be generated from inline json. Here's the full j
                 }
             ] 
 }
-</treemap>
-...
 </treemap>
 ```
 

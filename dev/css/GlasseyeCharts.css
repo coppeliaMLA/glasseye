@@ -1,5 +1,25 @@
 /* General chart formatting */
 
+.node {
+  cursor: pointer;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
 svg {
   clear: both;
   margin-top: 20px;
@@ -8,7 +28,6 @@ svg {
 
 text {
   stroke: none;
-  font-family: 'Raleway';
 }
 
 .line {
