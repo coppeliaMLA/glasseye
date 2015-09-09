@@ -26,7 +26,7 @@ I've tried to create charts that are simple and uncluttered with the tooltip tak
 
 Inserting a plot is again just a matter of using some custom tags. For example to generate a line plot just surround a string containing the path and filname of a csv file with a `<lineplot>` tag.
 
-Alternatively you can write the data in json into the markdown. For example we can create an interactive treemap nby inserting the following into the markdown<sidenote>See the section below for the full json</sidenote>
+Alternatively you can write the data in json into the markdown. For example we can create an interactive treemap by inserting the following into the markdown. See the section below for the full json</sidenote>
 
 ```
 
