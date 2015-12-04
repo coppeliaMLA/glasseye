@@ -55,4 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Misc
+glasseye/data
 *.DS_Store
+/css
+/js

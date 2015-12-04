@@ -11,7 +11,7 @@ text {
   font-family: 'Raleway';
 }
 
-.line {
+.line, .timeseries_line {
     fill: none;
     stroke: steelblue;
     stroke-width: 2.5 px;
@@ -59,6 +59,25 @@ text {
   stroke: none;
   fill: steelblue;
 }
+
+/*thermometers*/
+
+.glass {
+  stroke: none;
+  fill: steelblue;
+}
+
+.glass-gap {
+  stroke: none;
+  fill: white;
+}
+
+.mercury {
+  stroke: none;
+  fill: red;
+}
+
+
 
 /*tree*/
 
