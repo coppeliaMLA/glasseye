@@ -29,6 +29,8 @@ def main():
     pandoc_html = "pandocHTML.html"
     stem = os.path.splitext(input_file)[0]
     glasseye_file = stem + ".html"
+
+
     tufte_template = "templates/tufteTemplate.html"
 
     #Copy across directories to the user location
@@ -42,6 +44,13 @@ def main():
         if os.path.exists(js_path):
             sh.rmtree(js_path)
         sh.copytree(glasseye_path + "js", js_path)
+
+        template_path = user_path + 'templates/template.html'
+        if not(os.path.isfile(template_path)):
+            os.mkdir(user_path + 'templates/')
+            sh.copy(glasseye_path + tufte_template, template_path)
+
+        tufte_template = template_path
 
     #Convert markdown to html using pandoc
     py.convert(user_path+input_file, 'html', outputfile = user_path + "pandocHTML.html", extra_args=['--mathjax'])
@@ -115,7 +124,7 @@ def main():
     soup_string = str(soup)
 
     #Write to file with header and footer from template
-    with open(glasseye_path + tufte_template, "r") as template:
+    with open(template_path, "r") as template:
          with open(user_path + glasseye_file, "w") as glasseye_file:
              for line in template:
                  if '<div id = "tufte_container">' in line:
