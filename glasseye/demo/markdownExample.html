@@ -11,10 +11,11 @@
   <script src="js/d3.min.js"></script>
   <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
   <script src="js/glasseyeCharts.js"></script>
+  <script src="js/colorbrewer.js"></script>
   <script src="js/venn.js"></script>
 </head>
 <body>
-  
+
 <div id = "tufte_container"><h2 id="a-glasseye-demo">A Glasseye Demo</h2>
 <h2 id="what-is-glasseye">What is glasseye?</h2>
 <p>Glasseye<sup>1</sup><span class="marginnote">1. See the <a href="https://github.com/coppeliaMLA/glasseye">github repository</a> for the source code</span> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way.</p>
@@ -93,7 +94,7 @@
 <p>You'll just need to put the json describing your sets between <code>&lt;venn&gt;</code> tags as in this example. The result can be seen in the margin.<sup>15</sup><span class="marginnote">15. An example of a proportional Venn diagram created using Ben Frederickson's <a href="https://github.com/benfred/venn.js">Venn.js</a> package <span id="venn_0"></span><br/> </span></p>
 <pre><code>
 &lt;venn&gt;
-[ {sets: ['Badgers'], size: 300}, 
+[ {sets: ['Badgers'], size: 300},
   {sets: ['Peanuts'], size: 42},
   {sets: ['Mushrooms'], size: 130},
   {sets: ['Badgers','Mushrooms'], size: 67},
@@ -131,7 +132,7 @@
 <p>A simple bar chart can be created using the barchart tags.<sup>17</sup><span class="marginnote">17.  A bar chart as it appears in the margin. <span id="barchart_0"></span><br/> </span></p>
 <pre><code>
 &lt;barchart&gt;
-{"category": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]}
+{"label": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]}
 &lt;/barchart&gt;</code></pre>
 <h3 id="a-force-directed-layout">A force directed layout</h3>
 <p>Another fairly standard chart in the d3 world, you can create a force directed layout of a graph using the force tags and some json.<sup>18</sup><span class="marginnote">18.  A force directed layout of a graph. <span id="force_1"></span><br/> </span></p>
@@ -150,20 +151,20 @@
         {"name": "greycamel.com", "group": 3}
     ],
     "links": [
-        { "source": 0, "target": 1, "value": 20 }, 
-        { "source": 0, "target": 2, "value": 30 }, 
-        { "source": 1, "target": 4, "value": 22 }, 
-        { "source": 6, "target": 2, "value": 5 }, 
-        { "source": 1, "target": 7, "value": 5 }, 
-        { "source": 3, "target": 8, "value": 15 }, 
+        { "source": 0, "target": 1, "value": 20 },
+        { "source": 0, "target": 2, "value": 30 },
+        { "source": 1, "target": 4, "value": 22 },
+        { "source": 6, "target": 2, "value": 5 },
+        { "source": 1, "target": 7, "value": 5 },
+        { "source": 3, "target": 8, "value": 15 },
         { "source": 5, "target": 8, "value": 15 }
-        ] 
+        ]
     }
 &lt;/force&gt;</code></pre>
 <h3 id="a-gantt-chart">A gantt chart</h3>
 <p>I find a simple version of a Gantt chart useful when creating plans and proposals. It gives a rough idea of the time scales involved. The syntax is as follows:</p>
 <pre><code>&lt;gantt&gt;
-        [{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"}, 
+        [{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"},
         {"task": "Build phase", "start": "13/03/2015", "end": "24/03/2015"},
         {"task": "Testing phase", "start": "25/03/2015", "end": "15/04/2015"}]
 &lt;/gantt&gt;</code></pre>
@@ -174,7 +175,7 @@
 <pre><code>
 &lt;donut&gt;
 {
-    "label":["Cats", "Dogs", "Monkeys", "Cabbages"], 
+    "label":["Cats", "Dogs", "Monkeys", "Cabbages"],
     "values": [100, 34, 22, 76]
  }
 &lt;/donut&gt;</code></pre>
@@ -183,7 +184,7 @@
 <pre><code>
 &lt;lineplot&gt;
     {
-        "x": [1, 3, 5, 6, 20, 22, 25], 
+        "x": [1, 3, 5, 6, 20, 22, 25],
         "y": [100, 98, 66, 43, 23, 22, 45]
     }
 &lt;/lineplot&gt;</code></pre>
@@ -214,22 +215,22 @@
                             ]
                         },
                         {"name": "Apricots",
-                         "size": 89} 
-                                ] }] }, 
-                { "name": "Meat and Fish", 
+                         "size": 89}
+                                ] }] },
+                { "name": "Meat and Fish",
                    "children": [
-                        { "name": "Meat", 
+                        { "name": "Meat",
                           "children": [
-                                { "name": "Poultry", 
-                                  "size": 15 }, 
-                                { "name": "Beef", 
+                                { "name": "Poultry",
+                                  "size": 15 },
+                                { "name": "Beef",
                                   "size": 17 }
-                                       ]}, 
-                        { "name": "Fish", 
-                          "size": 89 } 
-                                ] 
+                                       ]},
+                        { "name": "Fish",
+                          "size": 89 }
+                                ]
                 }
-            ] 
+            ]
 }
 &lt;/treemap&gt;</code></pre>
     </div>
@@ -239,7 +240,7 @@ treemap({ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name"
 gantt( [{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"}, {"task": "Build phase", "start": "13/03/2015", "end": "24/03/2015"}, {"task": "Testing phase", "start": "25/03/2015", "end": "15/04/2015"}] , '#gantt_0', 'full_page'); 
 donut("data/share.csv", '#donut_0', 'margin'); 
 donut( {"labels":["Cats", "Dogs", "Monkeys", "Cabbages"], "values": [100, 34, 22, 76]} , '#donut_1', 'margin'); 
-barchart( {"category": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]} , '#barchart_0', 'margin'); 
+barchart( {"label": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]} , '#barchart_0', 'margin'); 
 tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]} , '#tree_0', 'full_page'); 
 tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]} , '#tree_1', 'margin'); 
 force( { "nodes": [{ "name": "Brand X", "group": 1 }, { "name": "Brand Y", "group": 1 }, { "name": "Brand Z", "group": 1 }, { "name": "Agent 1", "group": 2 }, { "name": "Agent 2", "group": 2 }, { "name": "Agent 3", "group": 3 }, { "name": "Agent 4", "group": 3}, { "name": "Agent 5", "group": 2}, { "name": "Agent 6", "group": 2} , {"name": "Agent 7", "group": 2} , { "name": "Agent 8", "group": 2 } , { "name": "Agent 9", "group": 2 } , { "name": "Agent 10", "group": 2 } , { "name": "Agent 11", "group": 2 }], "links": [{ "source": 0, "target": 6, "value": 20 }, { "source": 1, "target": 4, "value": 30 }, { "source": 2, "target": 7, "value": 22 }, { "source": 6, "target": 11, "value": 5 }, { "source": 10, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }, { "source": 5, "target": 9, "value": 15 }, { "source": 4, "target": 7, "value": 15 }, { "source": 10, "target": 6, "value": 15 }] } , '#force_0', 'full_page'); 

@@ -3,7 +3,7 @@ A Glasseye Demo
 
 ##What is glasseye?
 
-Glasseye<sidenote>See the [github repository](https://github.com/coppeliaMLA/glasseye) for the source code</sidenote> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way. 
+Glasseye<sidenote>See the [github repository](https://github.com/coppeliaMLA/glasseye) for the source code</sidenote> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way.
 
 Glasseye brings together three great things that I use a lot:
 
@@ -11,7 +11,7 @@ Glasseye brings together three great things that I use a lot:
 2. The Tufte wide margin layout
 3. Visualisation using d3.js
 
-The idea is to be able to write up work in markdown<sidenote>Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</sidenote> and have the results transformed into something like a Tufte layout<sidenote>The Tufte layout makes extenive use of a wide margin to display notes, images and charts. ![](Tufte.gif)</sidenote>. For the Tufte layout I took the excellent tufte.css style sheet developed by [Dave Liepmann and co](https://github.com/daveliepmann/tufte-css) and adapted it for my purposes. Finally I've added some d3 charts (just a small selection at the moment but this is growing) that can easily invoked from within the markdown. 
+The idea is to be able to write up work in markdown<sidenote>Markdown is a lightweight markup language with a simple easy-to-use syntax. Text written in markdown can be converted into HTML as well as a many other formats</sidenote> and have the results transformed into something like a Tufte layout<sidenote>The Tufte layout makes extenive use of a wide margin to display notes, images and charts. ![](Tufte.gif)</sidenote>. For the Tufte layout I took the excellent tufte.css style sheet developed by [Dave Liepmann and co](https://github.com/daveliepmann/tufte-css) and adapted it for my purposes. Finally I've added some d3 charts (just a small selection at the moment but this is growing) that can easily invoked from within the markdown.
 
 Here's an example:  a d3 force directed graph, which can be easily added in to a glasseye document using html like tags.
 
@@ -22,14 +22,14 @@ Here's an example:  a d3 force directed graph, which can be easily added in to a
 
 ##What it can do
 
-In case it's not obvious this web page was written using glasseye<sidenote>You can view the markdown [here](viewMarkdown.txt)</sidenote>, that it is it was written in markdown with a few extra html-like tags thrown in. 
+In case it's not obvious this web page was written using glasseye<sidenote>You can view the markdown [here](viewMarkdown.txt)</sidenote>, that it is it was written in markdown with a few extra html-like tags thrown in.
 
 ###Side notes and margin notes
-First there's the `<sidenote>` tag. Anything enclosed in these tags will generate a numbered side note in the wide margin as close as possible to the note number in the main text. For example, I've used one here.<sidenote>I'm a side note! Use me for commentary, links, bits of maths, anything that's peripheral to the main discussion.</sidenote>. 
+First there's the `<sidenote>` tag. Anything enclosed in these tags will generate a numbered side note in the wide margin as close as possible to the note number in the main text. For example, I've used one here.<sidenote>I'm a side note! Use me for commentary, links, bits of maths, anything that's peripheral to the main discussion.</sidenote>.
 
 You can easily add images to the side notes and margin notes just by including the usual markdown syntax for inserting an image<sidenote>The syntax is `![alt text](filename)`</sidenote> within the tags.
 
-Then there is a `<marginnote>` tag which is the nearly the same as the side note, only there's no number linking it to a particular part in the main text. You'll see to the right an example of a margin note containing a d3 donut chart. 
+Then there is a `<marginnote>` tag which is the nearly the same as the side note, only there's no number linking it to a particular part in the main text. You'll see to the right an example of a margin note containing a d3 donut chart.
 
 <marginnote>
 An example of margin note containing a donut plot. Because a tooltip is available we can create a less cluttered chart with labels for the smaller segments demoted to the tooltip.<donut>"data/share.csv"</donut>Including d3 charts in a glasseye document is very easy. You just need to surround the name of the file containing the data with tags specfying the type of chart. For example this chart was generated using `<donut>"data/share.csv"</donut>`
@@ -49,7 +49,7 @@ $$ \mathrm{B}(\alpha) = \frac{\prod_{i=1}^N \Gamma(\alpha_i)}{\Gamma\bigl(\sum_{
 
 ###d3 charts
 
-I've tried to create charts that are simple and uncluttered with the tooltip taking over some of the work. This is so that they can fit in the margin nicely. I've been thinking about making them as intellegent as possible so that choices are made for you about formatting (for example label positioning). That may prove annoying though so we'll see how it goes. It's easy to include any of the d3 charts into either the main body of the text or into the margin. 
+I've tried to create charts that are simple and uncluttered with the tooltip taking over some of the work. This is so that they can fit in the margin nicely. I've been thinking about making them as intellegent as possible so that choices are made for you about formatting (for example label positioning). That may prove annoying though so we'll see how it goes. It's easy to include any of the d3 charts into either the main body of the text or into the margin.
 
 Inserting a plot is again just a matter of using some custom tags. For example to generate a line plot just surround a string containing the path and filname of a csv file with a `<lineplot>` tag. You can optionally supply axis labels.<sidenote>
 An example of a line plot. Note the tooltip means we don't need y axis tick labels.
@@ -109,7 +109,7 @@ I've now added glasseye to pip so installation is fairly straightforward
 
 ##Using glasseye
 
-Just create your markdown file using a text editor and then from the commandline run<sidenote>Don't forget to include the path of the markdown file if you are not actually in its directory</sidenote> 
+Just create your markdown file using a text editor and then from the commandline run<sidenote>Don't forget to include the path of the markdown file if you are not actually in its directory</sidenote>
 
 ```
 glasseye myMarkdownFile.md
@@ -132,7 +132,7 @@ In no particular order here are the d3 charts I have added so far.<sidenote>You 
 I've used Ben Frederickson's [Venn.js](https://github.com/benfred/venn.js) package for laying out proportional Venn diagrams. It searches for the best possible representation and does a great job when there's three sets and quite often when there's four.<sidenote>A description of the algorithm he uses can be found on his [blog](http://www.benfrederickson.com/venn-diagrams-with-d3.js/)</sidenote>
 
 You'll just need to put the json describing your sets between `<venn>` tags as in this example. The result can be seen in the margin.<sidenote>An example of a proportional Venn diagram created using Ben Frederickson's [Venn.js](https://github.com/benfred/venn.js) package <venn>
-[ {sets: ['Badgers'], size: 300}, 
+[ {sets: ['Badgers'], size: 300},
   {sets: ['Peanuts'], size: 42},
   {sets: ['Mushrooms'], size: 130},
   {sets: ['Badgers','Mushrooms'], size: 67},
@@ -146,7 +146,7 @@ You'll just need to put the json describing your sets between `<venn>` tags as i
 ```
 
 <venn>
-[ {sets: ['Badgers'], size: 300}, 
+[ {sets: ['Badgers'], size: 300},
   {sets: ['Peanuts'], size: 42},
   {sets: ['Mushrooms'], size: 130},
   {sets: ['Badgers','Mushrooms'], size: 67},
@@ -158,7 +158,7 @@ You'll just need to put the json describing your sets between `<venn>` tags as i
 
 ###A tree layout
 
-This ia a fairly standard layout for a hierarchy, adapated from Mike Bostocks [original design](http://bl.ocks.org/mbostock/4063570). 
+This ia a fairly standard layout for a hierarchy, adapated from Mike Bostocks [original design](http://bl.ocks.org/mbostock/4063570).
 
 <tree>
 {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]}
@@ -200,14 +200,14 @@ To create a treelayout include some nested json within the tree tags.
 A simple bar chart can be created using the barchart tags.<sidenote>
 A bar chart as it appears in the margin.
 <barchart>
-{"category": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]}
+{"label": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]}
 </barchart>
 </sidenote>
 
 ```
 
 <barchart>
-{"category": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]}
+{"label": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]}
 </barchart>
 ```
 
@@ -237,14 +237,14 @@ A force directed layout of a graph.
         {"name": "greycamel.com", "group": 3}
     ],
     "links": [
-    	{ "source": 0, "target": 1, "value": 20 }, 
-    	{ "source": 0, "target": 2, "value": 30 }, 
-    	{ "source": 1, "target": 4, "value": 22 }, 
-    	{ "source": 6, "target": 2, "value": 5 }, 
-    	{ "source": 1, "target": 7, "value": 5 }, 
-    	{ "source": 3, "target": 8, "value": 15 }, 
+    	{ "source": 0, "target": 1, "value": 20 },
+    	{ "source": 0, "target": 2, "value": 30 },
+    	{ "source": 1, "target": 4, "value": 22 },
+    	{ "source": 6, "target": 2, "value": 5 },
+    	{ "source": 1, "target": 7, "value": 5 },
+    	{ "source": 3, "target": 8, "value": 15 },
     	{ "source": 5, "target": 8, "value": 15 }
-    	] 
+    	]
     }
 </force>
 ```
@@ -256,7 +256,7 @@ I find a simple version of a Gantt chart useful when creating plans and proposal
 
 ```
 <gantt>
-		[{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"}, 
+		[{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"},
 		{"task": "Build phase", "start": "13/03/2015", "end": "24/03/2015"},
 		{"task": "Testing phase", "start": "25/03/2015", "end": "15/04/2015"}]
 </gantt>
@@ -265,7 +265,7 @@ I find a simple version of a Gantt chart useful when creating plans and proposal
 This will give you the following
 
 <gantt>
-		[{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"}, 
+		[{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"},
 		{"task": "Build phase", "start": "13/03/2015", "end": "24/03/2015"},
 		{"task": "Testing phase", "start": "25/03/2015", "end": "15/04/2015"}]
 </gantt>
@@ -284,7 +284,7 @@ A donut created from inline json.
 
 <donut>
 {
-	"label":["Cats", "Dogs", "Monkeys", "Cabbages"], 
+	"label":["Cats", "Dogs", "Monkeys", "Cabbages"],
  	"values": [100, 34, 22, 76]
  }
 </donut>
@@ -298,7 +298,7 @@ Similarly the line chart can be either created from a csv file (as long as it ha
 
 <lineplot>
 	{
-		"x": [1, 3, 5, 6, 20, 22, 25], 
+		"x": [1, 3, 5, 6, 20, 22, 25],
 		"y": [100, 98, 66, 43, 23, 22, 45]
 	}
 </lineplot>
@@ -335,26 +335,22 @@ At present the treemap can only be generated from inline json. Here's the full j
                             ]
                         },
                         {"name": "Apricots",
-                         "size": 89} 
-                         		] }] }, 
-                { "name": "Meat and Fish", 
+                         "size": 89}
+                         		] }] },
+                { "name": "Meat and Fish",
                    "children": [
-                   		{ "name": "Meat", 
+                   		{ "name": "Meat",
                    		  "children": [
-                   		  		{ "name": "Poultry", 
-                   		  		  "size": 15 }, 
-                   		  		{ "name": "Beef", 
+                   		  		{ "name": "Poultry",
+                   		  		  "size": 15 },
+                   		  		{ "name": "Beef",
                    		  		  "size": 17 }
-                   		  		       ]}, 
-                        { "name": "Fish", 
-                          "size": 89 } 
-                                ] 
+                   		  		       ]},
+                        { "name": "Fish",
+                          "size": 89 }
+                                ]
                 }
-            ] 
+            ]
 }
 </treemap>
 ```
-
-
-
-

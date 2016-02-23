@@ -76,7 +76,7 @@
 <p>You'll just need to put the json describing your sets between <code>&lt;venn&gt;</code> tags as in this example. The result can be seen in the margin.<sidenote>An example of a proportional Venn diagram created using Ben Frederickson's <a href="https://github.com/benfred/venn.js">Venn.js</a> package <venn> [ {sets: ['Badgers'], size: 300}, {sets: ['Peanuts'], size: 42}, {sets: ['Mushrooms'], size: 130}, {sets: ['Badgers','Mushrooms'], size: 67}, {sets: ['Peanuts','Mushrooms'], size: 2}, {sets: ['Peanuts','Badgers'], size: 0} ] </venn> </sidenote></p>
 <pre><code>
 &lt;venn&gt;
-[ {sets: [&#39;Badgers&#39;], size: 300}, 
+[ {sets: [&#39;Badgers&#39;], size: 300},
   {sets: [&#39;Peanuts&#39;], size: 42},
   {sets: [&#39;Mushrooms&#39;], size: 130},
   {sets: [&#39;Badgers&#39;,&#39;Mushrooms&#39;], size: 67},
@@ -111,10 +111,10 @@
 }
 &lt;/tree&gt;</code></pre>
 <h3 id="a-simple-bar-chart">A simple bar chart</h3>
-<p>A simple bar chart can be created using the barchart tags.<sidenote> A bar chart as it appears in the margin. <barchart> {&quot;category&quot;: [&quot;Apples&quot;, &quot;Pears&quot;, &quot;Oranges&quot;], &quot;value&quot;: [33, 12, 9]} </barchart> </sidenote></p>
+<p>A simple bar chart can be created using the barchart tags.<sidenote> A bar chart as it appears in the margin. <barchart> {&quot;label&quot;: [&quot;Apples&quot;, &quot;Pears&quot;, &quot;Oranges&quot;], &quot;value&quot;: [33, 12, 9]} </barchart> </sidenote></p>
 <pre><code>
 &lt;barchart&gt;
-{&quot;category&quot;: [&quot;Apples&quot;, &quot;Pears&quot;, &quot;Oranges&quot;], &quot;value&quot;: [33, 12, 9]}
+{&quot;label&quot;: [&quot;Apples&quot;, &quot;Pears&quot;, &quot;Oranges&quot;], &quot;value&quot;: [33, 12, 9]}
 &lt;/barchart&gt;</code></pre>
 <h3 id="a-force-directed-layout">A force directed layout</h3>
 <p>Another fairly standard chart in the d3 world, you can create a force directed layout of a graph using the force tags and some json.<sidenote> A force directed layout of a graph. <force> { &quot;nodes&quot;: [{ &quot;name&quot;: &quot;squishedfish.com&quot;, &quot;group&quot;: 1 }, { &quot;name&quot;: &quot;reddog.co.uk&quot;, &quot;group&quot;: 1 }, { &quot;name&quot;: &quot;blankcat.com&quot;, &quot;group&quot;: 2 }, { &quot;name&quot;: &quot;scrimpledfeet.com&quot;, &quot;group&quot;: 2 }, { &quot;name&quot;: &quot;sickbag.com&quot;, &quot;group&quot;: 2 }, { &quot;name&quot;: &quot;bluehouse.co.uk&quot;, &quot;group&quot;: 3 }, { &quot;name&quot;: &quot;webbedcat.com&quot;, &quot;group&quot;: 3 }, { &quot;name&quot;: &quot;flatrhino.co.uk&quot;, &quot;group&quot;: 1 }, { &quot;name&quot;: &quot;greycamel.com&quot;, &quot;group&quot;: 3 } ], &quot;links&quot;: [{ &quot;source&quot;: 0, &quot;target&quot;: 1, &quot;value&quot;: 20 }, { &quot;source&quot;: 0, &quot;target&quot;: 2, &quot;value&quot;: 30 }, { &quot;source&quot;: 1, &quot;target&quot;: 4, &quot;value&quot;: 22 }, { &quot;source&quot;: 6, &quot;target&quot;: 2, &quot;value&quot;: 5 }, { &quot;source&quot;: 1, &quot;target&quot;: 7, &quot;value&quot;: 5 }, { &quot;source&quot;: 3, &quot;target&quot;: 8, &quot;value&quot;: 15 }, { &quot;source&quot;: 5, &quot;target&quot;: 8, &quot;value&quot;: 15 }] } </force> </sidenote></p>
@@ -133,20 +133,20 @@
         {&quot;name&quot;: &quot;greycamel.com&quot;, &quot;group&quot;: 3}
     ],
     &quot;links&quot;: [
-        { &quot;source&quot;: 0, &quot;target&quot;: 1, &quot;value&quot;: 20 }, 
-        { &quot;source&quot;: 0, &quot;target&quot;: 2, &quot;value&quot;: 30 }, 
-        { &quot;source&quot;: 1, &quot;target&quot;: 4, &quot;value&quot;: 22 }, 
-        { &quot;source&quot;: 6, &quot;target&quot;: 2, &quot;value&quot;: 5 }, 
-        { &quot;source&quot;: 1, &quot;target&quot;: 7, &quot;value&quot;: 5 }, 
-        { &quot;source&quot;: 3, &quot;target&quot;: 8, &quot;value&quot;: 15 }, 
+        { &quot;source&quot;: 0, &quot;target&quot;: 1, &quot;value&quot;: 20 },
+        { &quot;source&quot;: 0, &quot;target&quot;: 2, &quot;value&quot;: 30 },
+        { &quot;source&quot;: 1, &quot;target&quot;: 4, &quot;value&quot;: 22 },
+        { &quot;source&quot;: 6, &quot;target&quot;: 2, &quot;value&quot;: 5 },
+        { &quot;source&quot;: 1, &quot;target&quot;: 7, &quot;value&quot;: 5 },
+        { &quot;source&quot;: 3, &quot;target&quot;: 8, &quot;value&quot;: 15 },
         { &quot;source&quot;: 5, &quot;target&quot;: 8, &quot;value&quot;: 15 }
-        ] 
+        ]
     }
 &lt;/force&gt;</code></pre>
 <h3 id="a-gantt-chart">A gantt chart</h3>
 <p>I find a simple version of a Gantt chart useful when creating plans and proposals. It gives a rough idea of the time scales involved. The syntax is as follows:</p>
 <pre><code>&lt;gantt&gt;
-        [{&quot;task&quot;: &quot;Analysis phase&quot;, &quot;start&quot;: &quot;01/03/2015&quot;, &quot;end&quot;: &quot;12/03/2015&quot;}, 
+        [{&quot;task&quot;: &quot;Analysis phase&quot;, &quot;start&quot;: &quot;01/03/2015&quot;, &quot;end&quot;: &quot;12/03/2015&quot;},
         {&quot;task&quot;: &quot;Build phase&quot;, &quot;start&quot;: &quot;13/03/2015&quot;, &quot;end&quot;: &quot;24/03/2015&quot;},
         {&quot;task&quot;: &quot;Testing phase&quot;, &quot;start&quot;: &quot;25/03/2015&quot;, &quot;end&quot;: &quot;15/04/2015&quot;}]
 &lt;/gantt&gt;</code></pre>
@@ -157,7 +157,7 @@
 <pre><code>
 &lt;donut&gt;
 {
-    &quot;label&quot;:[&quot;Cats&quot;, &quot;Dogs&quot;, &quot;Monkeys&quot;, &quot;Cabbages&quot;], 
+    &quot;label&quot;:[&quot;Cats&quot;, &quot;Dogs&quot;, &quot;Monkeys&quot;, &quot;Cabbages&quot;],
     &quot;values&quot;: [100, 34, 22, 76]
  }
 &lt;/donut&gt;</code></pre>
@@ -166,7 +166,7 @@
 <pre><code>
 &lt;lineplot&gt;
     {
-        &quot;x&quot;: [1, 3, 5, 6, 20, 22, 25], 
+        &quot;x&quot;: [1, 3, 5, 6, 20, 22, 25],
         &quot;y&quot;: [100, 98, 66, 43, 23, 22, 45]
     }
 &lt;/lineplot&gt;</code></pre>
@@ -197,21 +197,21 @@
                             ]
                         },
                         {&quot;name&quot;: &quot;Apricots&quot;,
-                         &quot;size&quot;: 89} 
-                                ] }] }, 
-                { &quot;name&quot;: &quot;Meat and Fish&quot;, 
+                         &quot;size&quot;: 89}
+                                ] }] },
+                { &quot;name&quot;: &quot;Meat and Fish&quot;,
                    &quot;children&quot;: [
-                        { &quot;name&quot;: &quot;Meat&quot;, 
+                        { &quot;name&quot;: &quot;Meat&quot;,
                           &quot;children&quot;: [
-                                { &quot;name&quot;: &quot;Poultry&quot;, 
-                                  &quot;size&quot;: 15 }, 
-                                { &quot;name&quot;: &quot;Beef&quot;, 
+                                { &quot;name&quot;: &quot;Poultry&quot;,
+                                  &quot;size&quot;: 15 },
+                                { &quot;name&quot;: &quot;Beef&quot;,
                                   &quot;size&quot;: 17 }
-                                       ]}, 
-                        { &quot;name&quot;: &quot;Fish&quot;, 
-                          &quot;size&quot;: 89 } 
-                                ] 
+                                       ]},
+                        { &quot;name&quot;: &quot;Fish&quot;,
+                          &quot;size&quot;: 89 }
+                                ]
                 }
-            ] 
+            ]
 }
 &lt;/treemap&gt;</code></pre>

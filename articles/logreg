@@ -1,0 +1,5 @@
+Although logistic regression has been around for a very long time now it is used less often than it should be. Part of the reason is that is difficult to explain the results to an audience that is not statistically minded. Unlike linear regression there is no one answer to the question how much does the increase in a particular input change the output.
+
+Changing:
+
+For a subject with attributes gender = male, age = 35 and ... the impact of changing the attribute X from y to z is that the probability of q increases from a to b.

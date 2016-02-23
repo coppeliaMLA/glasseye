@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Glasseye</title>
+  <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Droid%20Sans' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="css/tufte.css" />
+  <link rel="stylesheet" href="css/glasseyeCharts.css" />
+  <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+  <script src="js/d3.min.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/queue-async/1.0.7/queue.min.js"></script>
+  <script src="js/jquery-1.11.3.min.js"></script>
+  <script src="js/icheck.min.js"></script>
+  <link href="js/square/blue.css" rel="stylesheet">
+  <script src="js/glasseyeCharts.js"></script>
+  <script src="js/venn.js"></script>
+
+  <style>
+    body {
+      font: 10px sans-serif;
+    }
+
+    text {
+      font: 10px sans-serif;
+    }
+
+    #chart_container {
+      width: 1000px;
+      height: 250px;
+    }
+
+    #side_panel {
+      width: 80px;
+      height: 160px;
+      float: left;
+      padding: 20px;
+    }
+
+    #device_chart {
+      width: 800px;
+      height: 250px;
+      float: left;
+    }
+
+    #timeseries {
+      width: 500px;
+      height: 250px;
+      float: left;
+    }
+
+    #thermometers {
+      width: 300px;
+      height: 250px;
+      float: left;
+    }
+
+
+  </style>
+
+</head>
+
+<body>
+
+  <div id="side_panel">
+    <br>
+    <br> Measure:
+    <form>
+      <input type="radio" name="measure" value="absolute" checked> Absolute
+      <br>
+      <input type="radio" name="measure" value="share"> Share
+      <br>
+      <input type="radio" name="measure" value="indexed"> Indexed
+    </form>
+    <br>
+  </div>
+
+  <div id="device_chart">
+    <div id="timeseries"></div>
+    <div id="thermometers"></div>
+  </div>
+  </div>
+
+  <script>
+    //JQuery for the radio buttons
+    $(document).ready(function() {
+      $('input').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '10%' // optional
+      });
+    });
+
+    //Set up the queue
+    queue()
+      .defer(d3.csv, "data/primary.csv")
+      .defer(d3.csv, "data/penetration.csv")
+      .await(ready);
+
+    //Execute once all data sets are loaded
+    function ready(error, primary, penetration) {
+
+      //Set up radio buttons
+
+      $('input[name="measure"]').on('ifChecked', function() {
+        var selected = $('input[name="measure"]:checked').val();
+        console.log(selected);
+        timeseries_obj.flip_variable(selected);
+      });
+
+      //Process data
+      var inline_parser = function(data) {
+
+          return data;
+        }
+        //Note this is just a copy of the glasseye parser
+      var csv_parser_primary = function(data) {
+
+        var groups = [];
+        data.map(function(d) {
+          if (groups.indexOf(d.group) === -1) {
+            groups.push(d.group)
+          }
+        });
+
+
+        var parse_date = d3.time.format("%d/%m/%Y").parse;
+
+        //Create the json data from the csv data
+        var processed_data = groups.map(function(g) {
+
+          return {
+            group: g,
+            values: data.filter(function(d) {
+              return d.group === g
+            }).map(function(e) {
+              return {
+                value: +e.value,
+                time: parse_date(e.time),
+                variable: e.variable
+              }
+            })
+          }
+        });
+
+        return processed_data;
+
+      }
+
+      var csv_parser_pen = function(data) {
+
+
+        var categories = [];
+        data.map(function(d) {
+          if (categories.indexOf(d.category) === -1) {
+            categories.push(d.category)
+          }
+        });
+
+
+        var parse_date = d3.time.format("%d/%m/%Y").parse;
+
+        //Create the json data from the csv data
+        var processed_data = categories.map(function(g) {
+
+          return {
+            category: g,
+            values: data.filter(function(d) {
+              return d.category === g
+            }).map(function(e) {
+              return {
+                value: +e.value,
+                time: parse_date(e.time),
+                variable: e.variable
+              }
+            })
+          }
+        });
+
+        return processed_data;
+
+      }
+
+      //draw charts
+
+      var draw_therm = function(processed_data, div, size) {
+
+        var x_values = processed_data.map(function(d) {
+          return d.category;
+        });
+
+        y_values = processed_data.map(function(d) {
+          return (d.values.map(function(e) {
+            return e.value;
+          }))
+        });
+        y_values = [].concat.apply([], y_values);
+
+        var scales = [create_scale(x_values, d3.scale.ordinal()), create_scale(y_values, d3.scale.linear())];
+
+        var glasseye_chart = new Thermometers(processed_data, div, size, ["category", "value"], scales);
+
+        glasseye_chart.add_svg().add_grid().add_thermometers();
+
+        return (glasseye_chart);
+
+      }
+
+      var thermometers_obj = build_chart(penetration, '#thermometers', "margin", undefined, csv_parser_pen, inline_parser, draw_therm);
+
+      //var closure = thermometers_obj.update_thermometers();
+
+      var tooltip_function = function(time, variable) {
+        thermometers_obj.update_thermometers(time, variable);
+      }
+
+      var draw_timeseries = function(processed_data, div, size, labels) {
+
+        var x_values = [],
+          y_values = [];
+
+        x_values = processed_data.map(function(d) {
+
+          return (d.values.map(function(e) {
+            return e.time;
+          }));
+        });
+        x_values = [].concat.apply([], x_values);
+
+        y_values = processed_data.map(function(d) {
+          return (d.values.map(function(e) {
+            return e.value;
+          }))
+        });
+        y_values = [].concat.apply([], y_values);
+
+        var scales = [create_scale(x_values, d3.time.scale()), create_scale(y_values, d3.scale.linear())];
+
+        var glasseye_chart = new TimeSeries(processed_data, div, size, labels, scales, tooltip_function);
+        glasseye_chart = glasseye_chart.add_svg().add_grid().add_timeseries();
+
+        return (glasseye_chart);
+
+      }
+
+      var timeseries_obj = build_chart(primary, '#timeseries', "full_page", undefined, csv_parser_primary, inline_parser, draw_timeseries);
+
+      function build_chart(data, div, size, labels, csv_parser, inline_parser, draw) {
+
+
+        var processed_data = csv_parser(data)
+        var built_chart = draw(processed_data, div, size, labels);
+
+        return (built_chart);
+
+      }
+
+
+    }
+  </script>
+
+
+</body>
+
+</html>

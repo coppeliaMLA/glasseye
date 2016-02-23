@@ -1,50 +1,51 @@
 /* General chart formatting */
 
 svg {
-  clear: both;
-  margin-top: 20px;
-  margin-bottom: 20px;
+    clear: both;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 text {
-  stroke: none;
-  font-family: 'Raleway';
+    stroke: none;
+    font-family: 'Raleway';
+    font-size: 10px;
 }
 
 .line {
     fill: none;
     stroke: steelblue;
-    stroke-width: 2.5 px;
+    stroke-width: 2.5px;
 }
 
 .chart_grid .tick {
     stroke: lightgrey;
     opacity: 0.7;
 }
+
 .chart_grid path {
     stroke-width: 0;
     shape-rendering: crispEdges;
 }
 
-.chart_grid text {
-  font-size: 10px;
-  fill: grey;
-  shape-rendering: crispEdges;
+.chart_grid .temp_y_label text {
+    font-size: 10px;
+    fill: grey;
+    shape-rendering: crispEdges;
 }
 
-
 .legend_item text {
-  font-size: 10px;
-  fill: grey;
-  shape-rendering: crispEdges;
+    font-size: 10px;
+    fill: grey;
+    shape-rendering: crispEdges;
 }
 
 .axis_label text {
-  font-size: 8px;
-  fill: grey;
-  shape-rendering: crispEdges;
-  text-transform: uppercase;
-  stroke: none;
+    font-size: 8px;
+    fill: grey;
+    shape-rendering: crispEdges;
+    text-transform: uppercase;
+    stroke: none;
 }
 
 /*line plot*/
@@ -53,11 +54,35 @@ text {
     opacity: 0;
 }
 
+/*timeseries*/
+
+.timeseries_line {
+    stroke-width: 3px;
+    fill: transparent;
+}
+
 /*bar chart*/
 
 .bar {
-  stroke: none;
-  fill: steelblue;
+    fill: steelblue;
+    stroke: none;
+}
+
+/*thermometers*/
+
+.glass {
+    stroke: none;
+    fill: grey;
+}
+
+.glass-gap {
+    stroke: none;
+    fill: white;
+}
+
+.mercury {
+    stroke: none;
+    fill: red;
 }
 
 /*tree*/
@@ -86,42 +111,41 @@ text {
     stroke-width: 1.5px;
     fill: steelblue;
 }
+
 .forcelink {
     stroke: #999;
     stroke-opacity: .6;
 }
 
-
-
 /* Tip formatting */
 
 .d3-tip {
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
+    line-height: 1;
+    font-weight: bold;
+    padding: 8px;
+    background: rgba(128, 128, 128, 0.9);
+    color: #fff;
+    border-radius: 2px;
 }
 
 /* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
-  box-sizing: border-box;
-  display: inline;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(128, 128, 128, 0.9);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
 }
 
 /* Style northward tooltips differently */
 .d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
 }
 
 /*Gantt elements */
