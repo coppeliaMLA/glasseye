@@ -104,6 +104,13 @@ text {
     stroke-width: 1.5px;
 }
 
+/*AnimatedDensity*/
+
+.block {
+
+    fill: #1abc9c;
+}
+
 /*force*/
 
 .forcenode {

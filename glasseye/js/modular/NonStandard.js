@@ -65,11 +65,9 @@ function treemap(data, div, size) {
 
     cell.append("svg:text")
       .attr("x", function(d) {
-        console.log(d.dx);
         return d.dx / 2;
       })
       .attr("y", function(d) {
-        console.log(d.dy);
         return d.dy / 2;
       })
       .attr("dy", ".35em")

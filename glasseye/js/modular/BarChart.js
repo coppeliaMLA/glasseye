@@ -272,6 +272,28 @@ BarChart.prototype.change_layout = function (direction) {
 
 };
 
+/**
+ * Allows the used to see which differences are significant
+ *
+ * @method
+ * @returns {object} The modified BarChart object
+ */
+
+BarChart.prototype.grumpy = function (method) {
+
+    var bar_values = self.processed_data.map(function(d){return d.value});
+    var sum_values = d3.sum(bar_values);
+    var prop = bar_values.map(function(d) {return d/sum_values});
+
+
+    if (method === "bon") {
+
+
+    }
+
+
+}
+
 
 /**
  * Creates a barchart within a div
@@ -335,7 +357,7 @@ function barchart(data, div, size) {
 
         var glasseye_chart = new BarChart(processed_data, div, size, ["label", "value"], scales);
 
-        glasseye_chart.add_svg().add_grid().add_bars();
+        glasseye_chart.add_svg().add_grid().add_bars().grumpy("bon");
 
         console.log(glasseye_chart);
 

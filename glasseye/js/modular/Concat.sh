@@ -20,5 +20,6 @@ Tree.js \
 Venn.js \
 Dial.js \
 LogReg.js \
+RandomNumber.js \
 > /Users/simon/Documents/CodeRepos/barbarella/javascript/glasseye/js/GlasseyeCharts.js
 minify /Users/simon/Documents/CodeRepos/barbarella/javascript/glasseye/js/GlasseyeCharts.js > /Users/simon/Documents/CodeRepos/barbarella/javascript/glasseye/js/GlasseyeCharts.min.js

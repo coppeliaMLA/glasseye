@@ -30,6 +30,8 @@ Tree.js \
 Venn.js \
 Dial.js \
 LogReg.js \
+RandomNumber.js \
+AnimatedDensity.js \
 > $GE_DIR/js/GlasseyeCharts.js
 
 #And copy it to barbarella
