@@ -4,17 +4,20 @@ var uni_format = function(d){
   var return_val;
 
   if (d > 999) {
-    return_val = d3.format(".4s")(d);
+    return_val = d3.format(".3s")(d);
+  }
+  else if (d > 100) {
+    return_val = d3.format(".3r")(d);
   }
   else if (d > 10) {
-    return_val = d3.format(".3r")(d);
+    return_val = d3.format(".1f")(d);
   }
   else if (d > 1) {
-    return_val = d3.format(".3r")(d);
+    return_val = d3.format(".1f")(d);
   }
   else
   {
-    return_val = d3.format(".3r")(d);
+    return_val = d3.format(".1f")(d);
   }
   return return_val;
 
@@ -213,5 +216,11 @@ function minmax_across_groups(processed_data, variable) {
   y_values = [].concat.apply([], y_values);
 
   return ([d3.min(y_values), d3.max(y_values)]);
+
+}
+
+function create_class_label(prefix, x){
+
+  return prefix + "_" + x.replace(/[.,\/#!$%\^&\*;:{}=+\-_`~()]/g,"").replace(" ","");
 
 }

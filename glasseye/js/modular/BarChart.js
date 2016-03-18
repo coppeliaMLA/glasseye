@@ -20,7 +20,7 @@ var BarChart = function (processed_data, div, size, labels, scales, margin) {
     if (margin === undefined) {
         margin = {
             top: 20,
-            bottom: 100,
+            bottom: 30,
             right: 20,
             left: 40
         };
@@ -281,12 +281,134 @@ BarChart.prototype.change_layout = function (direction) {
 
 BarChart.prototype.grumpy = function (method) {
 
+    var self = this;
+
+    //Add the commentary div;
+
+    d3.selectAll(self.div).append("div").attr("id", "commentary").style("width", self.width + "px").style("margin-left", self.margin.left + "px");
+
     var bar_values = self.processed_data.map(function(d){return d.value});
+    var bar_labels = self.processed_data.map(function(d){return d.label});
     var sum_values = d3.sum(bar_values);
-    var prop = bar_values.map(function(d) {return d/sum_values});
+
+    if (method === "bayesian") {
+
+        var alphas = bar_values.map(function(d){return d+1});
+
+        //Work out shrunk means
+        var sum_alphas = d3.sum(alphas);
+
+        var shrunk_means = alphas.map(function(d){return sum_values*d/sum_alphas;});
+
+        //Generate draws from the posterior distribution
+        var draw  = random_dirichlet(alphas);
+        var sample = [];
+
+        for (var i=0; i<1000;i=i+1){
+            sample.push(draw())
+        };
+
+        var comparisons = [];
+
+        bar_labels.forEach(function(d, i){
+            bar_labels.forEach(function(e, j){
+                comparisons.push(
+                    {A: i, B:j, A_label: d, B_label: e,
+                    diff_dist: sample.map(function(f){ return f[i] - f[j];}),
+                    })
+            })
+
+        });
+
+        self.comparisons = comparisons.map(function(d){
+            return {
+                A: d.A, B: d.B, A_label:d.A_label, B_label:d.B_label,
+                diff_dist: d.diff_dist,
+                less_than_zero: d3.sum(d.diff_dist.map(function(e){return (e<0)? 1:0;}))/1000,
+                more_than_zero: d3.sum(d.diff_dist.map(function(e){return (e<0)? 0:1;}))/1000
+            }
+        })
 
 
-    if (method === "bon") {
+
+        //Shadows for shrunken means
+        shrunk_means = shrunk_means.map(function(d,i){
+            return {label: bar_labels[i],
+            value: d};
+        });
+
+
+        self.chart_area.insert("g", "rect").selectAll(".bar_shrunk")
+            .data(shrunk_means)
+            .enter()
+            .append("rect")
+            .attr("class", "bar_shrunk")
+            .attr("x", function (d) {
+                return self.x(d.label) - self.bar_width / 4 + 15;
+            })
+            .attr("y", function (d) {
+                return self.y(d.value);
+            })
+            .attr("width", self.bar_width / 2)
+            .attr("height", function (d) {
+                return self.height - self.y(d.value);
+            })
+            .style("fill", "steelblue")
+            .style("opacity", 0.2);
+
+
+
+        //Click to show differences
+
+        self.select_mode = 0;
+
+        self.posterior_diff  = function(d,i)
+        {
+
+
+            if (self.select_mode === 0) {
+                self.select_mode = 1;
+                self.A = i;
+            }
+
+            else if (self.select_mode === 1) {
+                self.select_mode = 2;
+                self.B = i;
+                console.log(self.comparisons);
+                var diff = self.comparisons.filter(function(f){
+                    return f.A === self.A & f.B === self.B;
+                })[0];
+
+
+                d3.selectAll("#commentary").html("There is a " + d3.format("%")(diff.more_than_zero) + " probability that the number of " + diff.A_label + " in the population is greater that the number of " + diff.B_label);
+            }
+
+            else {console.log("ok");}
+
+        };
+
+
+        self.chart_area.selectAll(".bar")
+            .on('click', function (d,i) {
+                if ( self.select_mode === 2) {
+                    self.chart_area.selectAll(".bar").style("fill", 'steelblue');
+                    self.select_mode =0;
+                }
+                d3.select(this).style("fill", '#2b506e');
+            self.posterior_diff(d,i);
+        })
+
+
+/*
+            .on('mouseover', function(d){
+                self.tip.show(d);
+                d3.selectAll(".bar_shrunk").style("opacity", 0.2);
+            })
+            .on('mouseout', function(d){
+                self.tip.show(d);
+                d3.selectAll(".bar_shrunk").style("opacity", 0);
+            });
+*/
 
 
     }
@@ -357,7 +479,7 @@ function barchart(data, div, size) {
 
         var glasseye_chart = new BarChart(processed_data, div, size, ["label", "value"], scales);
 
-        glasseye_chart.add_svg().add_grid().add_bars().grumpy("bon");
+        glasseye_chart.add_svg().add_grid().add_bars().grumpy("bayesian");
 
         console.log(glasseye_chart);
 

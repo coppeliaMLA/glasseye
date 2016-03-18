@@ -181,7 +181,7 @@ var BarChart = function (processed_data, div, size, labels, scales, margin) {
     if (margin === undefined) {
         margin = {
             top: 20,
-            bottom: 100,
+            bottom: 30,
             right: 20,
             left: 40
         };
@@ -442,12 +442,134 @@ BarChart.prototype.change_layout = function (direction) {
 
 BarChart.prototype.grumpy = function (method) {
 
+    var self = this;
+
+    //Add the commentary div;
+
+    d3.selectAll(self.div).append("div").attr("id", "commentary").style("width", self.width + "px").style("margin-left", self.margin.left + "px");
+
     var bar_values = self.processed_data.map(function(d){return d.value});
+    var bar_labels = self.processed_data.map(function(d){return d.label});
     var sum_values = d3.sum(bar_values);
-    var prop = bar_values.map(function(d) {return d/sum_values});
+
+    if (method === "bayesian") {
+
+        var alphas = bar_values.map(function(d){return d+1});
+
+        //Work out shrunk means
+        var sum_alphas = d3.sum(alphas);
+
+        var shrunk_means = alphas.map(function(d){return sum_values*d/sum_alphas;});
+
+        //Generate draws from the posterior distribution
+        var draw  = random_dirichlet(alphas);
+        var sample = [];
+
+        for (var i=0; i<1000;i=i+1){
+            sample.push(draw())
+        };
+
+        var comparisons = [];
+
+        bar_labels.forEach(function(d, i){
+            bar_labels.forEach(function(e, j){
+                comparisons.push(
+                    {A: i, B:j, A_label: d, B_label: e,
+                    diff_dist: sample.map(function(f){ return f[i] - f[j];}),
+                    })
+            })
+
+        });
+
+        self.comparisons = comparisons.map(function(d){
+            return {
+                A: d.A, B: d.B, A_label:d.A_label, B_label:d.B_label,
+                diff_dist: d.diff_dist,
+                less_than_zero: d3.sum(d.diff_dist.map(function(e){return (e<0)? 1:0;}))/1000,
+                more_than_zero: d3.sum(d.diff_dist.map(function(e){return (e<0)? 0:1;}))/1000
+            }
+        })
 
 
-    if (method === "bon") {
+
+        //Shadows for shrunken means
+        shrunk_means = shrunk_means.map(function(d,i){
+            return {label: bar_labels[i],
+            value: d};
+        });
+
+
+        self.chart_area.insert("g", "rect").selectAll(".bar_shrunk")
+            .data(shrunk_means)
+            .enter()
+            .append("rect")
+            .attr("class", "bar_shrunk")
+            .attr("x", function (d) {
+                return self.x(d.label) - self.bar_width / 4 + 15;
+            })
+            .attr("y", function (d) {
+                return self.y(d.value);
+            })
+            .attr("width", self.bar_width / 2)
+            .attr("height", function (d) {
+                return self.height - self.y(d.value);
+            })
+            .style("fill", "steelblue")
+            .style("opacity", 0.2);
+
+
+
+        //Click to show differences
+
+        self.select_mode = 0;
+
+        self.posterior_diff  = function(d,i)
+        {
+
+
+            if (self.select_mode === 0) {
+                self.select_mode = 1;
+                self.A = i;
+            }
+
+            else if (self.select_mode === 1) {
+                self.select_mode = 2;
+                self.B = i;
+                console.log(self.comparisons);
+                var diff = self.comparisons.filter(function(f){
+                    return f.A === self.A & f.B === self.B;
+                })[0];
+
+
+                d3.selectAll("#commentary").html("There is a " + d3.format("%")(diff.more_than_zero) + " probability that the number of " + diff.A_label + " in the population is greater that the number of " + diff.B_label);
+            }
+
+            else {console.log("ok");}
+
+        };
+
+
+        self.chart_area.selectAll(".bar")
+            .on('click', function (d,i) {
+                if ( self.select_mode === 2) {
+                    self.chart_area.selectAll(".bar").style("fill", 'steelblue');
+                    self.select_mode =0;
+                }
+                d3.select(this).style("fill", '#2b506e');
+            self.posterior_diff(d,i);
+        })
+
+
+/*
+            .on('mouseover', function(d){
+                self.tip.show(d);
+                d3.selectAll(".bar_shrunk").style("opacity", 0.2);
+            })
+            .on('mouseout', function(d){
+                self.tip.show(d);
+                d3.selectAll(".bar_shrunk").style("opacity", 0);
+            });
+*/
 
 
     }
@@ -518,7 +640,7 @@ function barchart(data, div, size) {
 
         var glasseye_chart = new BarChart(processed_data, div, size, ["label", "value"], scales);
 
-        glasseye_chart.add_svg().add_grid().add_bars().grumpy("bon");
+        glasseye_chart.add_svg().add_grid().add_bars().grumpy("bayesian");
 
         console.log(glasseye_chart);
 
@@ -717,17 +839,20 @@ var uni_format = function(d){
   var return_val;
 
   if (d > 999) {
-    return_val = d3.format(".4s")(d);
+    return_val = d3.format(".3s")(d);
+  }
+  else if (d > 100) {
+    return_val = d3.format(".3r")(d);
   }
   else if (d > 10) {
-    return_val = d3.format(".3r")(d);
+    return_val = d3.format(".1f")(d);
   }
   else if (d > 1) {
-    return_val = d3.format(".3r")(d);
+    return_val = d3.format(".1f")(d);
   }
   else
   {
-    return_val = d3.format(".3r")(d);
+    return_val = d3.format(".1f")(d);
   }
   return return_val;
 
@@ -928,132 +1053,178 @@ function minmax_across_groups(processed_data, variable) {
   return ([d3.min(y_values), d3.max(y_values)]);
 
 }
-var AnimatedBarChart = function(processed_data, div, size, labels, scales) {
 
-  var self = this;
+function create_class_label(prefix, x){
 
-  var margin = {
-    top: 50,
-    bottom: 80,
-    right: 30,
-    left: 100
-  };
+  return prefix + "_" + x.replace(/[.,\/#!$%\^&\*;:{}=+\-_`~()]/g,"").replace(" ","");
 
-  BarChart.call(self, processed_data, div, size, labels, scales, margin);
-  self.bar_width = 30;
-  self.y_axis.tickFormat(format_millions).ticks(6).tickSize(6);
-  this.x_axis.tickSize(0);
+}var AnimatedBarChart = function (processed_data, div, size, labels, scales) {
+
+    var self = this;
+
+    var margin = {
+        top: 50,
+        bottom: 80,
+        right: 50,
+        left: 60
+    };
+
+    BarChart.call(self, processed_data, div, size, labels, scales, margin);
+    self.bar_width = 30;
+    self.y_axis.tickFormat(d3.format("%")).ticks(6);
+    this.x_axis.tickSize(0);
+
+    self.current_variable = "";
+
+    self.tip = d3.tip()
+        .attr('class', 'd3-tip')
+        .offset([-10, 0])
+        .html(function (d) {
+           return d3.format(".1%")(d.value) + " of " + d.category + " have access to a " + self.current_variable;
+        });
 
 };
 
 AnimatedBarChart.prototype = Object.create(BarChart.prototype);
 
-AnimatedBarChart.prototype.add_bars = function() {
+AnimatedBarChart.prototype.add_bars = function () {
 
-  var self = this;
+    var self = this;
 
-  self.chart_area.call(self.tip);
+    self.chart_area.call(self.tip);
 
-  //Customisations
-  self.svg.attr("class", "glasseye_chart animated_barchart");
+    //Customisations
+    self.svg.attr("class", "glasseye_chart animated_barchart");
 
+    //Get first Date
+    var start_date = d3.min(self.processed_data[0].values.map(function(d) {
+        return d.time;
+    }));
 
-  var bars = self.chart_area.selectAll(".bar")
-    .data(self.processed_data)
-    .enter()
-    .append("g")
-    .attr("transform", function(d) {
-      return "translate(" + (self.x(d.category) - self.bar_width * 0.4) + ", " + 0 + ")";
-    });
+    var bars = self.chart_area.selectAll(".bar")
+        .data(self.processed_data)
+        .enter()
+        .append("g")
+        .attr("transform", function (d) {
+            return "translate(" + (self.x(d.category) - self.bar_width * 0.4) + ", " + 0 + ")";
+        });
 
-  bars.append("rect")
-    .attr("class", "bar")
-    .attr("x", 0)
-    .attr("y", function(d) {
-      return self.y(d.values[0].value);
-    })
-    .attr("width", self.bar_width * 0.8)
-    .attr("height", function(d) {
-      return self.height - self.y(d.values[0].value);
-    });
+    bars.append("rect")
+        .attr("class", "bar")
+        .attr("x", 0)
+        .attr("y", function (d) {
+            return self.y(d.values[0].value);
+        })
+        .attr("width", self.bar_width * 0.8)
+        .attr("height", function (d) {
+            return self.height - self.y(d.values[0].value);
+        })
+        .on('mouseover', self.tip.show)
+        .on('mouseout', self.tip.hide);
+    ;
 
-  self.svg.append("text").attr("class", "context")
-    .attr("y", self.height + self.margin.top + 60)
-    .attr("x", self.margin.left + self.width / 2)
-    .style("text-anchor", "middle")
-    .text("At " + quarter_year(self.processed_data[0].values[0].time) + " for " + self.processed_data[0].values[0].variable);
+    self.svg.append("text").attr("class", "context")
+        .attr("y", self.height + self.margin.top + 60)
+        .attr("x", self.margin.left + self.width / 2)
+        .style("text-anchor", "middle")
+        .text("At " + quarter_year(self.processed_data[0].values[0].time) + " for " + self.processed_data[0].values[0].variable);
 
-  var max_string = d3.max(self.x.domain().map(function(d) {
-    return d.length;
-  }));
-  var num_points = self.x.domain().length;
+    var max_string = d3.max(self.x.domain().map(function (d) {
+        return d.length;
+    }));
+    var num_points = self.x.domain().length;
 
-  if ((max_string*5) > (1.5 * self.bar_width)) {
-    self.chart_area.selectAll(".x_axis").selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-1em")
-        .attr("dy", "-0.8em")
-        .attr("transform", "rotate(-90)");
-  }
-
-
-  return this;
-
-};
-
-
-AnimatedBarChart.prototype.update_bars = function(time, variable) {
-
-  var self = this;
-  self.chart_area.selectAll(".bar")
-    .transition()
-    .duration(500)
-    .attr("y", function(d) {
-      var filtered = d.values.filter(function(e) {
-        return e.time.getTime() === time.getTime() & e.variable === variable;
-      });
-      return self.y(filtered[0].value);
-    })
-    .attr("height", function(d) {
-      var filtered = d.values.filter(function(e) {
-        return e.time.getTime() === time.getTime() & e.variable === variable;
-      });
-
-      return self.height - self.y(filtered[0].value);
-    });
-
-  self.svg.selectAll(".context").text("At " + quarter_year(time) + " for " + variable);
+    if ((max_string * 5) > (1.5 * self.bar_width)) {
+        self.chart_area.selectAll(".x_axis").selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-1em")
+            .attr("dy", "-0.8em")
+            .attr("transform", "rotate(-90)");
+    }
 
 
+    self.update_bars(start_date, "PC");
+
+    return this;
 
 };
 
-AnimatedBarChart.prototype.add_title = function(title) {
 
-  var self = this;
-  self.svg.append('text').attr("class", "title")
-    .text(title)
-    .attr("transform", "translate(" + (self.margin.left - 10) + ",20)");
+AnimatedBarChart.prototype.update_bars = function (time, variable) {
 
-  return this;
+    var self = this;
+
+    //Set variable so that it can be accessed by the tooltip
+    self.current_variable = variable.toLowerCase();
+
+    var filtered_bars = self.processed_data.map(function(d) {
+
+        return {
+
+            category: d.category,
+            value: d.values.filter(function(e) {
+                return (e.time.getTime() === time.getTime() & e.variable === variable);
+            })[0].value
+        };
+    });
+
+    self.chart_area.selectAll(".bar").data(filtered_bars)
+     .transition()
+     .duration(500)
+     .attr("y", function (d){return self.y(d.value);})
+     .attr("height", function (d){return self.height - self.y(d.value);});
+
+
+    self.svg.selectAll(".context").text("In " + quarter_year(time) + " for " + variable);
+
 
 };
 
-AnimatedBarChart.prototype.redraw_barchart = function(title) {
+AnimatedBarChart.prototype.add_title = function (title, subtitle) {
 
-  var self = this;
+    var self = this;
+    self.title = title;
+    self.svg.append('text').attr("class", "title")
+        .text(title)
+        .attr("transform", "translate(" + (self.margin.left - 10) + ",20)");
 
-  //Delete the existing svg and commentary
-  d3.select(self.div).selectAll("svg").remove();
+    if (subtitle != undefined) {
+
+        self.subtitle = subtitle;
+        self.svg.append('text').attr("class", "subtitle")
+            .text(subtitle)
+            .attr("transform", "translate(" + (self.margin.left - 10) + ",35)");
+
+    } else {
+        self.subtitle = "";
+    }
+
+    return this;
+
+};
+
+AnimatedBarChart.prototype.redraw_barchart = function (title) {
+
+    var self = this;
+
+    //Delete the existing svg and commentary
+    d3.select(self.div).selectAll("svg").remove();
 
 
-  //Reset the size
-  self.set_size();
-  self.bar_width = self.width / self.processed_data.length;
-  self.x = self.scales[0].scale_func.rangePoints([0, self.width], 1);
+    //Reset the size
+    self.set_size();
+    self.bar_width = self.width / self.processed_data.length;
+    self.x = self.scales[0].scale_func.rangePoints([0, self.width], 1);
+    console.log(self.width);
+    self.y_axis = d3.svg.axis()
+        .scale(self.y)
+        .orient("left")
+        .tickSize(-self.width, 0, 0)
+        .tickFormat(d3.format("%")).ticks(6);
 
-  //Redraw the chart
-  self.add_svg().add_grid().add_bars().add_title(title);
+
+    //Redraw the chart
+    self.add_svg().add_grid().add_bars().add_title(self.title, self.subtitle);
 
 };
 var AnimatedDonut = function(processed_data, div, size) {
@@ -1062,12 +1233,12 @@ var AnimatedDonut = function(processed_data, div, size) {
 
   margin = {
     top: 80,
-    bottom: 30,
+    bottom: 130,
     left: 30,
     right: 30
   };
 
-  GlasseyeChart.call(self, div, size, margin, 300);
+  GlasseyeChart.call(self, div, size, margin, 400);
 
   self.processed_data = processed_data;
 
@@ -1075,11 +1246,13 @@ var AnimatedDonut = function(processed_data, div, size) {
     return d.values[0].value;
   }));
 
+  self.current_total = 1;
+
   self.tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-      return d3.format(",.0f")(d.data.value) + " households";
+      return   uni_format(d.data.value) + " households"  + "<br>" + d3.format(".1%")(d.data.value/self.current_total) + " of the total";
     });
 
   var radius = self.width / 2;
@@ -1132,16 +1305,31 @@ AnimatedDonut.prototype.add_donut = function() {
     .enter().append("g")
     .attr("class", "arc");
 
+  var existing_text;
+
   self.donut_path = self.donut_arc.append("path")
     .attr("d", self.arc)
     .attr("class", function(d, i) {
-      return ("d_" + i);
+      return ("d_" + i + " " + create_class_label("d", d.data.category));
     })
     .attr("fill", function(d) {
       return color(d.data.category);
     })
-    .on('mouseover', self.tip.show)
-    .on('mouseout', self.tip.hide);
+    .on('mouseover', function(d, i) {
+      /*existing_text  = self.svg.selectAll(".context").text();
+      var text_line_1 = existing_text.substring(0, 11) + d3.format("%")(d.data.value/self.current_total) + " of households";
+      var text_line_2  = "with " + existing_text.substring(15, existing_text.length);
+      var text_line_3  = "are at lifestage " + d.data.group;
+      self.svg.selectAll(".context").text(text_line_1);
+      self.svg.selectAll(".context_2").text(text_line_2);
+      self.svg.selectAll(".context_3").text(text_line_3);
+      */
+      self.tip.show(d);
+    })
+    .on('mouseout', function(d, i) {
+      //self.svg.selectAll(".context").text(existing_text);
+      self.tip.hide(d);
+    });
 
 
   self.donut_text = self.donut_arc.append("text")
@@ -1169,9 +1357,23 @@ AnimatedDonut.prototype.add_donut = function() {
     });
 
   self.svg.append("text").attr("class", "context")
-    .attr("y", self.height + self.margin.top + 60)
+    .attr("y", self.height + self.margin.top + 70)
     .attr("x", self.margin.left + self.width / 2)
     .style("text-anchor", "middle");
+
+  /*self.svg.append("text").attr("class", "context_2")
+      .attr("y", self.height + self.margin.top + 75)
+      .attr("x", self.margin.left + self.width / 2)
+      .style("text-anchor", "middle");
+
+  self.svg.append("text").attr("class", "context_3")
+      .attr("y", self.height + self.margin.top + 90)
+      .attr("x", self.margin.left + self.width / 2)
+      .style("text-anchor", "middle");
+  */
+
+  self.update_donut(start_date, "No TV");
+
 
   return this;
 
@@ -1198,6 +1400,10 @@ AnimatedDonut.prototype.update_donut = function(time, variable) {
   });
 
 
+  //Update tooltip
+
+  self.current_total = d3.sum(filtered_donut.map(function(d){return d.value}));
+
   self.donut_path.data(self.pie(filtered_donut)).transition().duration(200).attrTween("d", arcTween);
 
 
@@ -1218,19 +1424,35 @@ AnimatedDonut.prototype.update_donut = function(time, variable) {
     };
   }
 
-  self.svg.selectAll(".context").text("At " + quarter_year(time) + " for " + variable);
+  self.svg.selectAll(".context").text("In " + quarter_year(time) + " for " + variable);
+
+
 
 
 };
 
-AnimatedDonut.prototype.add_title = function(title) {
+AnimatedDonut.prototype.add_title = function(title, subtitle) {
 
   var self = this;
+  self.title = title;
   self.svg.append('text').attr("class", "title")
     .text(title)
     .attr("y", 20)
     .attr("x", self.margin.left + self.width / 2)
     .style("text-anchor", "middle");
+
+  if (subtitle != undefined) {
+
+    self.subtitle = subtitle;
+    self.svg.append('text').attr("class", "subtitle")
+        .text(subtitle)
+        .attr("y", 35)
+        .attr("x", self.margin.left + self.width / 2)
+        .style("text-anchor", "middle");
+
+  } else {
+    self.subtitle = "";
+  }
 
   return this;
 
@@ -1244,8 +1466,6 @@ AnimatedDonut.prototype.redraw_donut = function(title) {
   d3.select(self.div).selectAll("svg").remove();
   d3.select(self.div).selectAll("#venn_context").remove();
 
-  //console.log(self);
-
   //Reset the size
   self.set_size();
 
@@ -1257,7 +1477,7 @@ AnimatedDonut.prototype.redraw_donut = function(title) {
 
 
   //Redraw the chart
-  self = self.add_svg().add_donut().add_title('Breakdown by Lifestage');
+  self.add_svg().add_donut().add_title(self.title, self.subtitle);
 
 };
 /**
@@ -1328,8 +1548,7 @@ var AnimatedVenn = function(processed_data, div, size) {
         return d.__data__.sets.length === 1 & d.__data__.sets[0] === sub_2;
       })[0].__data__.size;
 
-      text = "There were " + uni_format(set_size * 1000) + " households that subscribe to both " + sub_1 + " and " + sub_2 + " (" + d3.format(",.1%")(set_size / total) + " of all VOD subscribing households.)<br><br> " + d3.format(",.1%")(set_size / set_1_size) + " of " + sub_1 + " were also " + sub_2 + " subscribers. <br><br> " + d3.format(',.1%')(set_size / set_2_size) + " of " + sub_2 + " were also " + sub_1 + " subscribers.";
-
+      text = "There were " + uni_format(set_size * 1000) + " households that subscribe to both " + sub_1 + " and " + sub_2 + " (" + d3.format(",.1%")(set_size / total) + " of all VOD subscribing households.)";
     } else {
 
       text = "There were " + uni_format(set_size * 1000) + " households that subscribe to all three. That's " + d3.format(",.1%")(set_size / total) + " of all VOD subscribing households.";
@@ -1375,7 +1594,7 @@ AnimatedVenn.prototype.add_venn = function() {
 
   //Add the div for the commentary
   var div = d3.select(self.div).append("div").attr("id", "venn_context");
-  div.append("div").attr("id", "commentary");
+  div.append("div").attr("id", "commentary").style("font-size", "11px");
 
   //Add interactivity
   self.chart_area.selectAll("g")
@@ -1452,6 +1671,7 @@ AnimatedVenn.prototype.update_venn = function(time, variable) {
 AnimatedVenn.prototype.add_title = function(title) {
 
   var self = this;
+  self.title = title;
   self.svg.append('text').attr("class", "title")
     .text(title)
     .attr("y", 20)
@@ -1459,6 +1679,19 @@ AnimatedVenn.prototype.add_title = function(title) {
     .style("text-anchor", "middle");
 
   return this;
+
+  if (subtitle != undefined) {
+
+    self.subtitle = subtitle;
+    self.svg.append('text').attr("class", "subtitle")
+        .text(subtitle)
+        .attr("y", 35)
+        .attr("x", self.margin.left + self.width / 2)
+        .style("text-anchor", "middle");
+
+  } else {
+    self.subtitle = "";
+  }
 
 };
 
@@ -1483,7 +1716,7 @@ AnimatedVenn.prototype.redraw_venn = function(title) {
     .height(self.height);
 
   //Redraw the chart
-  self = self.add_svg().add_venn().add_title('Overlap Between VOD Subs');
+  self = self.add_svg().add_venn().add_title(self.title, self.subtitle);
 
 };
 var Donut = function(processed_data, div, size) {
@@ -2616,8 +2849,8 @@ var Thermometers = function(processed_data, div, size, labels, scales) {
   var margin = {
     top: 50,
     bottom: 80,
-    right: 30,
-    left: 80
+    right: 50,
+    left: 50
   };
 
   BarChart.call(self, processed_data, div, size, labels, scales, margin);
@@ -2711,18 +2944,34 @@ Thermometers.prototype.update_thermometers = function(time, variable) {
       return d3.format("%")(filtered[0].value);
     });
 
-  self.svg.selectAll(".context").text("At " + quarter_year(time) + " for " + variable);
+  self.svg.selectAll(".context").text("In " + quarter_year(time) + " for " + variable + " households");
 
 
 
 };
 
-Thermometers.prototype.add_title = function(title) {
+Thermometers.prototype.add_title = function(title, subtitle) {
 
   var self = this;
+  self.title = title;
   self.svg.append('text').attr("class", "title")
     .text(title)
-    .attr("transform", "translate(" + (self.margin.left - 10) + ",20)");
+      .attr("y", 20)
+      .attr("x", self.margin.left + self.width / 2)
+      .style("text-anchor", "middle");
+
+  if (subtitle != undefined) {
+
+    self.subtitle = subtitle;
+    self.svg.append('text').attr("class", "subtitle")
+        .text(subtitle)
+        .attr("y", 35)
+        .attr("x", self.margin.left + self.width / 2)
+        .style("text-anchor", "middle");
+
+  } else {
+    self.subtitle = "";
+  }
 
   return this;
 
@@ -2730,6 +2979,8 @@ Thermometers.prototype.add_title = function(title) {
 
 
 Thermometers.prototype.redraw_thermometer = function(title) {
+
+  //Note no longer uses argument!
 
   var self = this;
 
@@ -2742,7 +2993,7 @@ Thermometers.prototype.redraw_thermometer = function(title) {
   self.x = self.scales[0].scale_func.rangePoints([0, self.width], 1);
 
   //Redraw the chart
-  self.add_svg().add_grid().add_thermometers().add_title(title);
+  self.add_svg().add_grid().add_thermometers().add_title(self.title, self.subtitle);
 
 };
 
@@ -2837,8 +3088,12 @@ var TimeSeries = function(processed_data, div, size, labels, scales, tooltip_fun
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-      return quarter_year(d.time) + "<br>" + d.group + "<br>" + uni_format(d.value);
+      return quarter_year(d.time) + "<br>" + d.group + "<br>" + ((d.variable==="share")? d3.format(".1%")(d.value): uni_format(d.value));
     });
+
+  //Reorder processed data in order of max value
+  //self.processed_data =  self.processed_data.sort(function(a,b){return a.group < b.group});
+
 
   //Function to create line path
   self.line = d3.svg.line()
@@ -2881,8 +3136,9 @@ var TimeSeries = function(processed_data, div, size, labels, scales, tooltip_fun
     })
     .values(function(d) {
       return d.values;
-    })
-    .order("inside-out");
+    }).order("reverse");
+
+
 
   self.color = d3.scale.ordinal()
       .range(colorbrewer.RdYlBu[self.processed_data.length]);
@@ -2922,7 +3178,7 @@ TimeSeries.prototype.add_timeseries = function() {
       return (self.color(d.group));
     })
     .attr("class", function(d, i) {
-      return ("timeseries_line c_" + i);
+      return ("timeseries_line c_" + i + " " + create_class_label("c", d.group));
     })
     .attr("d", function(d) {
       return self.line(d.values);
@@ -2935,7 +3191,7 @@ TimeSeries.prototype.add_timeseries = function() {
     .enter()
     .append("path")
     .attr("class", function(d, i) {
-      return ("timeseries_area d_" + i);
+      return ("timeseries_area d_" + i + " " +create_class_label("d", d.group));
     })
     .attr("d", function(d) {
       return self.area(d.values);
@@ -3147,7 +3403,7 @@ TimeSeries.prototype.add_legend = function() {
       return {
         "label": v.group,
         "colour": self.color(v.group),
-        "class": "d_" + i
+        "class": create_class_label("d", v.group)
       };
     }));
   }
@@ -3163,13 +3419,22 @@ TimeSeries.prototype.add_legend = function() {
  * @returns {object} The modified TimeSeries object
  */
 
-TimeSeries.prototype.add_title = function(title) {
+TimeSeries.prototype.add_title = function(title, subtitle) {
 
   var self = this;
   self.title = title;
   self.svg.append('text').attr("class", "title")
     .text(title)
     .attr("transform", "translate(" + (self.margin.left - 10) + ",20)");
+
+  if (subtitle != undefined) {
+
+    self.subtitle = subtitle;
+    self.svg.append('text').attr("class", "subtitle")
+        .text(subtitle)
+        .attr("transform", "translate(" + (self.margin.left - 10) + ",35)");
+
+  }
 
   return this;
 
@@ -3268,7 +3533,7 @@ TimeSeries.prototype.redraw_timeseries = function(title) {
   self.y.domain(minmax_across_groups(self.processed_data, current_y_axis));
 
   //Redraw the chart
-  self.add_svg().add_grid().add_timeseries().add_legend().add_title(self.title).flip_variable(current_y_axis, 0);
+  self.add_svg().add_grid().add_timeseries().add_legend().add_title(self.title, self.subtitle).flip_variable(current_y_axis, 0);
 
 };
 
@@ -3931,13 +4196,8 @@ function random_dirichlet(alphas){
 
         var k_sum  =  d3.sum(k);
 
-        console.log(k);
-
-        console.log(k_sum);
-
         var x = k.map(function(d) {return d/k_sum;})
 
-        console.log(x);
 
     return x;
 

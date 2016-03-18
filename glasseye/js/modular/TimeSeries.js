@@ -33,8 +33,12 @@ var TimeSeries = function(processed_data, div, size, labels, scales, tooltip_fun
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-      return quarter_year(d.time) + "<br>" + d.group + "<br>" + uni_format(d.value);
+      return quarter_year(d.time) + "<br>" + d.group + "<br>" + ((d.variable==="share")? d3.format(".1%")(d.value): uni_format(d.value));
     });
+
+  //Reorder processed data in order of max value
+  //self.processed_data =  self.processed_data.sort(function(a,b){return a.group < b.group});
+
 
   //Function to create line path
   self.line = d3.svg.line()
@@ -77,8 +81,9 @@ var TimeSeries = function(processed_data, div, size, labels, scales, tooltip_fun
     })
     .values(function(d) {
       return d.values;
-    })
-    .order("inside-out");
+    }).order("reverse");
+
+
 
   self.color = d3.scale.ordinal()
       .range(colorbrewer.RdYlBu[self.processed_data.length]);
@@ -118,7 +123,7 @@ TimeSeries.prototype.add_timeseries = function() {
       return (self.color(d.group));
     })
     .attr("class", function(d, i) {
-      return ("timeseries_line c_" + i);
+      return ("timeseries_line c_" + i + " " + create_class_label("c", d.group));
     })
     .attr("d", function(d) {
       return self.line(d.values);
@@ -131,7 +136,7 @@ TimeSeries.prototype.add_timeseries = function() {
     .enter()
     .append("path")
     .attr("class", function(d, i) {
-      return ("timeseries_area d_" + i);
+      return ("timeseries_area d_" + i + " " +create_class_label("d", d.group));
     })
     .attr("d", function(d) {
       return self.area(d.values);
@@ -343,7 +348,7 @@ TimeSeries.prototype.add_legend = function() {
       return {
         "label": v.group,
         "colour": self.color(v.group),
-        "class": "d_" + i
+        "class": create_class_label("d", v.group)
       };
     }));
   }
@@ -359,13 +364,22 @@ TimeSeries.prototype.add_legend = function() {
  * @returns {object} The modified TimeSeries object
  */
 
-TimeSeries.prototype.add_title = function(title) {
+TimeSeries.prototype.add_title = function(title, subtitle) {
 
   var self = this;
   self.title = title;
   self.svg.append('text').attr("class", "title")
     .text(title)
     .attr("transform", "translate(" + (self.margin.left - 10) + ",20)");
+
+  if (subtitle != undefined) {
+
+    self.subtitle = subtitle;
+    self.svg.append('text').attr("class", "subtitle")
+        .text(subtitle)
+        .attr("transform", "translate(" + (self.margin.left - 10) + ",35)");
+
+  }
 
   return this;
 
@@ -464,7 +478,7 @@ TimeSeries.prototype.redraw_timeseries = function(title) {
   self.y.domain(minmax_across_groups(self.processed_data, current_y_axis));
 
   //Redraw the chart
-  self.add_svg().add_grid().add_timeseries().add_legend().add_title(self.title).flip_variable(current_y_axis, 0);
+  self.add_svg().add_grid().add_timeseries().add_legend().add_title(self.title, self.subtitle).flip_variable(current_y_axis, 0);
 
 };
 

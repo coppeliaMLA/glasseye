@@ -66,8 +66,7 @@ var AnimatedVenn = function(processed_data, div, size) {
         return d.__data__.sets.length === 1 & d.__data__.sets[0] === sub_2;
       })[0].__data__.size;
 
-      text = "There were " + uni_format(set_size * 1000) + " households that subscribe to both " + sub_1 + " and " + sub_2 + " (" + d3.format(",.1%")(set_size / total) + " of all VOD subscribing households.)<br><br> " + d3.format(",.1%")(set_size / set_1_size) + " of " + sub_1 + " were also " + sub_2 + " subscribers. <br><br> " + d3.format(',.1%')(set_size / set_2_size) + " of " + sub_2 + " were also " + sub_1 + " subscribers.";
-
+      text = "There were " + uni_format(set_size * 1000) + " households that subscribe to both " + sub_1 + " and " + sub_2 + " (" + d3.format(",.1%")(set_size / total) + " of all VOD subscribing households.)";
     } else {
 
       text = "There were " + uni_format(set_size * 1000) + " households that subscribe to all three. That's " + d3.format(",.1%")(set_size / total) + " of all VOD subscribing households.";
@@ -113,7 +112,7 @@ AnimatedVenn.prototype.add_venn = function() {
 
   //Add the div for the commentary
   var div = d3.select(self.div).append("div").attr("id", "venn_context");
-  div.append("div").attr("id", "commentary");
+  div.append("div").attr("id", "commentary").style("font-size", "11px");
 
   //Add interactivity
   self.chart_area.selectAll("g")
@@ -190,6 +189,7 @@ AnimatedVenn.prototype.update_venn = function(time, variable) {
 AnimatedVenn.prototype.add_title = function(title) {
 
   var self = this;
+  self.title = title;
   self.svg.append('text').attr("class", "title")
     .text(title)
     .attr("y", 20)
@@ -197,6 +197,19 @@ AnimatedVenn.prototype.add_title = function(title) {
     .style("text-anchor", "middle");
 
   return this;
+
+  if (subtitle != undefined) {
+
+    self.subtitle = subtitle;
+    self.svg.append('text').attr("class", "subtitle")
+        .text(subtitle)
+        .attr("y", 35)
+        .attr("x", self.margin.left + self.width / 2)
+        .style("text-anchor", "middle");
+
+  } else {
+    self.subtitle = "";
+  }
 
 };
 
@@ -221,6 +234,6 @@ AnimatedVenn.prototype.redraw_venn = function(title) {
     .height(self.height);
 
   //Redraw the chart
-  self = self.add_svg().add_venn().add_title('Overlap Between VOD Subs');
+  self = self.add_svg().add_venn().add_title(self.title, self.subtitle);
 
 };

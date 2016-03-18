@@ -17,13 +17,13 @@
 <body>
 
     <div id = "tufte_container">
-      <div id="timeseries"></div>
+      <div id="bar"></div>
       <div id="thermometers"></div>
     </div>
 
 <script>
-timeseries("data/primary.csv", "#timeseries", "full_page");
-thermometers("data/penetration.csv", "#thermometers", "full_page");
+barchart({"label": ["Apples", "Pears", "Oranges", "Bananas"], "value": [4, 3, 6, 8]}, "#bar", "full_page");
+
 </script>
 <script type="text/javascript">
 (function () {

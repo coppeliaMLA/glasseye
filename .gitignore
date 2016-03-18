@@ -61,3 +61,6 @@ glasseye/data
 *.DS_Store
 /css
 /js
+*.idea*
+.idea/
+glasseye/.idea/

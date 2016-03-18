@@ -5,8 +5,8 @@ var Thermometers = function(processed_data, div, size, labels, scales) {
   var margin = {
     top: 50,
     bottom: 80,
-    right: 30,
-    left: 80
+    right: 50,
+    left: 50
   };
 
   BarChart.call(self, processed_data, div, size, labels, scales, margin);
@@ -100,18 +100,34 @@ Thermometers.prototype.update_thermometers = function(time, variable) {
       return d3.format("%")(filtered[0].value);
     });
 
-  self.svg.selectAll(".context").text("At " + quarter_year(time) + " for " + variable);
+  self.svg.selectAll(".context").text("In " + quarter_year(time) + " for " + variable + " households");
 
 
 
 };
 
-Thermometers.prototype.add_title = function(title) {
+Thermometers.prototype.add_title = function(title, subtitle) {
 
   var self = this;
+  self.title = title;
   self.svg.append('text').attr("class", "title")
     .text(title)
-    .attr("transform", "translate(" + (self.margin.left - 10) + ",20)");
+      .attr("y", 20)
+      .attr("x", self.margin.left + self.width / 2)
+      .style("text-anchor", "middle");
+
+  if (subtitle != undefined) {
+
+    self.subtitle = subtitle;
+    self.svg.append('text').attr("class", "subtitle")
+        .text(subtitle)
+        .attr("y", 35)
+        .attr("x", self.margin.left + self.width / 2)
+        .style("text-anchor", "middle");
+
+  } else {
+    self.subtitle = "";
+  }
 
   return this;
 
@@ -119,6 +135,8 @@ Thermometers.prototype.add_title = function(title) {
 
 
 Thermometers.prototype.redraw_thermometer = function(title) {
+
+  //Note no longer uses argument!
 
   var self = this;
 
@@ -131,7 +149,7 @@ Thermometers.prototype.redraw_thermometer = function(title) {
   self.x = self.scales[0].scale_func.rangePoints([0, self.width], 1);
 
   //Redraw the chart
-  self.add_svg().add_grid().add_thermometers().add_title(title);
+  self.add_svg().add_grid().add_thermometers().add_title(self.title, self.subtitle);
 
 };
 
