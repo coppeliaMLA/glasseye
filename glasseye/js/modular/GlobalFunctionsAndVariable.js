@@ -9,8 +9,13 @@ var uni_format = function(d){
   else if (d > 100) {
     return_val = d3.format(".3r")(d);
   }
-  else if (d > 10) {
-    return_val = d3.format(".1f")(d);
+  else if (d >= 10) {
+    if (Math.round(d) === d) {
+      return_val = d3.format(".0f")(d);
+    }
+    else {
+      return_val = d3.format(".1f")(d);
+    }
   }
   else if (d > 1) {
     return_val = d3.format(".1f")(d);

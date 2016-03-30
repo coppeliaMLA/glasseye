@@ -40,6 +40,9 @@ cp  $GE_DIR/js/GlasseyeCharts.js $BB_DIR/js/GlasseyeCharts.js
 #And to the demo area
 cp  $GE_DIR/js/GlasseyeCharts.js $GE_DIR/demo/js/GlasseyeCharts.js
 
+#And to the articles
+cp  $GE_DIR/js/GlasseyeCharts.js /Users/simon/Documents/CodeRepos/glasseye/articles/js/GlasseyeCharts.js
+
 #Also copy across the css
 #cp $GE_DIR/css/glasseyeCharts.css $BB_DIR/css/glasseyeCharts.css
 

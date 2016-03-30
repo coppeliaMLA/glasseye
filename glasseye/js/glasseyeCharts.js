@@ -83,80 +83,81 @@ GlasseyeChart.prototype.add_svg = function() {
 
   return self;
 };
-var GridChart = function(div, size, labels, scales, margin, height) {
+var GridChart = function (div, size, labels, scales, margin, height) {
 
-  var self = this;
-  self.scales = scales;
-  self.labels = labels;
+    var self = this;
+    self.scales = scales;
+    self.labels = labels;
 
-  GlasseyeChart.call(self, div, size, margin, height);
+    GlasseyeChart.call(self, div, size, margin, height);
 
-  if (scales[0].scale_type === "ordinal") {
-    self.x = self.scales[0].scale_func.rangePoints([0, self.width], 1);
-  } else {
-    self.x = self.scales[0].scale_func.range([0, self.width]);
-  }
+    if (scales[0].scale_type === "ordinal") {
+        self.x = self.scales[0].scale_func.rangePoints([0, self.width], 1);
+    } else {
+        self.x = self.scales[0].scale_func.range([0, self.width]);
+    }
 
-  if (scales[1].scale_type === "ordinal") {
-    self.y = self.scales[1].scale_func.rangePoints([self.height, 0], 1);
-  } else {
-    self.y = self.scales[1].scale_func.range([self.height, 0]);
-  }
+    if (scales[1].scale_type === "ordinal") {
+        self.y = self.scales[1].scale_func.rangePoints([self.height, 0], 1);
+    } else {
+        self.y = self.scales[1].scale_func.range([self.height, 0]);
+    }
 
 
-  self.x_axis = d3.svg.axis()
-    .scale(self.x)
-    .orient("bottom")
-    .tickSize(-self.height, 0, 0)
-    .tickPadding(10);
+    self.x_axis = d3.svg.axis()
+        .scale(self.x)
+        .orient("bottom")
+        .tickSize(-self.height, 0, 0)
+        .tickPadding(10);
 
-  self.y_axis = d3.svg.axis()
-    .scale(self.y)
-    .orient("left")
-    .tickSize(-self.width, 0, 0);
+    self.y_axis = d3.svg.axis()
+        .scale(self.y)
+        .orient("left")
+        .tickSize(-self.width, 0, 0)
+        .tickFormat(uni_format_axis);
 
 };
 
 GridChart.prototype = Object.create(GlasseyeChart.prototype);
 
-GridChart.prototype.add_grid = function() {
+GridChart.prototype.add_grid = function () {
 
-  var self = this;
+    var self = this;
 
-  var x_axis_g = self.chart_area.append("g")
-    .attr("class", "chart_grid x_axis")
-    .attr("transform", "translate(0," + self.height + ")")
-    .call(self.x_axis);
+    var x_axis_g = self.chart_area.append("g")
+        .attr("class", "chart_grid x_axis")
+        .attr("transform", "translate(0," + self.height + ")")
+        .call(self.x_axis);
 
-  if (self.scales[0].scale_type === "nonlinear") {
-    x_axis_g.selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .attr("transform", "rotate(-90)");
-  }
+    if (self.scales[0].scale_type === "nonlinear") {
+        x_axis_g.selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-90)");
+    }
 
-  self.chart_area.append("g")
-    .attr("class", "chart_grid y_axis")
-    .call(self.y_axis);
+    self.chart_area.append("g")
+        .attr("class", "chart_grid y_axis")
+        .call(self.y_axis);
 
-  //Add labels if they have been provided
+    //Add labels if they have been provided
 
-  if (typeof self.labels !== "undefined") {
-    self.svg.append("g")
-      .attr("class", "axis_label")
-      .attr("transform", "translate(" + (self.margin.left + self.width + 15) + ", " + (self.height + self.margin.top) + ") rotate(-90)")
-      .append("text")
-      .text(self.labels[0]);
+    if (typeof self.labels !== "undefined") {
+        self.svg.append("g")
+            .attr("class", "axis_label")
+            .attr("transform", "translate(" + (self.margin.left + self.width + 15) + ", " + (self.height + self.margin.top) + ") rotate(-90)")
+            .append("text")
+            .text(self.labels[0]);
 
-    self.svg.append("g")
-      .attr("class", "axis_label")
-      .attr("transform", "translate(" + self.margin.left + ", " + (self.margin.top - 8) + ")")
-      .append("text")
-      .text(self.labels[1]);
-  }
+        self.svg.append("g")
+            .attr("class", "axis_label")
+            .attr("transform", "translate(" + self.margin.left + ", " + (self.margin.top - 8) + ")")
+            .append("text")
+            .text(self.labels[1]);
+    }
 
-  return self;
+    return self;
 
 };
 /**
@@ -178,6 +179,16 @@ var BarChart = function (processed_data, div, size, labels, scales, margin) {
 
     self.type = (self.processed_data[0].group === undefined) ? "simple" : "group";
 
+    //Work out if there is a need for label rotation
+
+    var x_scale_labels = scales[0].scale_func.domain();
+    var max_string = d3.max(x_scale_labels.map(function (d) {
+        return d.length;
+    }));
+    var num_points = x_scale_labels.length;
+
+    self.rotate_labels = (max_string > 60 / num_points)? true: false;
+
     if (margin === undefined) {
         margin = {
             top: 20,
@@ -187,9 +198,10 @@ var BarChart = function (processed_data, div, size, labels, scales, margin) {
         };
     }
 
+    if (self.rotate_labels === true) {margin.bottom = max_string*5};
+
     if (self.type === "group") {
         margin.right = 80;
-
 
         self.loose_bars = self.processed_data.map(function (d) {
 
@@ -204,9 +216,11 @@ var BarChart = function (processed_data, div, size, labels, scales, margin) {
             }));
         });
 
+
         self.loose_bars = [].concat.apply([], self.loose_bars).filter(function (d) {
             return d !== undefined;
         });
+
 
         //Section to work out the number of labels
         self.legend_labels = [];
@@ -233,7 +247,7 @@ var BarChart = function (processed_data, div, size, labels, scales, margin) {
         .attr('class', 'd3-tip')
         .offset([-10, 0])
         .html(function (d) {
-            var text = (self.type === "simple") ? d3.format(".3n")(d.value) : d.label + "<br> size: " + d3.format(".3n")(d.value);
+            var text = (self.type === "simple") ? uni_format(d.value) : d.label + "<br> size: " + uni_format(d.value);
             return text;
         });
 
@@ -279,7 +293,6 @@ BarChart.prototype.add_bars = function () {
 
     } else {
 
-
         self.chart_area.selectAll(".bar")
             .data(self.loose_bars)
             .enter()
@@ -317,12 +330,7 @@ BarChart.prototype.add_bars = function () {
 
     //Rotate labels if necessary
 
-    var max_string = d3.max(self.x.domain().map(function (d) {
-        return d.length;
-    }));
-    var num_points = self.x.domain().length;
-
-    if (max_string > 60 / num_points) {
+    if (self.rotate_labels === true) {
         self.chart_area.selectAll(".x_axis").selectAll("text")
             .style("text-anchor", "end")
             .attr("dx", "-1em")
@@ -444,133 +452,154 @@ BarChart.prototype.grumpy = function (method) {
 
     var self = this;
 
-    //Add the commentary div;
+    if (self.type === "simple") {
 
-    d3.selectAll(self.div).append("div").attr("id", "commentary").style("width", self.width + "px").style("margin-left", self.margin.left + "px");
+        //Add the commentary div;
 
-    var bar_values = self.processed_data.map(function(d){return d.value});
-    var bar_labels = self.processed_data.map(function(d){return d.label});
-    var sum_values = d3.sum(bar_values);
+        d3.selectAll(self.div).append("div").attr("id", "commentary").style("width", self.width + "px").style("margin-left", self.margin.left + "px");
 
-    if (method === "bayesian") {
-
-        var alphas = bar_values.map(function(d){return d+1});
-
-        //Work out shrunk means
-        var sum_alphas = d3.sum(alphas);
-
-        var shrunk_means = alphas.map(function(d){return sum_values*d/sum_alphas;});
-
-        //Generate draws from the posterior distribution
-        var draw  = random_dirichlet(alphas);
-        var sample = [];
-
-        for (var i=0; i<1000;i=i+1){
-            sample.push(draw())
-        };
-
-        var comparisons = [];
-
-        bar_labels.forEach(function(d, i){
-            bar_labels.forEach(function(e, j){
-                comparisons.push(
-                    {A: i, B:j, A_label: d, B_label: e,
-                    diff_dist: sample.map(function(f){ return f[i] - f[j];}),
-                    })
-            })
-
+        var bar_values = self.processed_data.map(function (d) {
+            return d.value
         });
-
-        self.comparisons = comparisons.map(function(d){
-            return {
-                A: d.A, B: d.B, A_label:d.A_label, B_label:d.B_label,
-                diff_dist: d.diff_dist,
-                less_than_zero: d3.sum(d.diff_dist.map(function(e){return (e<0)? 1:0;}))/1000,
-                more_than_zero: d3.sum(d.diff_dist.map(function(e){return (e<0)? 0:1;}))/1000
-            }
-        })
-
-
-
-        //Shadows for shrunken means
-        shrunk_means = shrunk_means.map(function(d,i){
-            return {label: bar_labels[i],
-            value: d};
+        var bar_labels = self.processed_data.map(function (d) {
+            return d.label
         });
+        var sum_values = d3.sum(bar_values);
 
+        if (method === "bayesian") {
 
-        self.chart_area.insert("g", "rect").selectAll(".bar_shrunk")
-            .data(shrunk_means)
-            .enter()
-            .append("rect")
-            .attr("class", "bar_shrunk")
-            .attr("x", function (d) {
-                return self.x(d.label) - self.bar_width / 4 + 15;
-            })
-            .attr("y", function (d) {
-                return self.y(d.value);
-            })
-            .attr("width", self.bar_width / 2)
-            .attr("height", function (d) {
-                return self.height - self.y(d.value);
-            })
-            .style("fill", "steelblue")
-            .style("opacity", 0.2);
-
-
-
-        //Click to show differences
-
-        self.select_mode = 0;
-
-        self.posterior_diff  = function(d,i)
-        {
-
-
-            if (self.select_mode === 0) {
-                self.select_mode = 1;
-                self.A = i;
-            }
-
-            else if (self.select_mode === 1) {
-                self.select_mode = 2;
-                self.B = i;
-                console.log(self.comparisons);
-                var diff = self.comparisons.filter(function(f){
-                    return f.A === self.A & f.B === self.B;
-                })[0];
-
-
-                d3.selectAll("#commentary").html("There is a " + d3.format("%")(diff.more_than_zero) + " probability that the number of " + diff.A_label + " in the population is greater that the number of " + diff.B_label);
-            }
-
-            else {console.log("ok");}
-
-        };
-
-
-        self.chart_area.selectAll(".bar")
-            .on('click', function (d,i) {
-                if ( self.select_mode === 2) {
-                    self.chart_area.selectAll(".bar").style("fill", 'steelblue');
-                    self.select_mode =0;
-                }
-                d3.select(this).style("fill", '#2b506e');
-            self.posterior_diff(d,i);
-        })
-
-
-/*
-            .on('mouseover', function(d){
-                self.tip.show(d);
-                d3.selectAll(".bar_shrunk").style("opacity", 0.2);
-            })
-            .on('mouseout', function(d){
-                self.tip.show(d);
-                d3.selectAll(".bar_shrunk").style("opacity", 0);
+            var alphas = bar_values.map(function (d) {
+                return d + 1
             });
-*/
 
+            //Work out shrunk means
+            var sum_alphas = d3.sum(alphas);
+
+            var shrunk_means = alphas.map(function (d) {
+                return sum_values * d / sum_alphas;
+            });
+
+            //Generate draws from the posterior distribution
+            var draw = random_dirichlet(alphas);
+            var sample = [];
+
+            for (var i = 0; i < 5000; i = i + 1) {
+                sample.push(draw())
+            }
+            ;
+
+            var comparisons = [];
+
+            bar_labels.forEach(function (d, i) {
+                bar_labels.forEach(function (e, j) {
+                    comparisons.push(
+                        {
+                            A: i, B: j, A_label: d, B_label: e,
+                            diff_dist: sample.map(function (f) {
+                                return f[i] - f[j];
+                            }),
+                        })
+                })
+
+            });
+
+            self.comparisons = comparisons.map(function (d) {
+                return {
+                    A: d.A, B: d.B, A_label: d.A_label, B_label: d.B_label,
+                    diff_dist: d.diff_dist,
+                    less_than_zero: d3.sum(d.diff_dist.map(function (e) {
+                        return (e < 0) ? 1 : 0;
+                    })) / 5000,
+                    more_than_zero: d3.sum(d.diff_dist.map(function (e) {
+                        return (e < 0) ? 0 : 1;
+                    })) / 5000
+                }
+            })
+
+
+            //Shadows for shrunken means
+            shrunk_means = shrunk_means.map(function (d, i) {
+                return {
+                    label: bar_labels[i],
+                    value: d
+                };
+            });
+
+
+            self.chart_area.insert("g", "rect").selectAll(".bar_shrunk")
+                .data(shrunk_means)
+                .enter()
+                .append("rect")
+                .attr("class", "bar_shrunk")
+                .attr("x", function (d) {
+                    return self.x(d.label) - self.bar_width / 4 + 15;
+                })
+                .attr("y", function (d) {
+                    return self.y(d.value);
+                })
+                .attr("width", self.bar_width / 2)
+                .attr("height", function (d) {
+                    return self.height - self.y(d.value);
+                })
+                .style("fill", "steelblue")
+                .style("opacity", 0.2);
+
+
+            //Click to show differences
+
+            self.select_mode = 0;
+
+            self.posterior_diff = function (d, i) {
+
+
+                if (self.select_mode === 0) {
+                    self.select_mode = 1;
+                    self.A = i;
+                }
+
+                else if (self.select_mode === 1) {
+                    self.select_mode = 2;
+                    self.B = i;
+                    console.log(self.comparisons);
+                    var diff = self.comparisons.filter(function (f) {
+                        return f.A === self.A & f.B === self.B;
+                    })[0];
+
+
+                    d3.selectAll(self.div).selectAll("#commentary").html("Assuming that data sampling was random, there is a " + d3.format("%")(diff.more_than_zero) + " probability that the number of " + diff.A_label + " in the population is greater that the number of " + diff.B_label);
+                }
+
+                else {
+                    console.log("ok");
+                }
+
+            };
+
+
+            self.chart_area.selectAll(".bar")
+                .on('click', function (d, i) {
+                    if (self.select_mode === 2) {
+                        self.chart_area.selectAll(".bar").style("fill", 'steelblue');
+                        self.select_mode = 0;
+                    }
+                    d3.select(this).style("fill", '#2b506e');
+                    self.posterior_diff(d, i);
+                })
+
+
+            /*
+             .on('mouseover', function(d){
+             self.tip.show(d);
+             d3.selectAll(".bar_shrunk").style("opacity", 0.2);
+             })
+             .on('mouseout', function(d){
+             self.tip.show(d);
+             d3.selectAll(".bar_shrunk").style("opacity", 0);
+             });
+             */
+
+
+        }
 
     }
 
@@ -638,11 +667,11 @@ function barchart(data, div, size) {
 
         var scales = [create_scale(x_values, d3.scale.ordinal()), create_scale(y_values, d3.scale.linear())];
 
+
         var glasseye_chart = new BarChart(processed_data, div, size, ["label", "value"], scales);
 
         glasseye_chart.add_svg().add_grid().add_bars().grumpy("bayesian");
 
-        console.log(glasseye_chart);
 
     };
 
@@ -844,8 +873,13 @@ var uni_format = function(d){
   else if (d > 100) {
     return_val = d3.format(".3r")(d);
   }
-  else if (d > 10) {
-    return_val = d3.format(".1f")(d);
+  else if (d >= 10) {
+    if (Math.round(d) === d) {
+      return_val = d3.format(".0f")(d);
+    }
+    else {
+      return_val = d3.format(".1f")(d);
+    }
   }
   else if (d > 1) {
     return_val = d3.format(".1f")(d);
