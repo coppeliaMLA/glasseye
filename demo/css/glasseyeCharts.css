@@ -1,0 +1,163 @@
+/* General chart formatting */
+
+svg {
+    clear: both;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+text {
+    stroke: none;
+    font-family: 'Raleway';
+    font-size: 10px;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.chart_grid .tick {
+    stroke: lightgrey;
+    opacity: 0.7;
+}
+
+.chart_grid path {
+    stroke-width: 0;
+    shape-rendering: crispEdges;
+}
+
+.chart_grid .temp_y_label text {
+    font-size: 10px;
+    fill: grey;
+    shape-rendering: crispEdges;
+}
+
+.legend_item text {
+    font-size: 10px;
+    fill: grey;
+    shape-rendering: crispEdges;
+}
+
+.axis_label text {
+    font-size: 8px;
+    fill: grey;
+    shape-rendering: crispEdges;
+    text-transform: uppercase;
+    stroke: none;
+}
+
+/*line plot*/
+
+.line_points {
+    opacity: 0;
+}
+
+/*timeseries*/
+
+.timeseries_line {
+    stroke-width: 3px;
+    fill: transparent;
+}
+
+/*bar chart*/
+
+.bar {
+    fill: steelblue;
+    stroke: none;
+}
+
+/*thermometers*/
+
+.glass {
+    stroke: none;
+    fill: grey;
+}
+
+.glass-gap {
+    stroke: none;
+    fill: white;
+}
+
+.mercury {
+    stroke: none;
+    fill: red;
+}
+
+/*tree*/
+
+.treenode circle {
+    fill: #fff;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.treenode {
+    font: 10px sans-serif;
+    fill: grey;
+}
+
+.treelink {
+    fill: none;
+    stroke: #ccc;
+    stroke-width: 1.5px;
+}
+
+/*AnimatedDensity*/
+
+.block {
+
+    fill: #1abc9c;
+}
+
+/*force*/
+
+.forcenode {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: steelblue;
+}
+
+.forcelink {
+    stroke: #999;
+    stroke-opacity: .6;
+}
+
+/* Tip formatting */
+
+.d3-tip {
+    line-height: 1;
+    font-weight: bold;
+    padding: 8px;
+    background: rgba(128, 128, 128, 0.9);
+    color: #fff;
+    border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(128, 128, 128, 0.9);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
+
+/*Gantt elements */
+
+.task {
+    fill: steelblue;
+    stroke: none;
+}
