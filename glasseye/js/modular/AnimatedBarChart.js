@@ -10,18 +10,20 @@ var AnimatedBarChart = function (processed_data, div, size, labels, scales) {
     };
 
     BarChart.call(self, processed_data, div, size, labels, scales, margin);
-    self.bar_width = 30;
-    self.y_axis.tickFormat(d3.format("%")).ticks(6);
+    self.bar_width = self.width / self.processed_data.length;
+    self.y_axis.tickFormat(d3.format(",%")).ticks(6);
     this.x_axis.tickSize(0);
 
     self.current_variable = "";
 
+    self.tooltip_text = function (d) {
+        return d3.format(".1%")(d.value) + " of " + d.category + " have access to a " + self.current_variable;
+    }
+
     self.tip = d3.tip()
         .attr('class', 'd3-tip')
         .offset([-10, 0])
-        .html(function (d) {
-           return d3.format(".1%")(d.value) + " of " + d.category + " have access to a " + self.current_variable;
-        });
+        .html(self.tooltip_text);
 
 };
 
@@ -39,6 +41,11 @@ AnimatedBarChart.prototype.add_bars = function () {
     //Get first Date
     var start_date = d3.min(self.processed_data[0].values.map(function(d) {
         return d.time;
+    }));
+
+    //Get first variable
+    var start_variable = d3.min(self.processed_data[0].values.map(function(d) {
+        return d.variable;
     }));
 
     var bars = self.chart_area.selectAll(".bar")
@@ -83,7 +90,7 @@ AnimatedBarChart.prototype.add_bars = function () {
     }
 
 
-    self.update_bars(start_date, "PC");
+    self.update_bars(start_date, start_variable);
 
     return this;
 
@@ -94,11 +101,11 @@ AnimatedBarChart.prototype.update_bars = function (time, variable) {
 
     var self = this;
 
+
     //Set variable so that it can be accessed by the tooltip
     self.current_variable = variable.toLowerCase();
 
     var filtered_bars = self.processed_data.map(function(d) {
-
         return {
 
             category: d.category,
@@ -155,7 +162,6 @@ AnimatedBarChart.prototype.redraw_barchart = function (title) {
     self.set_size();
     self.bar_width = self.width / self.processed_data.length;
     self.x = self.scales[0].scale_func.rangePoints([0, self.width], 1);
-    console.log(self.width);
     self.y_axis = d3.svg.axis()
         .scale(self.y)
         .orient("left")
@@ -167,3 +173,5 @@ AnimatedBarChart.prototype.redraw_barchart = function (title) {
     self.add_svg().add_grid().add_bars().add_title(self.title, self.subtitle);
 
 };
+
+

@@ -28,12 +28,28 @@ var GridChart = function (div, size, labels, scales, margin, height) {
     self.y_axis = d3.svg.axis()
         .scale(self.y)
         .orient("left")
-        .tickSize(-self.width, 0, 0)
-        .tickFormat(uni_format_axis);
+        .tickSize(-self.width, 0, 0);
+
+    //If the scale is not ordinal apply the universal format
+    if (scales[1].scale_type != "ordinal") {self.y_axis .tickFormat(uni_format_axis)};
+
+    self.tooltip_formtter = uni_format;
 
 };
 
 GridChart.prototype = Object.create(GlasseyeChart.prototype);
+
+GridChart.prototype.set_y_axis_format = function (format) {
+
+    var self = this;
+
+    self.y_axis.tickFormat(format);
+    self.tooltip_formtter = format;
+    return self;
+
+}
+
+
 
 GridChart.prototype.add_grid = function () {
 
@@ -60,13 +76,13 @@ GridChart.prototype.add_grid = function () {
 
     if (typeof self.labels !== "undefined") {
         self.svg.append("g")
-            .attr("class", "axis_label")
+            .attr("class", "axis_label axis_label_x")
             .attr("transform", "translate(" + (self.margin.left + self.width + 15) + ", " + (self.height + self.margin.top) + ") rotate(-90)")
             .append("text")
             .text(self.labels[0]);
 
         self.svg.append("g")
-            .attr("class", "axis_label")
+            .attr("class", "axis_label axis_label_y")
             .attr("transform", "translate(" + self.margin.left + ", " + (self.margin.top - 8) + ")")
             .append("text")
             .text(self.labels[1]);

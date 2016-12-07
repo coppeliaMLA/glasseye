@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='glasseye',
-      version='0.1.12',
+      version='0.1.15',
       description='A python module for converting markdown documents into the glasseye format',
       url='https://github.com/coppeliaMLA/glasseye',
       author='coppeliamla',

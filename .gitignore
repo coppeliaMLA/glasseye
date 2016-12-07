@@ -64,3 +64,4 @@ glasseye/data
 *.idea*
 .idea/
 glasseye/.idea/
+*workspace.xml

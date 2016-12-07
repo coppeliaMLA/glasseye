@@ -33,7 +33,7 @@ GlasseyeChart.prototype.set_size = function() {
 
 
   if (self.size === "full_page") {
-    self.svg_width = 500;
+    self.svg_width = (rect.width < 500 & rect.width > 0) ? rect.width : 500;
     self.svg_height = (self.custom_height === undefined) ? 300 : self.custom_height;
   } else if (self.size === "margin") {
     //self.svg_width = (rect.width < 300) ? rect.width : 300;
@@ -83,3 +83,54 @@ GlasseyeChart.prototype.add_svg = function() {
 
   return self;
 };
+
+
+/**
+ * Adds a label to the TimeSeries object
+ * @method
+ * @param {string} title The title to be placed at the top of the chart
+ * @returns {object} The modified TimeSeries object
+ */
+
+GlasseyeChart.prototype.add_title = function(title, subtitle) {
+
+  var self = this;
+  self.title = title;
+  self.svg.append('text').attr("class", "title")
+      .text(title)
+      .attr("transform", "translate(" + self.margin.left + ",20)");
+
+  if (subtitle != undefined) {
+
+    self.subtitle = subtitle;
+    self.svg.append('text').attr("class", "subtitle")
+        .text(subtitle)
+        .attr("transform", "translate(" + self.margin.left + ",35)");
+
+  }
+
+  return self;
+
+};
+
+
+GlasseyeChart.prototype.set_tooltip_text = function (commentary_strings, variable_names, formats) {
+
+  var self = this;
+
+  self.tooltip_text = function (d) {
+    var embedded_vars = variable_names.map(function(e){
+      return (e==="filter")? self.current_variable : d[e];
+    })
+    var text = create_commentary(commentary_strings, embedded_vars, formats)
+    return text;
+  }
+
+  self.tip = d3.tip()
+      .attr('class', 'd3-tip')
+      .offset([-10, 0])
+      .html(self.tooltip_text);
+
+  return self;
+
+}

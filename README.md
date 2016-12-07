@@ -7,7 +7,7 @@ Glasseye is something I'm developing to present the results of statistical analy
 3. Visualisation using d3.js
 
 
-See a full demo with a more in-depth explanation [here](http://coppeliamla.github.io/glasseye/glasseye_markdownExample/demo.html)
+See a full demo with a more in-depth explanation [here](http://coppeliamla.github.io/glasseye/demo/markdownExample.html)
 
 The idea is to be able to write up work in markdown and have the results transformed into something like a Tufte layout. For the Tufte layout I took the excellent tufte.css style sheet developed by [Dave Liepmann and co](https://github.com/daveliepmann/tufte-css) and adapted it for my purposes. Finally I've added some d3 charts (just a small selection at the moment but this is growing) that can easily invoked from within the markdown. 
 

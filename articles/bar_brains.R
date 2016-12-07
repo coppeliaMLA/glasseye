@@ -79,4 +79,42 @@ hist(diff_2_4)
 sum(diff_2_4>0)
 
 
+#Using glm
+
+counts<-c(40,23,19,8)
+party<-c("Red", "Blue", "Green", "Yellow")
+party<-data.frame(counts, party)
+glm_party<-glm(counts~party, data = party, family ="poisson")
+#To test the hypotheses of no difference
+library(multcomp)
+summary(glht(glm_party, mcp(party="Tukey")))
+
+counts<-c(100,230, 265)
+party<-c("Apples", "Pears", "Oranges")
+party<-data.frame(counts, party)
+glm_party<-glm(counts~party, data = party, family ="poisson")
+#To test the hypotheses of no difference
+library(multcomp)
+summary(glht(glm_party, mcp(party="Tukey")))
+
+
+count<-c(100, 230, 265)
+N<-sum(count)
+prop<-count/N
+
+dir<-count+1 #with non informative dir prior
+bayesian<-dir/sum(dir)
+
+sample<-rdirichlet(1000, dir)
+diff_1_2<-sample[,1]-sample[,2]
+hist(diff_1_2)
+sum(diff_1_2>0)
+
+diff_2_3<-sample[,2]-sample[,3]
+hist(diff_2_3)
+sum(diff_2_3>0)
+
+diff_3_4<-sample[,3]-sample[,4]
+hist(diff_3_4)
+sum(diff_3_4>0)
 

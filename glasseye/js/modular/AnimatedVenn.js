@@ -25,12 +25,8 @@ var AnimatedVenn = function(processed_data, div, size) {
     .width(self.width)
     .height(self.height);
 
-  self.tip = d3.tip()
-    .attr('class', 'd3-tip')
-    .offset([-10, 0])
-    .html(function(d) {
-      return d3.format(".3n")(d.size);
-    });
+  self.tip = d3.select(self.div).append('div')
+      .attr('class', 'hidden tooltip');
 
   self.interactive_text = function(d, existing_text) {
 
@@ -53,6 +49,8 @@ var AnimatedVenn = function(processed_data, div, size) {
 
       text = set_name + " was in " + uni_format(set_size * 1000) + " households making up " + d3.format(",.1%")(set_size / total) + " of all VOD subscribing households.";
 
+      //$ was in $ households making up $ of all VOD subscribing households
+
     } else if (d.sets.length == 2) {
 
       var sub_1 = d.sets[0];
@@ -67,10 +65,11 @@ var AnimatedVenn = function(processed_data, div, size) {
       })[0].__data__.size;
 
       text = "There were " + uni_format(set_size * 1000) + " households that subscribe to both " + sub_1 + " and " + sub_2 + " (" + d3.format(",.1%")(set_size / total) + " of all VOD subscribing households.)";
+      //There were $ households that subscribe to both $ and $ ($ of all VOD subscribing households)
     } else {
 
       text = "There were " + uni_format(set_size * 1000) + " households that subscribe to all three. That's " + d3.format(",.1%")(set_size / total) + " of all VOD subscribing households.";
-
+      //There were $ households that subscribe to all three. That's $ of all VOD subscribing households
     }
 
     function add(a, b) {
@@ -92,11 +91,85 @@ AnimatedVenn.prototype = Object.create(GlasseyeChart.prototype);
  * @returns {object} The modified AnimatedVenn object
  */
 
+AnimatedVenn.prototype.set_commentary = function(commentary_strings) {
+
+  var self = this;
+
+  self.interactive_text = function(d, existing_text) {
+
+    var text, string_parts, set_name = d.sets[0],
+        set_size = d.size;
+
+    //Get total number
+    var all_sets = self.chart_area.selectAll("g")[0];
+    var signed = all_sets.map(function(e) {
+      if (e.__data__.sets.length == 2) {
+        return -e.__data__.size;
+      } else {
+        return e.__data__.size;
+      }
+    });
+
+    var total = signed.reduce(add, 0);
+
+    if (d.sets.length == 1) {
+
+      string_parts = commentary_strings[0].split("$");
+
+      text = string_parts[0] + set_name + string_parts[1] + uni_format(set_size * 1000) + string_parts[2] + d3.format(",.1%")(set_size / total) + string_parts[3];
+
+      //$ was in $ households making up $ of all VOD subscribing households
+
+    } else if (d.sets.length == 2) {
+
+      var sub_1 = d.sets[0];
+      var sub_2 = d.sets[1];
+
+      //Work out set sizes
+      var set_1_size = all_sets.filter(function(d) {
+        return d.__data__.sets.length === 1 & d.__data__.sets[0] === sub_1;
+      })[0].__data__.size;
+      var set_2_size = all_sets.filter(function(d) {
+        return d.__data__.sets.length === 1 & d.__data__.sets[0] === sub_2;
+      })[0].__data__.size;
+
+      string_parts = commentary_strings[1].split("$");
+      text = string_parts[0] + uni_format(set_size * 1000) + string_parts[1] + sub_1 + string_parts[2] + sub_2 + string_parts[3] + d3.format(",.1%")(set_size / total) + string_parts[4];
+      //There were $ households that subscribe to both $ and $ ($ of all VOD subscribing households)
+    } else {
+
+      string_parts = commentary_strings[2].split("$");
+      text = string_parts[0] + uni_format(set_size * 1000) + string_parts[1] + d3.format(",.1%")(set_size / total) + string_parts[2];
+      //There were $ households that subscribe to all three. That's $ of all VOD subscribing households
+    }
+
+    function add(a, b) {
+      return a + b;
+    }
+
+    return text;
+
+  };
+
+  return self;
+
+};
+
+/**
+ * Adds the SVGs corresponding to the AnimatedVenn object
+ *
+ * @method
+ * @returns {object} The modified AnimatedVenn object
+ */
+
 AnimatedVenn.prototype.add_venn = function() {
 
   var self = this;
 
-  var start_date = new Date("March 31, 2014 00:00:00"); //Hardcoded at the moment - change later
+
+  //var start_date = new Date("March 31, 2014 00:00:00"); //Hardcoded at the moment - change later
+
+  var start_date =  d3.max(self.processed_data.map(function(d){ return d.time}));
 
   var filtered_data = self.processed_data.filter(function(d) {
     return d.time.getTime() === start_date.getTime();
@@ -104,15 +177,19 @@ AnimatedVenn.prototype.add_venn = function() {
 
   self.chart_area.datum(filtered_data).call(self.venn_chart);
 
+  //Remove the labels
+
+  self.chart_area.selectAll(".venn-area").selectAll("text").remove();
+
   self.svg.append("text").attr("class", "context")
     .attr("y", 40)
     .attr("x", self.margin.left + self.width / 2)
     .style("text-anchor", "middle")
-    .text("In Q1 2014");
+      .text("In " + quarter_year(start_date) + " ");
 
   //Add the div for the commentary
   var div = d3.select(self.div).append("div").attr("id", "venn_context");
-  div.append("div").attr("id", "commentary").style("font-size", "11px");
+  div.append("div").attr("id", "commentary").style("font-size", "11px").html("Hover over the parts of the Venn diagram for information about the sizes of the groups.");
 
   //Add interactivity
   self.chart_area.selectAll("g")
@@ -133,12 +210,25 @@ AnimatedVenn.prototype.add_venn = function() {
       var existing_text = d3.selectAll("#commentary").html();
       d3.selectAll("#commentary").html(self.interactive_text(d, existing_text));
 
+      //Add the tooltip
+
+      var mouse = d3.mouse(self.chart_area.node()).map(function (d) {
+        return parseInt(d);
+      });
+
+      self.tip.classed('hidden', false)
+          .attr('style', 'left:' + (mouse[0]) +
+              'px; top:' + (mouse[1] + 30) + 'px')
+          .html(d.sets.join("<br>"));
+
     })
     .on("mouseout", function(d, i) {
       var selection = d3.select(this);
       selection.select("path").transition().duration(500)
         //  .style("fill-opacity", d.sets.length == 1 ? 0.5 : 0)
         .style("stroke-opacity", 0);
+
+      self.tip.classed('hidden', true);
 
     });
 
@@ -158,6 +248,9 @@ AnimatedVenn.prototype.update_venn = function(time, variable) {
 
   var self = this;
 
+  //Hide labels when set size = 0
+  //self.chart_area.selectAll(".venn-area").selectAll("text").style("opacity", function(d){ return d.size>0?1:0;});
+
   var filtered_data = self.processed_data.filter(function(d) {
     return d.time.getTime() === time.getTime();
   })[0].venns;
@@ -172,7 +265,7 @@ AnimatedVenn.prototype.update_venn = function(time, variable) {
     .selectAll("path")
     .style("stroke-opacity", 1);
 
-  d3.selectAll("#commentary").html("");
+  d3.selectAll("#commentary").html("Hover over the parts of the Venn diagram for information about the sizes of the groups.");
   self.svg.selectAll(".context").text("In " + quarter_year(time) + " ");
 
   return this;

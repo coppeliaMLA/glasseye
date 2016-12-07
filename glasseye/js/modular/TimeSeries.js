@@ -23,17 +23,17 @@ var TimeSeries = function(processed_data, div, size, labels, scales, tooltip_fun
   GridChart.call(self, div, size, undefined, scales, margin);
 
   self.processed_data = processed_data;
-  self.tooltip_function = tooltip_function;
+  self.tooltip_function = (tooltip_function===undefined)?function(time, variable){}:tooltip_function;
 
   //Some customisations
   self.y_axis.ticks(4).tickFormat(uni_format_axis).tickSize(0);
-  self.x_axis.tickFormat(d3.time.format("%Y")).ticks(d3.time.month, 3).tickSize(6, 0);
+  self.x_axis.tickFormat(d3.time.format("%Y")).ticks(d3.time.month, 1).tickSize(6, 0).tickPadding(10);
 
   self.tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
     .html(function(d) {
-      return quarter_year(d.time) + "<br>" + d.group + "<br>" + ((d.variable==="share")? d3.format(".1%")(d.value): uni_format(d.value));
+      return quarter_year(d.time) + "<br>" + d.group + "<br>" + ((d.variable==="share")? d3.format(".1%")(d.value): self.tooltip_formtter(d.value));
     });
 
   //Reorder processed data in order of max value
@@ -147,28 +147,38 @@ TimeSeries.prototype.add_timeseries = function() {
 
   //Structure the x axis
   self.chart_area.selectAll("g.x_axis g.tick line")
-    .attr("y2", function(d, i) {
-      if (i % 4)
+    .attr("y2", function(d) {
+      var month_no = d.getMonth();
+      if (month_no % 12 === 0)
+        return 6;
+      else if (month_no % 3 === 0)
         return 2;
       else
-        return 6;
+        return 0;
     });
 
 
   var domain_in_days = (self.x.domain()[1] - self.x.domain()[0]) / (24 * 60 * 60 * 1000);
 
-  self.chart_area.selectAll("g.x_axis g.tick text")
+   self.chart_area.selectAll("g.x_axis g.tick text")
     .text(function(d, i) {
-      if (i % 4) {
+      var month_no = d.getMonth();
+      if (month_no % 12 === 0) {
+        return d3.time.format("%Y")(d);
+      }
+      else if (month_no % 3 === 0) {
+
         if (domain_in_days > 1200) {
           return "";
         } else {
-          return "Q" + (i % 4 + 1);
+          console.log(month_no/3);
+          return "Q" + Math.floor(month_no/3);
         }
       } else {
-        return d3.time.format("%Y")(d);
+        return "";
       }
     });
+
 
     if (typeof self.labels !== "undefined") {
       self.chart_area.append("g")

@@ -235,27 +235,19 @@
 &lt;/treemap&gt;</code></pre>
     </div>
 
-<script>simplot("data/activeDecidedSim.csv", '#simplot_0', 'full_page');
-treemap({ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name": "Tinned Goods", "children": [{ "name": "Beans", "size": 34 }, { "name": "Soups", "size": 56 }, { "name": "Puddings", "children": [{ "name": "Fruit", "children": [{ "name": "Tangerines", "size": 15 }, { "name": "Pears", "size": 17 }]}, { "name": "Apricots", "size": 89 } ] }] }, { "name": "Meat and Fish", "children": [{ "name": "Meat", "children": [{ "name": "Poultry", "size": 15 }, { "name": "Beef", "size": 17 }]}, { "name": "Fish", "size": 89 } ] }] }, '#treemap_0', 'margin');
-gantt( [{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"}, {"task": "Build phase", "start": "13/03/2015", "end": "24/03/2015"}, {"task": "Testing phase", "start": "25/03/2015", "end": "15/04/2015"}] , '#gantt_0', 'full_page');
-donut("data/share.csv", '#donut_0', 'margin');
-donut( {"labels":["Cats", "Dogs", "Monkeys", "Cabbages"], "values": [100, 34, 22, 76]} , '#donut_1', 'margin');
-barchart( {"label": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]} , '#barchart_0', 'margin');
-tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]} , '#tree_0', 'full_page');
-tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]} , '#tree_1', 'margin');
-force( { "nodes": [{ "name": "Brand X", "group": 1 }, { "name": "Brand Y", "group": 1 }, { "name": "Brand Z", "group": 1 }, { "name": "Agent 1", "group": 2 }, { "name": "Agent 2", "group": 2 }, { "name": "Agent 3", "group": 3 }, { "name": "Agent 4", "group": 3}, { "name": "Agent 5", "group": 2}, { "name": "Agent 6", "group": 2} , {"name": "Agent 7", "group": 2} , { "name": "Agent 8", "group": 2 } , { "name": "Agent 9", "group": 2 } , { "name": "Agent 10", "group": 2 } , { "name": "Agent 11", "group": 2 }], "links": [{ "source": 0, "target": 6, "value": 20 }, { "source": 1, "target": 4, "value": 30 }, { "source": 2, "target": 7, "value": 22 }, { "source": 6, "target": 11, "value": 5 }, { "source": 10, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }, { "source": 5, "target": 9, "value": 15 }, { "source": 4, "target": 7, "value": 15 }, { "source": 10, "target": 6, "value": 15 }] } , '#force_0', 'full_page');
-force( { "nodes": [{ "name": "squishedfish.com", "group": 1 }, { "name": "reddog.co.uk", "group": 1 }, { "name": "blankcat.com", "group": 2 }, { "name": "scrimpledfeet.com", "group": 2 }, { "name": "sickbag.com", "group": 2 }, { "name": "bluehouse.co.uk", "group": 3 }, { "name": "webbedcat.com", "group": 3 }, { "name": "flatrhino.co.uk", "group": 1 }, { "name": "greycamel.com", "group": 3 } ], "links": [{ "source": 0, "target": 1, "value": 20 }, { "source": 0, "target": 2, "value": 30 }, { "source": 1, "target": 4, "value": 22 }, { "source": 6, "target": 2, "value": 5 }, { "source": 1, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }] } , '#force_1', 'margin');
-venn( [ {sets: ['Badgers'], size: 300}, {sets: ['Peanuts'], size: 42}, {sets: ['Mushrooms'], size: 130}, {sets: ['Badgers','Mushrooms'], size: 67}, {sets: ['Peanuts','Mushrooms'], size: 2}, {sets: ['Peanuts','Badgers'], size: 0} ] , '#venn_0', 'margin');
-lineplot("data/lineplotExample.csv", '#lineplot_0','margin', ["Size", "Number of explosions"]);
-lineplot({"x": [1, 3, 5, 6, 20, 22, 25], "y": [100, 98, 66, 43, 23, 22, 45]}, '#lineplot_1','full_page');
-
-
-animated_density('#lineplot_1','full_page');
-
-var z = random_dirichlet([1,1,1]);
-
-    console.log(z());
-
+<script>simplot("data/activeDecidedSim.csv", '#simplot_0', 'full_page'); 
+treemap({ "name": "All", "children": [{ "name": "Bakery", "size": 34 }, { "name": "Tinned Goods", "children": [{ "name": "Beans", "size": 34 }, { "name": "Soups", "size": 56 }, { "name": "Puddings", "children": [{ "name": "Fruit", "children": [{ "name": "Tangerines", "size": 15 }, { "name": "Pears", "size": 17 }]}, { "name": "Apricots", "size": 89 } ] }] }, { "name": "Meat and Fish", "children": [{ "name": "Meat", "children": [{ "name": "Poultry", "size": 15 }, { "name": "Beef", "size": 17 }]}, { "name": "Fish", "size": 89 } ] }] }, '#treemap_0', 'margin'); 
+gantt( [{"task": "Analysis phase", "start": "01/03/2015", "end": "12/03/2015"}, {"task": "Build phase", "start": "13/03/2015", "end": "24/03/2015"}, {"task": "Testing phase", "start": "25/03/2015", "end": "15/04/2015"}] , '#gantt_0', 'full_page'); 
+donut("data/share.csv", '#donut_0', 'margin'); 
+donut( {"labels":["Cats", "Dogs", "Monkeys", "Cabbages"], "values": [100, 34, 22, 76]} , '#donut_1', 'margin'); 
+barchart( {"label": ["Apples", "Pears", "Oranges"], "value": [33, 12, 9]} , '#barchart_0', 'margin'); 
+tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]} , '#tree_0', 'full_page'); 
+tree( {"name": "root", "children": [{ "name": "purpledog.com" }, { "name": "squishedfish.co.uk" }, { "name": "blogs", "children": [{ "name": "political", "children": [{ "name": "flatbat.com" }, { "name": "netfrog.co.uk" }]}, { "name": "squarespider.com" } ] }]} , '#tree_1', 'margin'); 
+force( { "nodes": [{ "name": "Brand X", "group": 1 }, { "name": "Brand Y", "group": 1 }, { "name": "Brand Z", "group": 1 }, { "name": "Agent 1", "group": 2 }, { "name": "Agent 2", "group": 2 }, { "name": "Agent 3", "group": 3 }, { "name": "Agent 4", "group": 3}, { "name": "Agent 5", "group": 2}, { "name": "Agent 6", "group": 2} , {"name": "Agent 7", "group": 2} , { "name": "Agent 8", "group": 2 } , { "name": "Agent 9", "group": 2 } , { "name": "Agent 10", "group": 2 } , { "name": "Agent 11", "group": 2 }], "links": [{ "source": 0, "target": 6, "value": 20 }, { "source": 1, "target": 4, "value": 30 }, { "source": 2, "target": 7, "value": 22 }, { "source": 6, "target": 11, "value": 5 }, { "source": 10, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }, { "source": 5, "target": 9, "value": 15 }, { "source": 4, "target": 7, "value": 15 }, { "source": 10, "target": 6, "value": 15 }] } , '#force_0', 'full_page'); 
+force( { "nodes": [{ "name": "squishedfish.com", "group": 1 }, { "name": "reddog.co.uk", "group": 1 }, { "name": "blankcat.com", "group": 2 }, { "name": "scrimpledfeet.com", "group": 2 }, { "name": "sickbag.com", "group": 2 }, { "name": "bluehouse.co.uk", "group": 3 }, { "name": "webbedcat.com", "group": 3 }, { "name": "flatrhino.co.uk", "group": 1 }, { "name": "greycamel.com", "group": 3 } ], "links": [{ "source": 0, "target": 1, "value": 20 }, { "source": 0, "target": 2, "value": 30 }, { "source": 1, "target": 4, "value": 22 }, { "source": 6, "target": 2, "value": 5 }, { "source": 1, "target": 7, "value": 5 }, { "source": 3, "target": 8, "value": 15 }, { "source": 5, "target": 8, "value": 15 }] } , '#force_1', 'margin'); 
+venn( [ {sets: ['Badgers'], size: 300}, {sets: ['Peanuts'], size: 42}, {sets: ['Mushrooms'], size: 130}, {sets: ['Badgers','Mushrooms'], size: 67}, {sets: ['Peanuts','Mushrooms'], size: 2}, {sets: ['Peanuts','Badgers'], size: 0} ] , '#venn_0', 'margin'); 
+lineplot("data/lineplotExample.csv", '#lineplot_0','margin', ["Size", "Number of explosions"]); 
+lineplot({"x": [1, 3, 5, 6, 20, 22, 25], "y": [100, 98, 66, 43, 23, 22, 45]}, '#lineplot_1','full_page'); 
 </script><script type="text/javascript">
 (function () {
   var script = document.createElement("script");

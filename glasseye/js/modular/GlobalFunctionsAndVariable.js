@@ -1,5 +1,21 @@
 //Global formatting functions
 
+//Add span around text for highlighting
+function highlight(d){
+  return   "<span class = 'highlighted'>" + d + "</span>";
+};
+
+//Get max string length in an array of strings
+
+function max_string_length(strings){
+
+  var lengths = strings.map(function(d){return d.length})
+
+  return Math.max.apply(null, lengths);
+
+}
+
+
 var uni_format = function(d){
   var return_val;
 
@@ -27,6 +43,18 @@ var uni_format = function(d){
   return return_val;
 
 };
+
+
+var uni_format_range = function(d){
+
+  var min = d[0], max = d[1];
+  console.log(min);
+  console.log(max);
+
+  if (min > - 1000 & max < 1000) {return d3.format(",.0f");}
+  else {return d3.format(",.0f");}
+
+}
 
 
 var uni_format_axis = function(d){
@@ -60,6 +88,37 @@ var quarter_year = function(d) {
   return "Q" + quarter + " " + year;
 
 };
+
+
+//Commentary function to be used in tool tips and on side bars
+
+function cap_first_letter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function lower_case(string) {
+  return string.toLowerCase();
+}
+
+function unchanged(string) {
+  return string;
+}
+
+function create_commentary(commentary_strings, embedded_vars, formats){
+
+
+  var string_parts = commentary_strings.split("$");
+
+  var text = "";
+
+  embedded_vars.forEach(function(d, i){
+    var formatter = (formats===undefined)? uni_format:formats[i];
+    text = text + string_parts[i] + formatter(d);
+  });
+
+  return text;
+
+}
 
 
 function create_scale(data, d3_scale, padding) {
