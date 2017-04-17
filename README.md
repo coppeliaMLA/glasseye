@@ -1,4 +1,4 @@
-##What is glasseye?
+## What is glasseye?
 
 Glasseye is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way. It brings together three great things that I use a lot:
 
@@ -11,8 +11,8 @@ See a full demo with a more in-depth explanation [here](http://coppeliamla.githu
 
 The idea is to be able to write up work in markdown and have the results transformed into something like a Tufte layout. For the Tufte layout I took the excellent tufte.css style sheet developed by [Dave Liepmann and co](https://github.com/daveliepmann/tufte-css) and adapted it for my purposes. Finally I've added some d3 charts (just a small selection at the moment but this is growing) that can easily invoked from within the markdown. 
 
-##What it can do
-###Side notes and margin notes
+## What it can do
+### Side notes and margin notes
 First there's the `<sidenote>` tag. Anything enclosed in these tags will generate a numbered side note in the wide margin as close as possible to the note number in the main text. These can be used for commentary, links, bits of maths, anything that's peripheral to the main discussion.
 
 You can easily add images to the side notes and margin notes just by including the usual markdown syntax for inserting an image within the tags.
@@ -20,7 +20,7 @@ You can easily add images to the side notes and margin notes just by including t
 Then there is a `<marginnote>` tag which is the nearly the same as the side note, only there's no number linking it to a particular part in the main text. You'll see to the right an example of a margin note containing a d3 donut chart. 
 
 
-###d3 charts
+### d3 charts
 
 I've tried to create charts that are simple and uncluttered with the tooltip taking over some of the work. This is so that they can fit in the margin nicely. I've been thinking about making them as intellegent as possible so that choices are made for you about formatting (for example label positioning). That may prove annoying though so we'll see how it goes. It's easy to include any of the d3 charts into either the main body of the text or into the margin. 
 
@@ -58,11 +58,11 @@ Alternatively you can write the data in json into the markdown. For example we c
 </treemap>
 ```
 
-##How it works
+## How it works
 
 Glasseye is built using pandoc and the python beautifulsoup library. Pandoc is used to generate the html from the markdown and beautifulsoup is used to manipulate the extra tags and make the appropriate substitutions, including adding in the d3 charts.
 
-##Installing glasseye
+## Installing glasseye
 
 I've now added glasseye to pip so installation is fairly straightforward
 
@@ -70,7 +70,7 @@ I've now added glasseye to pip so installation is fairly straightforward
 2. If you don't have it already install python 2.7
 3. Then from the command line run `pip install glasseye` <sidenote>Assumes you already have the pip package. If you don't just run `easy_install pip`</sidenote>
 
-##Using glasseye
+## Using glasseye
 
 Just create your markdown file using a text editor and then from the commandline run
 

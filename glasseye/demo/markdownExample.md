@@ -1,7 +1,7 @@
 A Glasseye Demo
 ----------------
 
-##What is glasseye?
+## What is glasseye?
 
 Glasseye<sidenote>See the [github repository](https://github.com/coppeliaMLA/glasseye) for the source code</sidenote> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way.
 
@@ -20,11 +20,11 @@ Here's an example:  a d3 force directed graph, which can be easily added in to a
 </force>
 
 
-##What it can do
+## What it can do
 
 In case it's not obvious this web page was written using glasseye<sidenote>You can view the markdown [here](viewMarkdown.txt)</sidenote>, that it is it was written in markdown with a few extra html-like tags thrown in.
 
-###Side notes and margin notes
+### Side notes and margin notes
 First there's the `<sidenote>` tag. Anything enclosed in these tags will generate a numbered side note in the wide margin as close as possible to the note number in the main text. For example, I've used one here.<sidenote>I'm a side note! Use me for commentary, links, bits of maths, anything that's peripheral to the main discussion.</sidenote>.
 
 You can easily add images to the side notes and margin notes just by including the usual markdown syntax for inserting an image<sidenote>The syntax is `![alt text](filename)`</sidenote> within the tags.
@@ -35,7 +35,7 @@ Then there is a `<marginnote>` tag which is the nearly the same as the side note
 An example of margin note containing a donut plot. Because a tooltip is available we can create a less cluttered chart with labels for the smaller segments demoted to the tooltip.<donut>"data/share.csv"</donut>Including d3 charts in a glasseye document is very easy. You just need to surround the name of the file containing the data with tags specfying the type of chart. For example this chart was generated using `<donut>"data/share.csv"</donut>`
 </marginnote>
 
-###Latex
+### Latex
 
 I'm using pandoc to convert the markdown to html which means we can take advantage of its ability to transform latex into mathjax. For example the formula below was written in latex.
 
@@ -47,7 +47,7 @@ Where the normalising constant is:
 $$ \mathrm{B}(\alpha) = \frac{\prod_{i=1}^N \Gamma(\alpha_i)}{\Gamma\bigl(\sum_{i=1}^N \alpha_i\bigr)},\qquad\alpha=(\alpha_1,\dots,\alpha_N)$$
 </sidenote>
 
-###d3 charts
+### d3 charts
 
 I've tried to create charts that are simple and uncluttered with the tooltip taking over some of the work. This is so that they can fit in the margin nicely. I've been thinking about making them as intellegent as possible so that choices are made for you about formatting (for example label positioning). That may prove annoying though so we'll see how it goes. It's easy to include any of the d3 charts into either the main body of the text or into the margin.
 
@@ -95,11 +95,11 @@ Javascript charts also allow us to animate content which can be useful. I create
 
 <simplot>"data/activeDecidedSim.csv"</simplot>
 
-##How it works
+## How it works
 
 Glasseye is built using pandoc and the python beautifulsoup library. Pandoc is used to generate the html from the markdown and beautifulsoup is used to manipulate the extra tags and make the appropriate substitutions, including adding in the d3 charts.
 
-##Installing glasseye
+## Installing glasseye
 
 I've now added glasseye to pip so installation is fairly straightforward
 
@@ -107,7 +107,7 @@ I've now added glasseye to pip so installation is fairly straightforward
 2. If you don't have it already install python 2.7
 3. Then from the command line run `pip install glasseye` <sidenote>Assumes you already have the pip package. If you don't just run `easy_install pip`</sidenote>
 
-##Using glasseye
+## Using glasseye
 
 Just create your markdown file using a text editor and then from the commandline run<sidenote>Don't forget to include the path of the markdown file if you are not actually in its directory</sidenote>
 
@@ -123,11 +123,11 @@ glasseye markdownExample.md
 ```
 
 
-##The charts
+## The charts
 
 In no particular order here are the d3 charts I have added so far.<sidenote>You might be wondering why I've added these charts when there are so many basic charts that I haven't yet included. The answer is quite selfish. I'm just adding them as I need them. More will follow!</sidenote>. Some of them can be generated from csv files some from inline json, some from both. The aim is for all to be generated from both.
 
-###A Venn diagram
+### A Venn diagram
 
 I've used Ben Frederickson's [Venn.js](https://github.com/benfred/venn.js) package for laying out proportional Venn diagrams. It searches for the best possible representation and does a great job when there's three sets and quite often when there's four.<sidenote>A description of the algorithm he uses can be found on his [blog](http://www.benfrederickson.com/venn-diagrams-with-d3.js/)</sidenote>
 
@@ -156,7 +156,7 @@ You'll just need to put the json describing your sets between `<venn>` tags as i
 </venn>
 ```
 
-###A tree layout
+### A tree layout
 
 This ia a fairly standard layout for a hierarchy, adapated from Mike Bostocks [original design](http://bl.ocks.org/mbostock/4063570).
 
@@ -195,7 +195,7 @@ To create a treelayout include some nested json within the tree tags.
 </tree>
 ```
 
-###A simple bar chart
+### A simple bar chart
 
 A simple bar chart can be created using the barchart tags.<sidenote>
 A bar chart as it appears in the margin.
@@ -212,7 +212,7 @@ A bar chart as it appears in the margin.
 ```
 
 
-###A force directed layout
+### A force directed layout
 
 Another fairly standard chart in the d3 world, you can create a force directed layout of a graph using the force tags and some json.<sidenote>
 A force directed layout of a graph.
@@ -250,7 +250,7 @@ A force directed layout of a graph.
 ```
 
 
-###A gantt chart
+### A gantt chart
 
 I find a simple version of a Gantt chart useful when creating plans and proposals. It gives a rough idea of the time scales involved. The syntax is as follows:
 
@@ -271,7 +271,7 @@ This will give you the following
 </gantt>
 
 
-###A donut chart
+### A donut chart
 
 As seen above, you can create a donut plot from a csv file (you just need columns with headings `label` and `value`). Alternatively you can use inline json as in this example.<sidenote>
 A donut created from inline json.
@@ -290,7 +290,7 @@ A donut created from inline json.
 </donut>
 ```
 
-###A line chart
+### A line chart
 
 Similarly the line chart can be either created from a csv file (as long as it has columns with heading x and y) or from in line json. Here is an example.
 
@@ -306,7 +306,7 @@ Similarly the line chart can be either created from a csv file (as long as it ha
 
 <lineplot>{"x": [1, 3, 5, 6, 20, 22, 25], "y": [100, 98, 66, 43, 23, 22, 45]}</lineplot>
 
-###A tree map
+### A tree map
 
 At present the treemap can only be generated from inline json. Here's the full json.
 
