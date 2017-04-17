@@ -28,7 +28,7 @@ An example of a Gantt chart in the margin.
 </gantt>
 </sidenote> To do this you'll need to wrap it in the `<marginnote>` or `<sidenote>` tags.
 
-##What is glasseye?
+## What is glasseye?
 
 Glasseye<sidenote>See the [github repository](https://github.com/coppeliaMLA/glasseye) for the source code</sidenote> is something I'm developing to present the results of statistical analysis in an attractive and hopefully interesting way. It brings together three great things that I use a lot:
 
@@ -40,11 +40,11 @@ The idea is to be able to write up work in markdown<sidenote>Markdown is a light
 
 It's all very very beta at the moment. I'm not claiming it's ready to go. I would like to add lots more charts, redesign the d3 code and improve its overall usability (in particular replace the tags approach with something more in the spirit of markdown) however I thought I'd share it as it is. There's also a lot be done in terms of good design practice (css and all that). Please don't judge me **yet**!
 
-##What it can do
+## What it can do
 
 In case it's not obvious this web page was written using glasseye<sidenote>You can view the markdown [here](viewMarkdown.txt)</sidenote>, that it is it was written in markdown with a few extra html-like tags thrown in. 
 
-###Side notes and margin notes
+### Side notes and margin notes
 First there's the `<sidenote>` tag. Anything enclosed in these tags will generate a numbered side note in the wide margin as close as possible to the note number in the main text. For example, I've used one here<sidenote>I'm a side note! Use me for commentary, links, bits of maths, anything that's peripheral to the main discussion.</sidenote>. 
 
 Then there is a `<marginnote>` tag which is the nearly the same as the side note, only there's no number linking it to a particular part in the main text. You'll see to the right an example of a margin note containing a d3 donut.
